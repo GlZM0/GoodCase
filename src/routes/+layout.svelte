@@ -3,8 +3,12 @@
 	import '@skeletonlabs/skeleton/themes/theme-crimson.css';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import { AppShell, Avatar, popup, type PopupSettings } from '@skeletonlabs/skeleton';
+	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
+	import { storePopup } from '@skeletonlabs/skeleton';
 
-	let profileMenu: PopupSettings = {
+	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+
+	let exampleMenu: PopupSettings = {
 		event: 'click',
 		target: 'exampleMenu',
 		placement: 'bottom'
@@ -30,42 +34,19 @@
 				</div>
 				<div class="flex-shrink-0">
 					<div class="relative">
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<!-- <div class="flex items-center" id="profileAvatar" use:popup={profileMenu}>
-						<Avatar
+						<img
 							src="https://avatars.akamai.steamstatic.com/cc65b2e51c12c364fdb62d61b2232e804b4c789a_full.jpg"
 							class="rounded-[14px] hover:rounded-[20px] transition-all duration-200 w-16 cursor-pointer"
+							alt="avatar"
+							use:popup={exampleMenu}
 						/>
-						
-					</div> -->
-						<button class="btn variant-filled" use:popup={profileMenu}>Click</button>
-						<div class="card p-4 w-72 shadow-xl" data-popup="exampleMenu">
+						<div class="card p-4 w-44 shadow-xl" data-popup="exampleMenu">
 							<!-- NOTE: Keep this wrapper, .space-y will affect the arrow -->
 							<div class="space-y-4">
-								<Avatar
-									src="https://pbs.twimg.com/profile_images/1587479781544759297/TINbbJLC_400x400.png"
-									width="w-16"
-								/>
 								<div>
-									<p class="font-bold">Skeleton</p>
-									<p class="opacity-50">@SkeletonUI</p>
+									<p class="font-bold text-white"><a href="/" class="no-underline">Profile</a></p>
+									<p class="font-bold"><a href="/upgrader">Upgrader</a></p>
 								</div>
-								<p>
-									Skeleton is a fully featured UI component library using the power of Svelte +
-									Tailwind.
-								</p>
-								<div class="flex gap-4">
-									<small><strong>50</strong> <span class="opacity-50">Following</span></small>
-									<small><strong>440</strong> <span class="opacity-50">Followers</span></small>
-								</div>
-								<a
-									class="btn variant-soft w-full"
-									href="https://twitter.com/SkeletonUI"
-									target="_blank"
-									rel="noreferrer"
-								>
-									View on Twitter
-								</a>
 							</div>
 							<!-- Arrow -->
 							<div class="arrow bg-surface-100-800-token" />

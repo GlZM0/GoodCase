@@ -56,12 +56,12 @@
 			</div>
 		</div>
 	</header>
+
+	<main class="mx-32 p-4">
+		<slot />
+	</main>
+
+	<footer class="p-4 bg-surface-800">
+		<div class="mx-32">Hello from footer</div>
+	</footer>
 </AppShell>
-
-<main class="mx-32 p-4">
-	<slot />
-</main>
-
-<footer class="p-4 bg-surface-800">
-	<div class="mx-32">Hello from footer</div>
-</footer>

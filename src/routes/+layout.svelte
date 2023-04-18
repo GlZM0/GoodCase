@@ -29,6 +29,7 @@
 			<!-- svelte-ignore` a11y-click-events-have-key-events -->
 			<div class="flex items-center p-4">
 				<div class="mr-4">
+					<!--Need to add server and database connection-->
 					<h3 class="text-lg font-medium">GIZMO</h3>
 					<p class="text-sm text-gray-300">Balans: 1000 zł</p>
 				</div>

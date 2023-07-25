@@ -1,8 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model Case {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  image String
+  alt   String
+  link  String
+  price Float
+  items Item[]
+}
+
+model Item {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  color     String
+  image     String
+  condition String
+  price     Float
+  chance    Float
+  Case      Case?   @relation(fields: [caseId], references: [id])
+  caseId    String? @db.ObjectId
 }

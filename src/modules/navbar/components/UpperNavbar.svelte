@@ -27,8 +27,7 @@
 		<!-- svelte-ignore` a11y-click-events-have-key-events -->
 		<div class="flex items-center p-4">
 			<div class="mr-4">
-				<h3 class="text-lg font-medium">GIZMO</h3>
-				<p class="text-sm text-gray-300">Balans: 1000 zł</p>
+				<button>Log in with Steam</button>
 			</div>
 			<div class="flex-shrink-0">
 				<div class="relative">

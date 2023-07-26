@@ -10,11 +10,7 @@ app.use(cors());
 
 app.get('/api/milSpecCase', async (req, res) => {
 	try {
-		const milSpecCase = await prisma.case.findUnique({
-			where: {
-				id: '64bb95e4b2bdcb4142772c66'
-			}
-		});
+		const milSpecCase = await prisma.case.findMany();
 
 		res.json(milSpecCase);
 	} catch (error) {

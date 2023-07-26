@@ -1,32 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	let name: string;
-	let image: string;
-	let alt: string;
-	let link: string;
-	let price: number;
-
-	onMount(async () => {
-		return new Promise(async (resolve, reject) => {
-			try {
-				const response = await fetch('http://localhost:3000/api/milSpecCase');
-				if (response.ok) {
-					const responseData = await response.json();
-					resolve(responseData);
-
-					name = responseData.name;
-					image = responseData.image;
-					alt = responseData.alt;
-					link = responseData.link;
-					price = responseData.price;
-				} else {
-					reject(new Error('Error fetching data from the API'));
-				}
-			} catch (error) {
-				reject(new Error('Error fetching data from the API: ' + error));
-			}
-		});
-	});
+	export let prop;
+	const myCase = prop.myCase;
 </script>
 
 <div>
@@ -34,15 +8,15 @@
 	<div class="grid grid-cols-5">
 		<div class="flex w-64 h-64 items-center justify-center">
 			<a href="/" class="!no-underline"
-				><img src={image} {alt} />
+				><img src={myCase.image} alt={myCase.alt} />
 				<div>
-					<h4 class="flex text-white items-center justify-center pt-8">{name}</h4>
+					<h4 class="flex text-white items-center justify-center pt-8">{myCase.name}</h4>
 				</div>
 				<div>
 					<a
-						href={link}
+						href={myCase.link}
 						class="!no-underline flex !text-white items-center justify-center pt-4 border-solid border-blue-600 border-2 rounded-full"
-						>{price} PLN</a
+						>{myCase.price} PLN</a
 					>
 				</div>
 			</a>

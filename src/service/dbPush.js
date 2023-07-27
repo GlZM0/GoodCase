@@ -1,3 +1,5 @@
+//File to push data to database using prisma
+
 // @ts-nocheck
 const { PrismaClient } = require('@prisma/client');
 

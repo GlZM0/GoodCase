@@ -3,8 +3,8 @@
 	import '@skeletonlabs/skeleton/themes/theme-crimson.css';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import { AppShell } from '@skeletonlabs/skeleton';
-	import Navbar from '../modules/navbar/Navbar.svelte';
-	import Footer from '../modules/footer/footer.svelte';
+	import Navbar from '../components/header/Navbar.svelte';
+	import Footer from '../components/footer/footer.svelte';
 </script>
 
 <AppShell>

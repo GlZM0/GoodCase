@@ -8,11 +8,15 @@ const app = express();
 
 app.use(cors());
 
-app.get('/api/milSpecCase', async (req, res) => {
+app.get('/api/cases', async (req, res) => {
 	try {
-		const milSpecCase = await prisma.case.findMany();
+		const cases = await prisma.case.findMany({
+			include: {
+				items: true
+			}
+		});
 
-		res.json(milSpecCase);
+		res.json(cases);
 	} catch (error) {
 		res.status(500).json({ error: 'Error fetching data from the database' });
 	}

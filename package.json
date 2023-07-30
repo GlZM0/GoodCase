@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"client": "vite dev",
-		"server": "cd ./src/server && ts-node-esm app.ts",
+		"server": "cd ./src/service && ts-node-esm app.ts",
 		"start": "concurrently \"npm run client\" \"npm run server\"",
 		"dev": "vite dev",
 		"build": "vite build",

@@ -1,13 +1,13 @@
 <script lang="ts">
 	export let prop;
-	const myCase = prop.myCase;
+	const myCase = prop.myCase[0];
 </script>
 
 <div>
 	<h2 class="py-14">COLOR CASES</h2>
 	<div class="grid grid-cols-5">
 		<div class="flex w-64 h-64 items-center justify-center">
-			<a href="/" class="!no-underline"
+			<a href={myCase.link} class="!no-underline"
 				><img src={myCase.image} alt={myCase.alt} />
 				<div>
 					<h4 class="flex text-white items-center justify-center pt-8">{myCase.name}</h4>

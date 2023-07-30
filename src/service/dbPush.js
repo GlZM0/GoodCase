@@ -8,21 +8,21 @@ const prisma = new PrismaClient();
 main = async () => {
 	await prisma.case.create({
 		data: {
-			name: 'mil-spec',
+			name: 'restricted',
 			image:
-				'https://csgocases.com/uploads/gallery/oryginal/f781f8f0ae272eb45ffacbf9ca3c8fdf00f0e873.png',
-			alt: 'mil-spec-case',
-			link: '../../../mil-spec',
-			price: 3.49,
+				'https://csgocases.com/uploads/gallery/oryginal/60a3d30a395fa4a6e63252f04325de4c91ffc095.png',
+			alt: 'restricted-case',
+			link: '../../../restricted',
+			price: 7.25,
 			items: {
 				create: [
 					{
-						name: 'M4A4 | Magnesium',
-						color: 'blue',
-						image: 'https://cdn.key-drop.com/csgo_icons/b0/b0a3b4f4eaff2002de26e417f403097c.png',
-						condition: 'minimal wear',
-						price: 0.85,
-						chance: 9.59
+						name: 'M4A1-S | Emphorosaur-S',
+						color: 'purple',
+						image: 'https://cdn.key-drop.com/csgo_icons/e7/e754503a8fca82d085a53bf2fec3912e.png',
+						condition: 'factory new',
+						price: 24.99,
+						chance: 2.45
 					},
 					{
 						name: 'P250 | Verdigris',

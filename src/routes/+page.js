@@ -1,7 +1,8 @@
+// @ts-ignore
 export const load = async ({ fetch }) => {
 	let myCase;
 	try {
-		const response = await fetch('http://localhost:3000/api/milSpecCase');
+		const response = await fetch('http://localhost:3000/api/cases');
 		if (response.ok) {
 			const responseData = await response.json();
 			myCase = responseData;

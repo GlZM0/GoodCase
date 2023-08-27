@@ -2,6 +2,7 @@
 	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
+	import { steamLogin } from '../../routes/steam/signin/+server';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
@@ -9,6 +10,10 @@
 		event: 'click',
 		target: 'exampleMenu',
 		placement: 'bottom'
+	};
+
+	const handleSteamLogin = () => {
+		steamLogin();
 	};
 </script>
 
@@ -27,7 +32,9 @@
 		<!-- svelte-ignore` a11y-click-events-have-key-events -->
 		<div class="flex items-center p-4">
 			<div class="mr-4">
-				<button>Log in with Steam</button>
+				<button on:click={handleSteamLogin}>
+					<p>Log in with Steam</p>
+				</button>
 			</div>
 			<div class="flex-shrink-0">
 				<div class="relative">

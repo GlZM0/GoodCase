@@ -21,13 +21,34 @@ model Case {
 }
 
 model Item {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   color     String
   image     String
   condition String
   price     Float
   chance    Float
-  Case      Case?   @relation(fields: [caseId], references: [id])
-  caseId    String? @db.ObjectId
+
+  Case   Case?   @relation(fields: [caseId], references: [id])
+  caseId String? @db.ObjectId
+}
+
+model User {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  steamid     Int
+  personaname String
+  profileurl  String
+  avatar      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  role   Roles?  @relation(fields: [roleId], references: [id])
+  roleId String? @db.ObjectId
+}
+
+model Roles {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+  user User[]
 }

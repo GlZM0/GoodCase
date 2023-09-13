@@ -9,15 +9,20 @@ export const GET = async ({ url, cookies }) => {
 	const responseFromSteamIsValid = await fetch(verifyUrl);
 	const res = await responseFromSteamIsValid.text();
 
-	let userSteamID64;
+	let userSteamID64: any;
 	if (res.includes('true')) {
 		userSteamID64 = verifyParams.get('openid.claimed_id')?.replace(/^\D+/g, '');
 		console.log('Request has been validated by OpenID, Client ID:' + userSteamID64);
+
+		cookies.set('steamid64', userSteamID64, {
+			path: '/',
+			maxAge: 60 * 60 * 24 * 30
+		});
 	} else {
 		console.log('Status 408: Request timeout');
 	}
 
-	const userSteamApiKey = 'YOUR_STEAM_API_KEY';
+	const userSteamApiKey = 'MY STEAM API KEY';
 	const userDataLink = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${userSteamApiKey}&steamids=${userSteamID64}`;
 
 	const responseFromSteamUserInfo = await fetch(userDataLink);
@@ -25,15 +30,10 @@ export const GET = async ({ url, cookies }) => {
 	const userJsonResp = JSON.parse(resp);
 
 	const userData = userJsonResp['response']['players'][0];
-	const steamID = userData.steamid;
-	const name = userData.personaname;
+	const personaname = userData.personaname;
 	const avatar = userData.avatarmedium;
 
-	cookies.set('steamID', steamID, {
-		path: '/',
-		maxAge: 60 * 60 * 24 * 30
-	});
-	cookies.set('name', name, {
+	cookies.set('personaname', personaname, {
 		path: '/',
 		maxAge: 60 * 60 * 24 * 30
 	});

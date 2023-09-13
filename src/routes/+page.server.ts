@@ -1,6 +1,8 @@
-// @ts-ignore
-export const load = async ({ fetch }) => {
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ fetch }) => {
 	let myCase;
+
 	try {
 		const response = await fetch('http://localhost:3000/api/cases');
 		if (response.ok) {
@@ -14,7 +16,6 @@ export const load = async ({ fetch }) => {
 	}
 
 	return {
-		// @ts-ignore
 		myCase: myCase
 	};
 };

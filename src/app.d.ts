@@ -6,11 +6,6 @@ import type { PrismaClient } from '@prisma/client';
 declare global {
 	namespace App {
 		// interface Error {}
-		interface Locals {
-			personaname: string | undefined;
-			steamid: string | undefined;
-			avatar: string | undefined;
-		}
 		// interface PageData {}
 		// interface Platform {}
 	}

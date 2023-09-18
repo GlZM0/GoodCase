@@ -13,6 +13,8 @@ const steamLogin = () => {
 	const redirectToUrl = (url: string) => {
 		window.location.href = url;
 	};
+	const userSteamApiKey = JSON.parse(localStorage.apiKey);
+	console.log(userSteamApiKey);
 
 	redirectToUrl(url);
 };

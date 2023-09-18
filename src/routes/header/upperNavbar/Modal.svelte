@@ -9,7 +9,6 @@
 	const handleClick = () => {
 		dialog.close();
 		steamLogin();
-		///
 	};
 
 	$: if (dialog && $showModal) dialog.showModal();

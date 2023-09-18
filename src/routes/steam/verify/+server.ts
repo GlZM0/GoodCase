@@ -22,7 +22,7 @@ export const GET = async ({ url, cookies }) => {
 		console.log('Status 408: Request timeout');
 	}
 
-	const userSteamApiKey = 'MY STEAM API KEY';
+	const userSteamApiKey = 'APIKEY';
 	const userDataLink = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${userSteamApiKey}&steamids=${userSteamID64}`;
 
 	const responseFromSteamUserInfo = await fetch(userDataLink);

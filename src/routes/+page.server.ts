@@ -1,21 +1,14 @@
 import type { PageServerLoad } from './$types';
+import prisma from '$lib/prisma';
 
-export const load: PageServerLoad = async ({ fetch }) => {
-	let myCase;
-
-	try {
-		const response = await fetch('http://localhost:3000/api/cases');
-		if (response.ok) {
-			const responseData = await response.json();
-			myCase = responseData;
-		} else {
-			console.error('Error fetching data from the API');
+export const load: PageServerLoad = async () => {
+	const cases = await prisma.case.findMany({
+		include: {
+			items: true
 		}
-	} catch (error) {
-		console.error('Error fetching data from the API' + error);
-	}
+	});
 
 	return {
-		myCase: myCase
+		cases
 	};
 };

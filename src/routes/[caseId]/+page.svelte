@@ -2,7 +2,7 @@
 	import { OpenCase } from './OpenCase';
 	export let data;
 
-	const myCase = data.returnedCase;
+	const myCase = data.cases;
 	const openSystem = new OpenCase(0, 100, myCase[0]);
 	let winnerName = '';
 	let winnerPrice = 0;

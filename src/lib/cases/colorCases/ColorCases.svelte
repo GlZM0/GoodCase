@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let data;
-	const myCase = data.myCase[0];
+	const myCase = data.cases[0];
 </script>
 
 <div>

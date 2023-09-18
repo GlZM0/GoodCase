@@ -1,6 +1,6 @@
-import { redirect } from '@sveltejs/kit';
+import { redirect, type RequestEvent } from '@sveltejs/kit';
 
-export const GET = async ({ url, cookies }) => {
+export const GET = async ({ url, cookies }: RequestEvent) => {
 	const verifyParams = url.searchParams;
 	verifyParams.set('openid.mode', 'check_authentication');
 
@@ -22,7 +22,7 @@ export const GET = async ({ url, cookies }) => {
 		console.log('Status 408: Request timeout');
 	}
 
-	const userSteamApiKey = 'APIKEY';
+	const userSteamApiKey = '2FF10F7E7396BCFA996099E1A39777A8';
 	const userDataLink = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${userSteamApiKey}&steamids=${userSteamID64}`;
 
 	const responseFromSteamUserInfo = await fetch(userDataLink);

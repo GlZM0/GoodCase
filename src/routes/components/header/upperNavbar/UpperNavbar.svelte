@@ -2,10 +2,19 @@
 	import SteamProfile from './SteamProfile.svelte';
 	import Modal from './Modal.svelte';
 	import { showModal } from '../../../../stores';
+	import { steamLogin } from '$routes/api/steam/signin/+server';
 
 	export let data: any;
 
 	const isLogged = data.user.logged;
+
+	const isApiKey = () => {
+		if (localStorage.getItem('apikey')) {
+			steamLogin();
+		} else {
+			showModal.set(true);
+		}
+	};
 </script>
 
 <div class="p-4 bg-surface-800 h-30">
@@ -26,11 +35,7 @@
 				{#if isLogged}
 					<SteamProfile {data} />
 				{:else}
-					<button
-						on:click={() => {
-							showModal.set(true);
-						}}
-					>
+					<button on:click={isApiKey}>
 						<div
 							class="flex justify-center items-center space-x-2 bg-gray-700 p-4 rounded-3xl border-2 border-gray-300 transition-transform duration-250 scale-100 hover:scale-90 active:scale-100"
 						>

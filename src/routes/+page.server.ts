@@ -1,7 +1,6 @@
 import type { PageServerLoad } from './$types';
 import type { Actions } from '@sveltejs/kit';
 import prisma from '$lib/prisma';
-import { steamLogin } from './api/steam/signin/+server';
 
 export const load: PageServerLoad = async () => {
 	const cases = await prisma.case.findMany({
@@ -16,7 +15,7 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	default: async ({ request, cookies }) => {
+	signin: async ({ request, cookies }) => {
 		const data = await request.formData();
 		const apikey = data.get('apikey');
 
@@ -34,6 +33,15 @@ export const actions: Actions = {
 		});
 
 		console.log(apikey);
+
+		return {
+			success: true
+		};
+	},
+	logout: async ({ cookies }) => {
+		cookies.delete('personaname');
+		cookies.delete('avatar');
+		cookies.delete('steamid64');
 
 		return {
 			success: true

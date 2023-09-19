@@ -30,10 +30,10 @@
 				<div class="space-y-4">
 					<div>
 						<p class="font-bold text-white"><a href="/" class="no-underline">Profile</a></p>
-						<p class="font-bold"><a href="../upgrader" class="no-underline">Upgrader</a></p>
-						<p class="font-bold text-white">
-							<a href="../login" class="no-underline">LOGIN</a>
-						</p>
+						<p class="font-bold"><a href="../../../upgrader" class="no-underline">Upgrader</a></p>
+						<form action="?/logout" method="POST">
+							<button><p class="font-bold">LOG OUT</p></button>
+						</form>
 					</div>
 				</div>
 				<!-- Arrow -->

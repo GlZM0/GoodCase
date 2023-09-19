@@ -7,6 +7,7 @@
 	let apiKey: number;
 
 	const handleClick = () => {
+		localStorage.setItem('apikey', JSON.stringify(apiKey));
 		dialog.close();
 		steamLogin();
 	};
@@ -17,7 +18,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <dialog
-	class="rounded p-0 w-96 h-32 bg-surface-700"
+	class="rounded p-0 w-1/2 h-1/4 bg-surface-700"
 	bind:this={dialog}
 	on:close={() => {
 		showModal.set(false);
@@ -27,12 +28,29 @@
 	}}
 >
 	<div class="flex justify-center items-center space-x-2 text-white" on:click|stopPropagation>
-		<form method="POST" action="/" use:enhance>
+		<form method="POST" action="?/signin" use:enhance>
 			<label for="apiKey" class="label">
 				<span> Put your Steam API Key here: </span>
 			</label>
-			<input type="text" class="input" placeholder="API KEY" name="apikey" bind:value={apiKey} />
-			<button type="submit" on:click={handleClick}>Submit</button>
+			<input
+				type="text"
+				class="input p-1 border-2 m-1 placeholder:pl-1"
+				placeholder="API KEY"
+				name="apikey"
+				bind:value={apiKey}
+			/>
+			<div class="flex flex-col items-center">
+				<button type="submit" on:click={handleClick} class="border-2 my-2 p-1 rounded-lg"
+					>Submit</button
+				>
+			</div>
+			<p>
+				Where to find my Api Key? <a
+					href="https://steamcommunity.com/dev/apikey"
+					class="text-red-700 font-semibold"
+					target="_blank">CLICK</a
+				>
+			</p>
 		</form>
 	</div>
 </dialog>

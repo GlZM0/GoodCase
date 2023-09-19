@@ -1,8 +1,8 @@
 <script lang="ts">
 	import '../app.css';
 	import { AppShell } from '@skeletonlabs/skeleton';
-	import Navbar from './header/Navbar.svelte';
-	import Footer from './footer/footer.svelte';
+	import Navbar from './components/header/Navbar.svelte';
+	import Footer from './components/footer/footer.svelte';
 
 	export let data;
 </script>

@@ -4,8 +4,6 @@
 	"private": true,
 	"scripts": {
 		"client": "vite dev",
-		"caseServer": "cd ./src/service && ts-node-esm app.ts",
-		"start": "concurrently \"npm run client\" \"npm run caseServer\"",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",

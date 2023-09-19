@@ -1,7 +1,7 @@
 <script lang="ts">
-	import ApiKeyForm from './ApiKeyForm.svelte';
-	import { showModal } from '../../../stores';
-	import { steamLogin } from '../../../routes/steam/signin/+server';
+	import { enhance } from '$app/forms';
+	import { showModal } from '../../../../stores';
+	import { steamLogin } from '../../../api/steam/signin/+server';
 
 	let dialog: HTMLDialogElement;
 	let apiKey: number;
@@ -27,13 +27,13 @@
 	}}
 >
 	<div class="flex justify-center items-center space-x-2 text-white" on:click|stopPropagation>
-		<ApiKeyForm bind:apiKey />
-		<!-- svelte-ignore a11y-autofocus -->
-		<button
-			class="flex justify-center items-center rounded-3xl border-2 border-gray-300 transition-transform duration-250 scale-100 hover:scale-90 active:scale-100 mt-5"
-			autofocus
-			on:click={() => handleClick()}>Submit</button
-		>
+		<form method="POST" action="/" use:enhance>
+			<label for="apiKey" class="label">
+				<span> Put your Steam API Key here: </span>
+			</label>
+			<input type="text" class="input" placeholder="API KEY" name="apikey" bind:value={apiKey} />
+			<button type="submit" on:click={handleClick}>Submit</button>
+		</form>
 	</div>
 </dialog>
 

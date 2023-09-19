@@ -35,7 +35,7 @@ model Item {
 
 model User {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
-  steamid     Int
+  steamid     String
   personaname String
   profileurl  String
   avatar      String

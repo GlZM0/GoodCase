@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SteamProfile from './SteamProfile.svelte';
 	import Modal from './Modal.svelte';
-	import { showModal } from '../../../stores';
+	import { showModal } from '../../../../stores';
 
 	export let data: any;
 

@@ -1,4 +1,5 @@
 import { redirect, type RequestEvent } from '@sveltejs/kit';
+import prisma from '$lib/prisma';
 
 export const GET = async ({ url, cookies }: RequestEvent) => {
 	const verifyParams = url.searchParams;
@@ -32,6 +33,31 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 	const userData = userJsonResp['response']['players'][0];
 	const personaname = userData.personaname;
 	const avatar = userData.avatarmedium;
+	const profileurl = userData.profileurl;
+
+	const userExists = !!(await prisma.user.findFirst({
+		where: {
+			steamapikey: JSON.stringify(userSteamApiKey)
+		}
+	}));
+
+	console.log(userExists);
+
+	try {
+		if (!userExists) {
+			await prisma.user.create({
+				data: {
+					steamid: userSteamID64,
+					personaname: personaname,
+					profileurl: profileurl,
+					avatar: avatar,
+					steamapikey: JSON.stringify(userSteamApiKey)
+				}
+			});
+		}
+	} catch (error) {
+		console.error(error);
+	}
 
 	cookies.set('personaname', personaname, {
 		path: '/',

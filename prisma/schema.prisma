@@ -35,6 +35,7 @@ model Item {
 
 model User {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
+  steamapikey String
   steamid     String
   personaname String
   profileurl  String

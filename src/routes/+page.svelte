@@ -6,10 +6,6 @@
 	import FiftyCases from '$lib/cases/fiftyCases/FiftyCases.svelte';
 
 	export let data;
-
-	// if (form?.success) {
-	// 	console.log('success');
-	// }
 </script>
 
 <ColorCases {data} />

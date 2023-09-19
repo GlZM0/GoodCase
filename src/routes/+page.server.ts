@@ -1,6 +1,7 @@
 import type { PageServerLoad } from './$types';
 import type { Actions } from '@sveltejs/kit';
 import prisma from '$lib/prisma';
+import { fail } from 'assert';
 
 export const load: PageServerLoad = async () => {
 	const cases = await prisma.case.findMany({
@@ -16,23 +17,13 @@ export const load: PageServerLoad = async () => {
 
 export const actions: Actions = {
 	signin: async ({ request, cookies }) => {
-		const data = await request.formData();
+		let data = await request.formData();
 		const apikey = data.get('apikey');
-
-		// try {
-		// 	await prisma.user.findFirst({
-		// 		where: {
-		// 			steamid: apikey
-		// 		}
-		// 	})
-		// }
 
 		cookies.set('apikey', JSON.stringify(apikey), {
 			path: '/',
 			maxAge: 60 * 60 * 24 * 30
 		});
-
-		console.log(apikey);
 
 		return {
 			success: true

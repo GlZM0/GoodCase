@@ -15,8 +15,6 @@ const steamLogin = () => {
 	};
 
 	redirectToUrl(url);
-
-	console.log(url);
 };
 
 export { steamLogin };

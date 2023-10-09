@@ -4,6 +4,7 @@
 	import { storePopup } from '@skeletonlabs/skeleton';
 
 	export let data: any;
+	console.log(data.user.balance);
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
@@ -19,25 +20,34 @@
 		{#await data}
 			<p>... waiting</p>
 		{:then data}
-			<img
-				src={data.user.avatar}
-				class="rounded-[14px] hover:rounded-[20px] transition-all duration-200 w-16 cursor-pointer"
-				alt="your avatar"
-				use:popup={exampleMenu}
-			/>
-			<div class="card p-4 w-44 shadow-xl" data-popup="exampleMenu">
-				<!-- NOTE: Keep this wrapper, .space-y will affect the arrow -->
-				<div class="space-y-4">
-					<div>
-						<p class="font-bold text-white"><a href="/" class="no-underline">Profile</a></p>
-						<p class="font-bold"><a href="../../../upgrader" class="no-underline">Upgrader</a></p>
-						<form action="?/logout" method="POST">
-							<button><p class="font-bold">LOG OUT</p></button>
-						</form>
+			<div class="flex flex-row">
+				<div class="flex items-center pr-10">Balance: {data.user.balance} PLN</div>
+				<div>
+					<img
+						src={data.user.avatar}
+						class="rounded-[14px] hover:rounded-[20px] transition-all duration-200 w-16 cursor-pointer"
+						alt="your avatar"
+						use:popup={exampleMenu}
+					/>
+					<div class="card p-4 w-44 shadow-xl" data-popup="exampleMenu">
+						<!-- NOTE: Keep this wrapper, .space-y will affect the arrow -->
+						<div class="space-y-4">
+							<div>
+								<p class="font-bold text-white">
+									<a href="../../../profile" class="no-underline">Profile</a>
+								</p>
+								<p class="font-bold">
+									<a href="../../../upgrader" class="no-underline">Upgrader</a>
+								</p>
+								<form action="?/logout" method="POST">
+									<button><p class="font-bold">LOG OUT</p></button>
+								</form>
+							</div>
+						</div>
+						<!-- Arrow -->
+						<div class="arrow bg-surface-100-800-token" />
 					</div>
 				</div>
-				<!-- Arrow -->
-				<div class="arrow bg-surface-100-800-token" />
 			</div>
 		{/await}
 	</div>

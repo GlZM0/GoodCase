@@ -34,6 +34,7 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 	const personaname = userData.personaname;
 	const avatar = userData.avatarmedium;
 	const profileurl = userData.profileurl;
+	let balance = 0;
 
 	const userExists = !!(await prisma.user.findFirst({
 		where: {
@@ -41,18 +42,37 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 		}
 	}));
 
-	console.log(userExists);
-
 	try {
 		if (!userExists) {
+			var clearBalance = 0;
 			await prisma.user.create({
 				data: {
+					steamapikey: JSON.stringify(userSteamApiKey),
 					steamid: userSteamID64,
 					personaname: personaname,
 					profileurl: profileurl,
 					avatar: avatar,
-					steamapikey: JSON.stringify(userSteamApiKey)
+					balance: clearBalance,
+					siteInventory: null,
+					steamInventory: null
 				}
+			});
+			cookies.set('balance', JSON.stringify(clearBalance), {
+				path: '/',
+				maxAge: 60 * 60 * 24 * 30
+			});
+		} else {
+			const user = await prisma.user.findFirst({
+				where: {
+					steamid: userSteamID64
+				}
+			});
+
+			console.log(user?.balance);
+
+			cookies.set('balance', JSON.stringify(user?.balance), {
+				path: '/',
+				maxAge: 60 * 60 * 24 * 30
 			});
 		}
 	} catch (error) {

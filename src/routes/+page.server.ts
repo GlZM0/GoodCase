@@ -1,7 +1,6 @@
 import type { PageServerLoad } from './$types';
 import type { Actions } from '@sveltejs/kit';
 import prisma from '$lib/prisma';
-import { fail } from 'assert';
 
 export const load: PageServerLoad = async () => {
 	const cases = await prisma.case.findMany({
@@ -33,6 +32,7 @@ export const actions: Actions = {
 		cookies.delete('personaname');
 		cookies.delete('avatar');
 		cookies.delete('steamid64');
+		cookies.delete('balance');
 
 		return {
 			success: true

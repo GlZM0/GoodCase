@@ -1,18 +1,18 @@
 <script lang="ts">
 	import SteamProfile from './SteamProfile.svelte';
 	import Modal from './Modal.svelte';
-	import { showModal } from '../../../../stores';
+	import { showApiModal } from '../../../../stores';
 	import { steamLogin } from '$routes/api/steam/signin/+server';
 
 	export let data: any;
 
 	const isLogged = data.user.logged;
 
-	const isApiKey = () => {
+	export const isApiKey = () => {
 		if (localStorage.getItem('apikey')) {
 			steamLogin();
 		} else {
-			showModal.set(true);
+			showApiModal.set(true);
 		}
 	};
 </script>

@@ -5,11 +5,13 @@ export class OpenCase {
 	private cumulativeDistribution: number[];
 	private winnerName: string;
 	private winnerPrice: number;
+	private winnerImage: string;
 
 	constructor(private min: number, private max: number, private myCase: any) {
 		this.cumulativeDistribution = [];
 		this.winnerName = '';
 		this.winnerPrice = 0;
+		this.winnerImage = '';
 	}
 
 	public openCase(): void {
@@ -27,9 +29,11 @@ export class OpenCase {
 
 		const winningItemName = this.myCase.items[rangeIndex].name;
 		const winningItemPrice = this.myCase.items[rangeIndex].price;
+		const winningItemImage = this.myCase.items[rangeIndex].image;
 
 		this.winnerName = winningItemName;
 		this.winnerPrice = winningItemPrice;
+		this.winnerImage = winningItemImage;
 	}
 
 	public getWinnerName(): string {
@@ -38,5 +42,9 @@ export class OpenCase {
 
 	public getWinnerPrice(): number {
 		return this.winnerPrice;
+	}
+
+	public getWinnerImage(): string {
+		return this.winnerImage;
 	}
 }

@@ -4,7 +4,6 @@
 	import { storePopup } from '@skeletonlabs/skeleton';
 
 	export let data: any;
-	console.log(data.user.balance);
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { showModal } from '../../../../stores';
+	import { showApiModal } from '../../../../stores';
 	import { steamLogin } from '../../../api/steam/signin/+server';
 
 	let dialog: HTMLDialogElement;
@@ -12,8 +12,8 @@
 		steamLogin();
 	};
 
-	$: if (dialog && $showModal) dialog.showModal();
-	$: if (dialog && !$showModal) dialog.close();
+	$: if (dialog && $showApiModal) dialog.showModal();
+	$: if (dialog && !$showApiModal) dialog.close();
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -21,7 +21,7 @@
 	class="rounded p-0 w-1/2 h-1/4 bg-surface-700"
 	bind:this={dialog}
 	on:close={() => {
-		showModal.set(false);
+		showApiModal.set(false);
 	}}
 	on:click|self={() => {
 		dialog.close();

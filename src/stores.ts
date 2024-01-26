@@ -1,3 +1,4 @@
 import { writable } from 'svelte/store';
 
-export const showModal = writable(false);
+export const showApiModal = writable(false);
+export const showWinnerModal = writable(false);

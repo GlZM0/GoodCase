@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"client": "vite dev",
+		"client": "vite dev --host",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -36,6 +36,7 @@
 		"prettier-plugin-svelte": "^2.8.1",
 		"prisma": "^4.16.2",
 		"svelte": "^3.54.0",
+		"svelte-carousel": "github:vadimkorr/svelte-carousel#pull/142/head",
 		"svelte-check": "^3.0.1",
 		"sveltekit-superforms": "^1.7.0",
 		"tailwindcss": "^3.3.1",
@@ -57,6 +58,7 @@
 		"express": "^4.18.2",
 		"express-session": "^1.17.3",
 		"mongodb": "^5.7.0",
+		"motion": "^10.17.0",
 		"openid-client": "^5.4.2",
 		"parse-nested-form-data": "^1.0.0"
 	}

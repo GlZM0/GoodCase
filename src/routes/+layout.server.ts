@@ -13,7 +13,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 		}
 	}));
 
-	console.log(userExists);
+	// console.log(userExists);
 
 	let user;
 	if (userExists) {

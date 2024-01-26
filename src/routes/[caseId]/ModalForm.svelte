@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { showWinnerModal } from '../../stores';
+
 	export let winnerImage: string;
 	export let winnerName: string;
 	export let winnerPrice: number;

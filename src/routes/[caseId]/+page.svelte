@@ -4,7 +4,9 @@
 	import { OpenCase } from './OpenCase';
 	import { animate, spring } from 'motion';
 	import { showWinnerModal } from '../../stores';
+	import { putWinnerItemIntoPlace } from './PutWinnerItem';
 	import ModalForm from './ModalForm.svelte';
+	import { getWinnerItemPosition } from './WinnerItemPosition';
 
 	export let data;
 	const myCase = data.cases;
@@ -17,7 +19,6 @@
 
 	let container: HTMLElement;
 	let itemsContainer: HTMLElement;
-	let modalContainer: HTMLElement;
 
 	const sortItems = () => {
 		sortedItems = myCase[0].items;
@@ -59,31 +60,17 @@
 		winnerPrice = openSystem.getWinnerPrice();
 		winnerImage = openSystem.getWinnerImage();
 
-		const itemsVisible = Math.ceil(container.clientWidth / itemConfig.size);
+		putWinnerItemIntoPlace(shuffledItems, winnerName, winnerImage, winnerPrice);
 
-		shuffledItems[99] = {
-			name: winnerName,
-			image: winnerImage,
-			price: winnerPrice
-		};
-
-		const positionOfWinnerItem = shuffledItems.length - Math.ceil(itemsVisible / 2);
-
-		const winnerItemX =
-			-((positionOfWinnerItem - 1) * itemConfig.size) +
-			Math.ceil(itemsVisible / 2) * itemConfig.size;
+		const winnerItemX = getWinnerItemPosition(container, shuffledItems);
 
 		animate(
 			itemsContainer,
-			{ x: [0, winnerItemX] },
+			{ x: [0, winnerItemX - 100 + Math.random() * 200] },
 			{ easing: spring({ damping: 60, stiffness: 10, mass: 2, restSpeed: 1 }) }
 		).finished.then(() => {
 			showWinnerModal.set(true);
 		});
-	};
-
-	const itemConfig = {
-		size: 200
 	};
 </script>
 
@@ -101,8 +88,10 @@
 
 					<div class="w-max flex" bind:this={itemsContainer}>
 						{#each shuffledItems as { name, image, price }}
-							<div class="w-[200px] h-[200px] border-2 border-gray-600/50 border-solid">
-								<img class="w-full h-full" src={image} alt={name} />
+							<div
+								class="w-[200px] h-[200px] border-2 border-gray-600/50 border-solid flex items-center justify-center"
+							>
+								<img class="flex aspect-[4/3]" src={image} alt={name} />
 							</div>
 						{/each}
 					</div>

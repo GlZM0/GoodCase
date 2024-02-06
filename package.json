@@ -60,6 +60,7 @@
 		"mongodb": "^5.7.0",
 		"motion": "^10.17.0",
 		"openid-client": "^5.4.2",
-		"parse-nested-form-data": "^1.0.0"
+		"parse-nested-form-data": "^1.0.0",
+		"svelte-sound": "^0.6.0"
 	}
 }

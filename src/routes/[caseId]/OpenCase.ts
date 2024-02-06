@@ -6,12 +6,16 @@ export class OpenCase {
 	private winnerName: string;
 	private winnerPrice: number;
 	private winnerImage: string;
+	private winnerColor: string;
+	private winnerCondition: string;
 
 	constructor(private min: number, private max: number, private myCase: any) {
 		this.cumulativeDistribution = [];
 		this.winnerName = '';
 		this.winnerPrice = 0;
 		this.winnerImage = '';
+		this.winnerColor = '';
+		this.winnerCondition = '';
 	}
 
 	public openCase(): void {
@@ -30,10 +34,14 @@ export class OpenCase {
 		const winningItemName = this.myCase.items[rangeIndex].name;
 		const winningItemPrice = this.myCase.items[rangeIndex].price;
 		const winningItemImage = this.myCase.items[rangeIndex].image;
+		const winningItemColor = this.myCase.items[rangeIndex].color;
+		const winningCondition = this.myCase.items[rangeIndex].condition;
 
 		this.winnerName = winningItemName;
 		this.winnerPrice = winningItemPrice;
 		this.winnerImage = winningItemImage;
+		this.winnerColor = winningItemColor;
+		this.winnerCondition = winningCondition;
 	}
 
 	public getWinnerName(): string {
@@ -46,5 +54,13 @@ export class OpenCase {
 
 	public getWinnerImage(): string {
 		return this.winnerImage;
+	}
+
+	public getWinnerColor(): string {
+		return this.winnerColor;
+	}
+
+	public getWinnerCondition(): string {
+		return this.winnerCondition;
 	}
 }

@@ -7,15 +7,26 @@
 	import { putWinnerItemIntoPlace } from './PutWinnerItem';
 	import ModalForm from './ModalForm.svelte';
 	import { getWinnerItemPosition } from './WinnerItemPosition';
+	import { Sound, useSound } from 'svelte-sound';
+	import opening_mp3 from '../../static/openingSound.mp3';
+	import caseOpenEnd_mp3 from '../../static/caseOpenEnd.mp3';
 
 	export let data;
 	const myCase = data.cases;
 	const openSystem = new OpenCase(0, 100, myCase[0]);
+
+	const openSound = useSound(opening_mp3, ['click']);
+	const caseOpenEndSound = new Sound(caseOpenEnd_mp3);
+
 	let winnerName = '';
 	let winnerPrice = 0;
 	let winnerImage = '';
+	let winnerColor = '';
+	let winnerCondition = '';
+
 	let shuffledItems: any[] = [];
 	let sortedItems: any[] = [];
+	let isOpening = false;
 
 	let container: HTMLElement;
 	let itemsContainer: HTMLElement;
@@ -53,14 +64,24 @@
 
 	// @ts-ignore
 	const openCase = () => {
+		isOpening = true;
 		shuffleCase();
 
 		openSystem.openCase();
 		winnerName = openSystem.getWinnerName();
 		winnerPrice = openSystem.getWinnerPrice();
 		winnerImage = openSystem.getWinnerImage();
+		winnerColor = openSystem.getWinnerColor();
+		winnerCondition = openSystem.getWinnerCondition();
 
-		putWinnerItemIntoPlace(shuffledItems, winnerName, winnerImage, winnerPrice);
+		putWinnerItemIntoPlace(
+			shuffledItems,
+			winnerName,
+			winnerImage,
+			winnerPrice,
+			winnerColor,
+			winnerCondition
+		);
 
 		const winnerItemX = getWinnerItemPosition(container, shuffledItems);
 
@@ -70,6 +91,8 @@
 			{ easing: spring({ damping: 60, stiffness: 10, mass: 2, restSpeed: 1 }) }
 		).finished.then(() => {
 			showWinnerModal.set(true);
+			caseOpenEndSound.play();
+			isOpening = false;
 		});
 	};
 </script>
@@ -91,7 +114,9 @@
 							<div
 								class="w-[200px] h-[200px] border-2 border-gray-600/50 border-solid flex items-center justify-center"
 							>
-								<img class="flex aspect-[4/3]" src={image} alt={name} />
+								<div class="m-1">
+									<img class="flex aspect-[4/3]" src={image} alt={name} />
+								</div>
 							</div>
 						{/each}
 					</div>
@@ -102,11 +127,33 @@
 				<div class="w-auto border-4 border-solid rounded-full">
 					<div class="justify-center flex">
 						<form method="POST" action="?/open" use:enhance>
-							<button type="submit" class="bg-red-500 flex rounded-full" on:click={openCase}>
-								<div class="p-4">Open case</div>
-								<div class="p-4">{myCase[0].price}</div>
+							<button
+								type="submit"
+								class="flex justify-center items-center rounded-full w-[300px] bg-"
+								class:bg-red-500={!isOpening}
+								class:bg-gray-700={isOpening}
+								on:click={openCase}
+								disabled={isOpening}
+								use:openSound
+							>
+								<div class="p-6">
+									{#if isOpening}
+										<h1 class="font-semibold text-xl">Opening...</h1>
+									{:else}
+										<h1 class="font-semibold text-xl">
+											Open case for {myCase[0].price} PLN
+										</h1>
+									{/if}
+								</div>
 							</button>
-							<ModalForm {winnerImage} {winnerName} {winnerPrice} />
+							<ModalForm
+								{winnerImage}
+								{winnerName}
+								{winnerPrice}
+								{winnerColor}
+								{openCase}
+								{winnerCondition}
+							/>
 						</form>
 					</div>
 				</div>

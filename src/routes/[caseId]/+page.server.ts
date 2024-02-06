@@ -1,6 +1,5 @@
 import type { Actions, PageServerLoad } from '../$types';
 import prisma from '$lib/prisma';
-import { OpenCase } from './OpenCase';
 
 export const load: PageServerLoad = async () => {
 	const cases = await prisma.case.findMany({

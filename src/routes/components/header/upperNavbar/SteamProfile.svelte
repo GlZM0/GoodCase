@@ -29,7 +29,6 @@
 						use:popup={exampleMenu}
 					/>
 					<div class="card p-4 w-44 shadow-xl" data-popup="exampleMenu">
-						<!-- NOTE: Keep this wrapper, .space-y will affect the arrow -->
 						<div class="space-y-4">
 							<div>
 								<p class="font-bold text-white">

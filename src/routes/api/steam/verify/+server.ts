@@ -25,10 +25,6 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 
 	const userSteamApiKey = cookies.get('apikey')?.slice(1, -1);
 
-	// const query = `https://partner.steam-api.com/IInventoryService/GetInventory/v1/?appid=730&steamid=${userSteamID64}&key=${userSteamApiKey}`;
-	// const resp1 = await fetch(query);
-	// console.log(resp1);
-
 	const userDataLink = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${userSteamApiKey}&steamids=${userSteamID64}`;
 
 	const responseFromSteamUserInfo = await fetch(userDataLink);

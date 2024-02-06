@@ -7,16 +7,17 @@
 	import { putWinnerItemIntoPlace } from './PutWinnerItem';
 	import ModalForm from './ModalForm.svelte';
 	import { getWinnerItemPosition } from './WinnerItemPosition';
-	import { Sound, useSound } from 'svelte-sound';
+	import { Sound } from 'svelte-sound';
 	import opening_mp3 from '../../static/openingSound.mp3';
 	import caseOpenEnd_mp3 from '../../static/caseOpenEnd.mp3';
 
 	export let data;
 	const myCase = data.cases;
 	const openSystem = new OpenCase(0, 100, myCase[0]);
+	let caseName = myCase[0].name.toUpperCase();
 
-	const openSound = useSound(opening_mp3, ['click']);
-	const caseOpenEndSound = new Sound(caseOpenEnd_mp3);
+	let caseOpeningSound = new Sound(opening_mp3);
+	let caseOpenEndSound = new Sound(caseOpenEnd_mp3);
 
 	let winnerName = '';
 	let winnerPrice = 0;
@@ -26,7 +27,9 @@
 
 	let shuffledItems: any[] = [];
 	let sortedItems: any[] = [];
+
 	let isOpening = false;
+	let isAudio = true;
 
 	let container: HTMLElement;
 	let itemsContainer: HTMLElement;
@@ -64,6 +67,8 @@
 
 	// @ts-ignore
 	const openCase = () => {
+		if (isAudio) caseOpeningSound.play();
+
 		isOpening = true;
 		shuffleCase();
 
@@ -91,7 +96,7 @@
 			{ easing: spring({ damping: 60, stiffness: 10, mass: 2, restSpeed: 1 }) }
 		).finished.then(() => {
 			showWinnerModal.set(true);
-			caseOpenEndSound.play();
+			if (isAudio) caseOpenEndSound.play();
 			isOpening = false;
 		});
 	};
@@ -100,6 +105,39 @@
 <main>
 	<div>
 		<section class="pt-10">
+			<div class="flex justify-center w-full pb-4 text-3xl font-bold text-white">
+				<h1>{caseName}</h1>
+			</div>
+			<div class="flex justify-center pb-10">
+				<button
+					on:click={() => {
+						isAudio = !isAudio;
+					}}
+				>
+					<svg
+						class:non-active-stroke={!isAudio}
+						width="40px"
+						height="40px"
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						><g id="SVGRepo_bgCarrier" stroke-width="0" /><g
+							id="SVGRepo_tracerCarrier"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/><g id="SVGRepo_iconCarrier">
+							<path
+								d="M19 6C20.5 7.5 21 10 21 12C21 14 20.5 16.5 19 18M16 8.99998C16.5 9.49998 17 10.5 17 12C17 13.5 16.5 14.5 16 15M3 10.5V13.5C3 14.6046 3.5 15.5 5.5 16C7.5 16.5 9 21 12 21C14 21 14 3 12 3C9 3 7.5 7.5 5.5 8C3.5 8.5 3 9.39543 3 10.5Z"
+								stroke="#d1d1d1"
+								stroke-width="1.5"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</g></svg
+					>
+				</button>
+			</div>
+
 			<div class="flex justify-center w-full">
 				<div
 					class="border-4 border-solid border-white rounded-lg overflow-hidden w-[1400px] relative"
@@ -110,7 +148,7 @@
 					</div>
 
 					<div class="w-max flex" bind:this={itemsContainer}>
-						{#each shuffledItems as { name, image, price }}
+						{#each shuffledItems as { name, image }}
 							<div
 								class="w-[200px] h-[200px] border-2 border-gray-600/50 border-solid flex items-center justify-center"
 							>
@@ -129,19 +167,18 @@
 						<form method="POST" action="?/open" use:enhance>
 							<button
 								type="submit"
-								class="flex justify-center items-center rounded-full w-[300px] bg-"
+								class="flex justify-center items-center rounded-full w-[250px]"
 								class:bg-red-500={!isOpening}
 								class:bg-gray-700={isOpening}
 								on:click={openCase}
 								disabled={isOpening}
-								use:openSound
 							>
 								<div class="p-6">
 									{#if isOpening}
 										<h1 class="font-semibold text-xl">Opening...</h1>
 									{:else}
 										<h1 class="font-semibold text-xl">
-											Open case for {myCase[0].price} PLN
+											Open {myCase[0].price} PLN
 										</h1>
 									{/if}
 								</div>
@@ -173,3 +210,9 @@
 		</section>
 	</div>
 </main>
+
+<style>
+	.non-active-stroke path {
+		stroke: #808080;
+	}
+</style>

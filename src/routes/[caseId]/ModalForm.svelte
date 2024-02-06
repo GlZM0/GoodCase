@@ -26,7 +26,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <dialog
-	class="justify-center rounded-lg p-0 h-[700px] w-[800px] bg-surface-700 overflow-hidden"
+	class="justify-center rounded-[32px] p-0 h-[700px] w-[800px] bg-surface-700 overflow-hidden"
 	bind:this={dialog}
 	on:close={() => showWinnerModal.set(false)}
 	on:click|self={() => {
@@ -61,12 +61,12 @@
 		</button>
 		<div class="items-center justify-center h-screen text-center">
 			<div class="flex flex-col justify-center items-center space-y-4">
-				<h2 class="text-green-500 text-3xl font-bold mb-4">YOU WON</h2>
-				<p class="text-lg">{winnerName === '' ? '' : winnerName}</p>
-				<p class="text-lg">{winnerName === null ? '' : '(' + winnerCondition + ')'}</p>
+				<h2 class="text-green-500 text-2xl font-bold">YOU WON</h2>
+				<h1 class="text-4xl">{winnerName === '' ? '' : winnerName}</h1>
+				<h1 class="text-md">{winnerName === null ? '' : '(' + winnerCondition + ')'}</h1>
 			</div>
 			<div>
-				<div class="max-w-md border-[3px] my-4 p-4 relative" style={`border-color: ${color}`}>
+				<div class="max-w-md border-[0px] my-4 p-4 relative" style={`border-color: ${color}`}>
 					<div class="absolute inset-0 flex justify-center items-center">
 						<div
 							class="rounded-full h-full w-full m-10 opacity-50 backdrop-filter blur-3xl backdrop-blur-sm"

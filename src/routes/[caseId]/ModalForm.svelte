@@ -12,7 +12,7 @@
 		openCase();
 	};
 
-	let color = '';
+	let color: string = '';
 
 	if (winnerColor == 'blue') {
 		color = 'rgb(59 130 246)';
@@ -66,7 +66,7 @@
 				<h1 class="text-md">{winnerName === null ? '' : '(' + winnerCondition + ')'}</h1>
 			</div>
 			<div>
-				<div class="max-w-md border-[0px] my-4 p-4 relative" style={`border-color: ${color}`}>
+				<div class="max-w-md my-4 p-4 relative" style={`border-color: ${color}`}>
 					<div class="absolute inset-0 flex justify-center items-center">
 						<div
 							class="rounded-full h-full w-full m-10 opacity-50 backdrop-filter blur-3xl backdrop-blur-sm"

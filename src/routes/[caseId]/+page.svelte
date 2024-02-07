@@ -10,9 +10,11 @@
 	import { Sound } from 'svelte-sound';
 	import opening_mp3 from '../../static/openingSound.mp3';
 	import caseOpenEnd_mp3 from '../../static/caseOpenEnd.mp3';
+	import { isApiKey } from '$routes/components/header/upperNavbar/UpperNavbar.svelte';
 
 	export let data;
 	const myCase = data.cases;
+	const isLoggedIn = data.logged;
 	const openSystem = new OpenCase(0, 100, myCase[0]);
 	let caseName = myCase[0].name.toUpperCase();
 
@@ -41,7 +43,13 @@
 		});
 	};
 
+	const handleLoginClick = () => {
+		isApiKey();
+	};
+
 	onMount(() => {
+		console.log(isLoggedIn);
+
 		sortItems();
 
 		const originalItems = Array.from({ length: 21 }, (_, index) => myCase[0].items[index]);
@@ -67,6 +75,7 @@
 
 	// @ts-ignore
 	const openCase = () => {
+		console.log(isLoggedIn);
 		if (isAudio) caseOpeningSound.play();
 
 		isOpening = true;
@@ -165,32 +174,43 @@
 				<div class="w-auto border-4 border-solid rounded-full">
 					<div class="justify-center flex">
 						<form method="POST" action="?/open" use:enhance>
-							<button
-								type="submit"
-								class="flex justify-center items-center rounded-full w-[250px]"
-								class:bg-red-500={!isOpening}
-								class:bg-gray-700={isOpening}
-								on:click={openCase}
-								disabled={isOpening}
-							>
-								<div class="p-6">
-									{#if isOpening}
-										<h1 class="font-semibold text-xl">Opening...</h1>
-									{:else}
-										<h1 class="font-semibold text-xl">
-											Open {myCase[0].price} PLN
-										</h1>
-									{/if}
-								</div>
-							</button>
-							<ModalForm
-								{winnerImage}
-								{winnerName}
-								{winnerPrice}
-								{winnerColor}
-								{openCase}
-								{winnerCondition}
-							/>
+							{#if !isLoggedIn}
+								<button
+									class="flex justify-center items-center rounded-full w-[250px] bg-gray-700"
+									on:click={handleLoginClick}
+								>
+									<div class="p-6">
+										<p class="font-semibold text-xl">You need to login</p>
+									</div>
+								</button>
+							{:else}
+								<button
+									type="submit"
+									class="flex justify-center items-center rounded-full w-[250px]"
+									class:bg-red-500={!isOpening}
+									class:bg-gray-700={isOpening}
+									on:click={openCase}
+									disabled={isOpening}
+								>
+									<div class="p-6">
+										{#if isOpening}
+											<h1 class="font-semibold text-xl">Opening...</h1>
+										{:else}
+											<h1 class="font-semibold text-xl">
+												Open {myCase[0].price} PLN
+											</h1>
+										{/if}
+									</div>
+								</button>
+								<ModalForm
+									{winnerImage}
+									{winnerName}
+									{winnerPrice}
+									{winnerColor}
+									{openCase}
+									{winnerCondition}
+								/>
+							{/if}
 						</form>
 					</div>
 				</div>

@@ -6,9 +6,10 @@
 	import FiftyCases from '$lib/cases/fiftyCases/FiftyCases.svelte';
 
 	export let data;
+	const cases = data.cases;
 </script>
 
-<ColorCases {data} />
+<ColorCases {cases} />
 
 <CsgoCases />
 

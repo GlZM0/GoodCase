@@ -12,12 +12,6 @@
 		openCase();
 	};
 
-	let color: string = '';
-
-	if (winnerColor == 'blue') {
-		color = 'rgb(59 130 246)';
-	}
-
 	let dialog: HTMLDialogElement;
 
 	$: if (dialog && $showWinnerModal) dialog.showModal();
@@ -66,11 +60,11 @@
 				<h1 class="text-md">{winnerName === null ? '' : '(' + winnerCondition + ')'}</h1>
 			</div>
 			<div>
-				<div class="max-w-md my-4 p-4 relative" style={`border-color: ${color}`}>
+				<div class="max-w-md my-4 p-4 relative" style={`border-color: ${winnerColor}`}>
 					<div class="absolute inset-0 flex justify-center items-center">
 						<div
 							class="rounded-full h-full w-full m-10 opacity-50 backdrop-filter blur-3xl backdrop-blur-sm"
-							style={`background-image: radial-gradient(${color}, transparent);`}
+							style={`background-image: radial-gradient(${winnerColor}, transparent)`}
 						/>
 					</div>
 

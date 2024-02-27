@@ -26,9 +26,9 @@
 				><img
 					src="https://cdn.7tv.app/emote/6268904f4f54759b7184fa72/4x.webp"
 					alt="Logo"
-					class="h-16 mr-2"
+					class="h-20 mr-2"
 				/>
-				<span><h1 class="text-lg font-semibold">GoodCase</h1></span>
+				<span><h1 class="text-4xl font-semibold">GoodCase</h1></span>
 			</a>
 		</div>
 		<!-- svelte-ignore` a11y-click-events-have-key-events -->

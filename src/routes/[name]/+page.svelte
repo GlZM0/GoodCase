@@ -13,10 +13,10 @@
 	import { isApiKey } from '$routes/components/header/upperNavbar/UpperNavbar.svelte';
 
 	export let data;
-	const myCase = data.cases;
+	const cases = data.cases;
 	const isLoggedIn = data.logged;
-	const openSystem = new OpenCase(0, 100, myCase[0]);
-	let caseName = myCase[0].name.toUpperCase();
+	const openSystem = new OpenCase(0, 100, cases[0]);
+	let caseName = cases[0].name.toUpperCase();
 
 	let caseOpeningSound = new Sound(opening_mp3);
 	let caseOpenEndSound = new Sound(caseOpenEnd_mp3);
@@ -36,23 +36,17 @@
 	let container: HTMLElement;
 	let itemsContainer: HTMLElement;
 
-	const sortItems = () => {
-		sortedItems = myCase[0].items;
-		sortedItems.sort((a, b) => {
-			return b.price - a.price;
-		});
-	};
-
-	const handleLoginClick = () => {
-		isApiKey();
-	};
+	$: gradientStyle = isOpening
+		? 'background-color: rgba(55, 65, 81, 1)'
+		: 'background-image: linear-gradient(to right, rgba(220, 227, 238, 0.4), rgba(75, 85, 99, 0.8))';
 
 	onMount(() => {
-		console.log(isLoggedIn);
-
 		sortItems();
 
-		const originalItems = Array.from({ length: 21 }, (_, index) => myCase[0].items[index]);
+		const originalItems = Array.from(
+			{ length: cases[0].items.length },
+			(_, index) => cases[0].items[index]
+		);
 		let allItems: any[] = [];
 
 		for (let i = 0; i < Math.ceil(100 / originalItems.length); i++) {
@@ -62,8 +56,18 @@
 		shuffleCase();
 	});
 
+	const sortItems = () => {
+		sortedItems = cases[0].items;
+		sortedItems.sort((a, b) => {
+			return b.price - a.price;
+		});
+	};
+
 	const shuffleCase = () => {
-		const originalItems = Array.from({ length: 21 }, (_, index) => myCase[0].items[index]);
+		const originalItems = Array.from(
+			{ length: cases[0].items.length },
+			(_, index) => cases[0].items[index]
+		);
 		let allItems: any[] = [];
 
 		for (let i = 0; i < Math.ceil(100 / originalItems.length); i++) {
@@ -73,10 +77,13 @@
 		shuffledItems = allItems.sort(() => Math.random() - 0.5);
 	};
 
+	const handleLoginClick = () => {
+		isApiKey();
+	};
+
 	// @ts-ignore
 	const openCase = () => {
-		console.log(isLoggedIn);
-		if (isAudio) caseOpeningSound.play();
+		caseOpeningSound.play();
 
 		isOpening = true;
 		shuffleCase();
@@ -96,6 +103,12 @@
 			winnerColor,
 			winnerCondition
 		);
+
+		if (winnerColor == 'blue') {
+			winnerColor = 'rgb(59 130 246)';
+		} else if (winnerColor == 'purple') {
+			winnerColor = 'rgb(136,71,255)';
+		}
 
 		const winnerItemX = getWinnerItemPosition(container, shuffledItems);
 
@@ -121,8 +134,10 @@
 				<button
 					on:click={() => {
 						isAudio = !isAudio;
+						caseOpeningSound;
 					}}
 				>
+					<!-- naprawić dźwięk, użyć volume https://github.com/goldfire/howler.js/#options -->
 					<svg
 						class:non-active-stroke={!isAudio}
 						width="40px"
@@ -171,7 +186,7 @@
 			</div>
 
 			<div class="flex justify-center pt-8 pb-8">
-				<div class="w-auto border-4 border-solid rounded-full">
+				<div class="border-4 border-solid rounded-full open-button">
 					<div class="justify-center flex">
 						<form method="POST" action="?/open" use:enhance>
 							{#if !isLoggedIn}
@@ -187,8 +202,7 @@
 								<button
 									type="submit"
 									class="flex justify-center items-center rounded-full w-[250px]"
-									class:bg-red-500={!isOpening}
-									class:bg-gray-700={isOpening}
+									style={gradientStyle}
 									on:click={openCase}
 									disabled={isOpening}
 								>
@@ -197,7 +211,7 @@
 											<h1 class="font-semibold text-xl">Opening...</h1>
 										{:else}
 											<h1 class="font-semibold text-xl">
-												Open {myCase[0].price} PLN
+												Open {cases[0].price} PLN
 											</h1>
 										{/if}
 									</div>
@@ -234,5 +248,14 @@
 <style>
 	.non-active-stroke path {
 		stroke: #808080;
+	}
+
+	.open-button {
+		transform: scale(1);
+		transition: transform 0.3s ease;
+	}
+	.open-button:hover {
+		transform: scale(0.9);
+		transition: transform 0.3s ease;
 	}
 </style>

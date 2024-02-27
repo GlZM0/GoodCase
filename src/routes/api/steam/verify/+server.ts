@@ -29,6 +29,7 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 
 	const responseFromSteamUserInfo = await fetch(userDataLink);
 	const resp = await responseFromSteamUserInfo.text();
+	console.log(resp);
 	const userJsonResp = JSON.parse(resp);
 
 	const userData = userJsonResp['response']['players'][0];
@@ -86,6 +87,12 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 		path: '/',
 		maxAge: 60 * 60 * 24 * 30
 	});
+
+	const getMarketPricesUrl = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?ISteamEconomy/GetMarketPrices/v1/?key=${userSteamApiKey}&appid=730`;
+
+	const response = await fetch(getMarketPricesUrl);
+	const respo = await response.text();
+	console.log(respo);
 
 	throw redirect(302, 'http://localhost:5173');
 };

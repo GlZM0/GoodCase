@@ -1,8 +1,13 @@
 import type { Actions, PageServerLoad } from '../$types';
 import prisma from '$lib/prisma';
 
-export const load: PageServerLoad = async ({ cookies }) => {
+export const load: PageServerLoad = async ({ cookies, params }) => {
+	const { name } = params as { name: string };
+
 	const cases = await prisma.case.findMany({
+		where: {
+			name: `${name}`
+		},
 		include: {
 			items: true
 		}
@@ -27,7 +32,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 };
 
 export const actions: Actions = {
-	open: async ({ cookies }) => {
+	open: async () => {
 		console.log('u need to login');
 	}
 };

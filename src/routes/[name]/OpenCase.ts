@@ -20,7 +20,7 @@ export class OpenCase {
 
 	public openCase(): void {
 		let cumulative = 0;
-		for (let i = 0; i <= 20; i++) {
+		for (let i = 0; i <= this.myCase.items.length - 1; i++) {
 			cumulative += this.myCase.items[i].chance;
 			this.cumulativeDistribution.push(cumulative);
 		}

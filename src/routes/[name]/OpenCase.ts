@@ -1,5 +1,6 @@
 import { RandomNumberGenerator } from './RandomNumberGenerator';
 import { RangeIndexFinder } from './RangeIndex';
+import type { Case } from '../../app.d.ts';
 
 export class OpenCase {
 	private cumulativeDistribution: number[];
@@ -9,7 +10,7 @@ export class OpenCase {
 	private winnerColor: string;
 	private winnerCondition: string;
 
-	constructor(private min: number, private max: number, private myCase: any) {
+	constructor(private min: number, private max: number, private myCase: Case) {
 		this.cumulativeDistribution = [];
 		this.winnerName = '';
 		this.winnerPrice = 0;
@@ -19,29 +20,28 @@ export class OpenCase {
 	}
 
 	public openCase(): void {
-		let cumulative = 0;
-		for (let i = 0; i <= this.myCase.items.length - 1; i++) {
-			cumulative += this.myCase.items[i].chance;
-			this.cumulativeDistribution.push(cumulative);
+		const randomNumberGenerator = new RandomNumberGenerator();
+		const randomNumber = randomNumberGenerator.generator(0, 999999);
+
+		let winningItemIndex = -1;
+		for (let i = 0; i < this.myCase.items.length; i++) {
+			const item = this.myCase.items[i];
+			if (randomNumber >= item.dropRangeStart && randomNumber < item.dropRangeEnd) {
+				winningItemIndex = i;
+				break;
+			}
 		}
 
-		const randomNumberGenerator = new RandomNumberGenerator();
-		const randomNumber = randomNumberGenerator.generator(this.min, this.max);
-
-		const rangeIndexFinder = new RangeIndexFinder();
-		const rangeIndex = rangeIndexFinder.findIndex(this.cumulativeDistribution, randomNumber);
-
-		const winningItemName = this.myCase.items[rangeIndex].name;
-		const winningItemPrice = this.myCase.items[rangeIndex].price;
-		const winningItemImage = this.myCase.items[rangeIndex].image;
-		const winningItemColor = this.myCase.items[rangeIndex].color;
-		const winningCondition = this.myCase.items[rangeIndex].condition;
-
-		this.winnerName = winningItemName;
-		this.winnerPrice = winningItemPrice;
-		this.winnerImage = winningItemImage;
-		this.winnerColor = winningItemColor;
-		this.winnerCondition = winningCondition;
+		if (winningItemIndex !== -1) {
+			const winningItem = this.myCase.items[winningItemIndex];
+			this.winnerName = winningItem.name;
+			this.winnerPrice = winningItem.price;
+			this.winnerImage = winningItem.image;
+			this.winnerColor = winningItem.color;
+			this.winnerCondition = winningItem.condition;
+		} else {
+			console.error('No winning item found for random number:', randomNumber);
+		}
 	}
 
 	public getWinnerName(): string {

@@ -11,8 +11,9 @@
 	import opening_mp3 from '../../static/openingSound.mp3';
 	import caseOpenEnd_mp3 from '../../static/caseOpenEnd.mp3';
 	import { isApiKey } from '$routes/components/header/upperNavbar/UpperNavbar.svelte';
+	import type { Case, Item } from '../../app';
 
-	export let data;
+	export let data: Case;
 	const cases = data.cases;
 	const isLoggedIn = data.logged;
 	const openSystem = new OpenCase(0, 100, cases[0]);
@@ -27,8 +28,8 @@
 	let winnerColor = '';
 	let winnerCondition = '';
 
-	let shuffledItems: any[] = [];
-	let sortedItems: any[] = [];
+	let shuffledItems: Item[] = [];
+	let sortedItems: Item[] = [];
 
 	let isOpening = false;
 	let isAudio = true;
@@ -47,7 +48,7 @@
 			{ length: cases[0].items.length },
 			(_, index) => cases[0].items[index]
 		);
-		let allItems: any[] = [];
+		let allItems: Item[] = [];
 
 		for (let i = 0; i < Math.ceil(100 / originalItems.length); i++) {
 			allItems = allItems.concat(originalItems);
@@ -68,7 +69,7 @@
 			{ length: cases[0].items.length },
 			(_, index) => cases[0].items[index]
 		);
-		let allItems: any[] = [];
+		let allItems: Item[] = [];
 
 		for (let i = 0; i < Math.ceil(100 / originalItems.length); i++) {
 			allItems = allItems.concat(originalItems);
@@ -81,7 +82,6 @@
 		isApiKey();
 	};
 
-	// @ts-ignore
 	const openCase = () => {
 		caseOpeningSound.play();
 

@@ -1,5 +1,7 @@
+import type { Item } from '../../app.d.ts';
+
 export const putWinnerItemIntoPlace = (
-	shuffledItems: any[],
+	shuffledItems: Item,
 	winnerName: string,
 	winnerImage: string,
 	winnerPrice: number,

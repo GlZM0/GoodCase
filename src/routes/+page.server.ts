@@ -1,9 +1,10 @@
 import type { PageServerLoad } from './$types';
 import type { Actions } from '@sveltejs/kit';
 import prisma from '$lib/prisma';
+import type { Case } from '../app';
 
 export const load: PageServerLoad = async () => {
-	const cases = await prisma.case.findMany({
+	const cases: Case = await prisma.case.findMany({
 		include: {
 			items: true
 		}

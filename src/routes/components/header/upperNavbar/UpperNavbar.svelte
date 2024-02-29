@@ -13,8 +13,9 @@
 	import Modal from './Modal.svelte';
 	import { showApiModal } from '../../../../stores';
 	import { steamLogin } from '$routes/api/steam/signin/+server';
+	import type { UserObj } from '../../../../app';
 
-	export let data: any;
+	export let data: UserObj;
 
 	const isLogged = data.user.logged;
 </script>

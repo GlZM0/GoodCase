@@ -10,15 +10,22 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 	const responseFromSteamIsValid = await fetch(verifyUrl);
 	const res = await responseFromSteamIsValid.text();
 
-	let userSteamID64: any;
+	let userSteamID64: string | undefined;
 	if (res.includes('true')) {
-		userSteamID64 = verifyParams.get('openid.claimed_id')?.replace(/^\D+/g, '');
-		console.log('Request has been validated by OpenID, Client ID:' + userSteamID64);
+		if (userSteamID64 !== undefined) {
+			userSteamID64 = verifyParams.get('openid.claimed_id')?.replace(/^\D+/g, '');
 
-		cookies.set('steamid64', userSteamID64, {
-			path: '/',
-			maxAge: 60 * 60 * 24 * 30
-		});
+			console.log('Request has been validated by OpenID, Client ID:' + userSteamID64);
+
+			if (userSteamID64 !== undefined) {
+				cookies.set('steamid64', userSteamID64, {
+					path: '/',
+					maxAge: 60 * 60 * 24 * 30
+				});
+			}
+		} else {
+			userSteamID64 = undefined;
+		}
 	} else {
 		console.log('Status 408: Request timeout');
 	}
@@ -50,7 +57,7 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 			await prisma.user.create({
 				data: {
 					steamapikey: JSON.stringify(userSteamApiKey),
-					steamid: userSteamID64,
+					steamid: userSteamID64?.toString() ?? '',
 					personaname: personaname,
 					profileurl: profileurl,
 					avatar: avatar,

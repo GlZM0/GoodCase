@@ -1,5 +1,7 @@
 <script lang="ts">
-	export let data: any;
+	import type { UserObj } from '../../../../app';
+
+	export let data: UserObj;
 </script>
 
 <div class="flex-shrink-0">

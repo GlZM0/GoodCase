@@ -9,7 +9,7 @@ declare global {
 			image: string;
 			condition: string;
 			price: number;
-			chance: number;
+			chance?: number;
 			caseId: string;
 			dropProbability?: number;
 			dropRangeStart?: number;

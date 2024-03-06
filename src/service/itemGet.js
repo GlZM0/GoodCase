@@ -4,14 +4,18 @@ const prisma = new PrismaClient();
 
 const main = async () => {
 	try {
-		await prisma.item.update({
+		const items = await prisma.item.findMany({
 			where: {
-				id: '65dc68cc6fa4715e6533e24f'
+				color: 'Blue'
 			},
-			data: {
-				caseId: '65dc5392eb73a875d8234b19'
-			}
+			select: {
+				id: true,
+				name: true
+			},
+			take: 20
 		});
+
+		console.log(items);
 		console.log('Item updated successfully!');
 	} catch (error) {
 		console.error('Error creating item:', error);

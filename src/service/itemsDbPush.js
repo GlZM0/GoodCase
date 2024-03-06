@@ -4,20 +4,56 @@ const prisma = new PrismaClient();
 
 const main = async () => {
 	try {
-		await prisma.item.create({
-			data: {
-				name: 'MP9 | Mount Fuji',
-				color: 'purple',
-				image:
-					'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou6r8FAZh7P7YKAJE-da_q5CCmfzLP7LWnn8fu8EmjLySrYikjQ2xqRE-Yz_xJtCSc1A2aF_ZqVa5ku66jMe6tJTJn2wj5HcLkc-m3A',
-				condition: 'Minimal Wear',
-				price: 6.28,
-				chance: 10
-			}
+		const caseId = '64bb95e4b2bdcb4142772c66';
+		const itemIds = [
+			'65e76d373c1fdc6e83c6c14a',
+			'65e76d373c1fdc6e83c6c167',
+			'65e76d373c1fdc6e83c6c16a',
+			'65e76d373c1fdc6e83c6c188',
+			'65e76d373c1fdc6e83c6c189',
+			'65e76d373c1fdc6e83c6c193',
+			'65e76d373c1fdc6e83c6c1a0',
+			'65e76d373c1fdc6e83c6c1aa',
+			'65e76d373c1fdc6e83c6c1b1',
+			'65e76d373c1fdc6e83c6c1b2',
+			'65e76d373c1fdc6e83c6c1b7',
+			'65e76d373c1fdc6e83c6c1b9',
+			'65e76d373c1fdc6e83c6c1c3',
+			'65e76d373c1fdc6e83c6c1c4',
+			'65e76d373c1fdc6e83c6c1cb',
+			'65e76d373c1fdc6e83c6c1d0',
+			'65e76d373c1fdc6e83c6c1da',
+			'65e76d373c1fdc6e83c6c11d',
+			'65e76d373c1fdc6e83c6c128',
+			'65e76d373c1fdc6e83c6c130'
+		];
+
+		// Retrieve the items based on their IDs
+		const items = await prisma.item.findMany({
+			where: { id: { in: itemIds } }
 		});
-		console.log('Item created successfully!');
+
+		// Update each item's caseId field to the caseId of the case
+		const updatedItems = await Promise.all(
+			items.map(async (item) => {
+				const updatedItem = await prisma.item.update({
+					where: { id: item.id },
+					data: { caseIDs: caseId }
+				});
+				return updatedItem;
+			})
+		);
+
+		// Connect the items to the case
+		const updatedCase = await prisma.case.update({
+			where: { id: caseId },
+			data: { items: { connect: updatedItems.map((item) => ({ id: item.id })) } },
+			include: { items: true } // Include associated items in the result
+		});
+
+		console.log('Case updated:', updatedCase);
 	} catch (error) {
-		console.error('Error creating item:', error);
+		console.error('Error updating case:', error);
 		throw error; // Rethrow the error to be caught by the caller
 	} finally {
 		await prisma.$disconnect();

@@ -137,7 +137,7 @@
 						caseOpeningSound;
 					}}
 				>
-					<!-- naprawić dźwięk, użyć volume https://github.com/goldfire/howler.js/#options -->
+					<!-- TODO: naprawić dźwięk, użyć volume https://github.com/goldfire/howler.js/#options -->
 					<svg
 						class:non-active-stroke={!isAudio}
 						width="40px"
@@ -211,7 +211,7 @@
 											<h1 class="font-semibold text-xl">Opening...</h1>
 										{:else}
 											<h1 class="font-semibold text-xl">
-												Open {cases[0].price} PLN
+												Open ${cases[0].price}
 											</h1>
 										{/if}
 									</div>
@@ -236,7 +236,7 @@
 					<li class="border-2 border-solid rounded-lg p-8 m-4 w-auto h-auto">
 						<p>{name}</p>
 						<img src={image} alt="item" />
-						<p>Price: {price} PLN</p>
+						<p>Price: ${price}</p>
 						<p>Chance: {chance}%</p>
 					</li>
 				{/each}

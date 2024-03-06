@@ -8,7 +8,7 @@ export const putWinnerItemIntoPlace = (
 	winnerColor: string,
 	winnerCondition: string
 ) => {
-	shuffledItems[99] = {
+	shuffledItems[94] = {
 		name: winnerName,
 		image: winnerImage,
 		price: winnerPrice,

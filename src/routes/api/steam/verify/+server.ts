@@ -62,8 +62,7 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 					profileurl: profileurl,
 					avatar: avatar,
 					balance: clearBalance,
-					siteInventory: null,
-					steamInventory: null
+					siteInventory: null
 				}
 			});
 			cookies.set('balance', JSON.stringify(clearBalance), {

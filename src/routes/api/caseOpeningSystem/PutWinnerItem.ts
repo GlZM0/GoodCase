@@ -1,4 +1,4 @@
-import type { Item } from '../../app.d.ts';
+import type { Item } from '../../../app.js';
 
 export const putWinnerItemIntoPlace = (
 	shuffledItems: Item,
@@ -15,4 +15,6 @@ export const putWinnerItemIntoPlace = (
 		color: winnerColor,
 		condition: winnerCondition
 	};
+
+	return shuffledItems;
 };

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
-	import { OpenCase } from './OpenCase';
+	import { OpenCase } from '../api/caseOpeningSystem/OpenCase';
 	import { animate, spring } from 'motion';
 	import { showWinnerModal } from '../../stores';
-	import { putWinnerItemIntoPlace } from './PutWinnerItem';
+	import { putWinnerItemIntoPlace } from '../api/caseOpeningSystem/PutWinnerItem';
 	import ModalForm from './ModalForm.svelte';
 	import { getWinnerItemPosition } from './WinnerItemPosition';
 	import { Sound } from 'svelte-sound';
@@ -12,21 +12,24 @@
 	import caseOpenEnd_mp3 from '../../static/caseOpenEnd.mp3';
 	import { isApiKey } from '$routes/components/header/upperNavbar/UpperNavbar.svelte';
 	import type { Case, Item } from '../../app';
+	import { sortItems } from './ItemsSorter';
+	import { shuffleCase } from '../api/caseOpeningSystem/CaseShuffler';
+	import type { ActionData } from '../$types';
 
 	export let data: Case;
 	const cases = data.cases;
 	const isLoggedIn = data.logged;
-	const openSystem = new OpenCase(0, 100, cases[0]);
 	let caseName = cases[0].name.toUpperCase();
+	let color;
+
+	let winnerName: string;
+	let winnerColor: string;
+	let winnerImage: string;
+	let winnerPrice: number;
+	let winnerCondition: string;
 
 	let caseOpeningSound = new Sound(opening_mp3);
 	let caseOpenEndSound = new Sound(caseOpenEnd_mp3);
-
-	let winnerName = '';
-	let winnerPrice = 0;
-	let winnerImage = '';
-	let winnerColor = '';
-	let winnerCondition = '';
 
 	let shuffledItems: Item[] = [];
 	let sortedItems: Item[] = [];
@@ -42,7 +45,7 @@
 		: 'background-image: linear-gradient(to right, rgba(220, 227, 238, 0.4), rgba(75, 85, 99, 0.8))';
 
 	onMount(() => {
-		sortItems();
+		sortedItems = sortItems(cases[0]);
 
 		const originalItems = Array.from(
 			{ length: cases[0].items.length },
@@ -54,48 +57,45 @@
 			allItems = allItems.concat(originalItems);
 		}
 
-		shuffleCase();
+		shuffledItems = shuffleCase(cases[0].items);
 	});
-
-	const sortItems = () => {
-		sortedItems = cases[0].items;
-		sortedItems.sort((a, b) => {
-			return b.price - a.price;
-		});
-	};
-
-	const shuffleCase = () => {
-		const originalItems = Array.from(
-			{ length: cases[0].items.length },
-			(_, index) => cases[0].items[index]
-		);
-		let allItems: Item[] = [];
-
-		for (let i = 0; i < Math.ceil(100 / originalItems.length); i++) {
-			allItems = allItems.concat(originalItems);
-		}
-
-		shuffledItems = allItems.sort(() => Math.random() - 0.5);
-	};
 
 	const handleLoginClick = () => {
 		isApiKey();
 	};
 
-	const openCase = () => {
+	const openCase = async () => {
+		try {
+			const response = await fetch('../api/caseOpeningSystem', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(cases[0])
+			});
+
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+
+			const responseData = await response.json();
+
+			winnerName = responseData.winnerName;
+			winnerColor = responseData.winnerColor;
+			winnerImage = responseData.winnerImage;
+			winnerPrice = responseData.winnerPrice;
+			winnerCondition = responseData.winnerCondition;
+		} catch (error) {
+			console.error('Error:', error);
+		}
+
 		caseOpeningSound.play();
 
 		isOpening = true;
-		shuffleCase();
 
-		openSystem.openCase();
-		winnerName = openSystem.getWinnerName();
-		winnerPrice = openSystem.getWinnerPrice();
-		winnerImage = openSystem.getWinnerImage();
-		winnerColor = openSystem.getWinnerColor();
-		winnerCondition = openSystem.getWinnerCondition();
+		console.log(winnerName);
 
-		putWinnerItemIntoPlace(
+		shuffledItems = putWinnerItemIntoPlace(
 			shuffledItems,
 			winnerName,
 			winnerImage,
@@ -103,11 +103,12 @@
 			winnerColor,
 			winnerCondition
 		);
+		console.log(shuffledItems);
 
 		if (winnerColor == 'blue') {
-			winnerColor = 'rgb(59 130 246)';
+			color = 'rgb(59 130 246)';
 		} else if (winnerColor == 'purple') {
-			winnerColor = 'rgb(136,71,255)';
+			color = 'rgb(136,71,255)';
 		}
 
 		const winnerItemX = getWinnerItemPosition(container, shuffledItems);
@@ -188,44 +189,42 @@
 			<div class="flex justify-center pt-8 pb-8">
 				<div class="border-4 border-solid rounded-full open-button">
 					<div class="justify-center flex">
-						<form method="POST" action="?/open" use:enhance>
-							{#if !isLoggedIn}
-								<button
-									class="flex justify-center items-center rounded-full w-[250px] bg-gray-700"
-									on:click={handleLoginClick}
-								>
-									<div class="p-6">
-										<p class="font-semibold text-xl">You need to login</p>
-									</div>
-								</button>
-							{:else}
-								<button
-									type="submit"
-									class="flex justify-center items-center rounded-full w-[250px]"
-									style={gradientStyle}
-									on:click={openCase}
-									disabled={isOpening}
-								>
-									<div class="p-6">
-										{#if isOpening}
-											<h1 class="font-semibold text-xl">Opening...</h1>
-										{:else}
-											<h1 class="font-semibold text-xl">
-												Open ${cases[0].price}
-											</h1>
-										{/if}
-									</div>
-								</button>
-								<ModalForm
-									{winnerImage}
-									{winnerName}
-									{winnerPrice}
-									{winnerColor}
-									{openCase}
-									{winnerCondition}
-								/>
-							{/if}
-						</form>
+						{#if !isLoggedIn}
+							<button
+								class="flex justify-center items-center rounded-full w-[250px] bg-gray-700"
+								on:click={handleLoginClick}
+							>
+								<div class="p-6">
+									<p class="font-semibold text-xl">You need to login</p>
+								</div>
+							</button>
+						{:else}
+							<button
+								type="submit"
+								class="flex justify-center items-center rounded-full w-[250px]"
+								style={gradientStyle}
+								disabled={isOpening}
+								on:click={openCase}
+							>
+								<div class="p-6">
+									{#if isOpening}
+										<h1 class="font-semibold text-xl">Opening...</h1>
+									{:else}
+										<h1 class="font-semibold text-xl">
+											Open ${cases[0].price}
+										</h1>
+									{/if}
+								</div>
+							</button>
+							<ModalForm
+								{winnerImage}
+								{winnerName}
+								{winnerPrice}
+								{winnerColor}
+								{openCase}
+								{winnerCondition}
+							/>
+						{/if}
 					</div>
 				</div>
 			</div>

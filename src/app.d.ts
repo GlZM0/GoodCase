@@ -9,8 +9,9 @@ declare global {
 			image: string;
 			condition: string;
 			price: number;
+			type: string;
 			chance?: number;
-			caseId: string;
+			caseIDs: string[];
 			dropProbability?: number;
 			dropRangeStart?: number;
 			dropRangeEnd?: number;
@@ -24,6 +25,7 @@ declare global {
 			link: string;
 			name: string;
 			price: number;
+			itemIds: string[];
 		}
 
 		interface User {

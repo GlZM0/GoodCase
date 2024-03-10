@@ -1,6 +1,8 @@
 import type { Actions, PageServerLoad } from '../$types';
 import prisma from '$lib/prisma';
-import type { Item } from '../../app.d.ts';
+import type { Item, Case } from '../../app.d.ts';
+import { shuffleCase } from '../api/caseOpeningSystem/CaseShuffler';
+import { putWinnerItemIntoPlace } from '../api/caseOpeningSystem/PutWinnerItem';
 
 const calcDropProbabilities = (caseItems: Item[]) => {
 	const totalSum: number = caseItems.reduce((acc, item) => acc + item.price, 0);
@@ -84,11 +86,5 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 			logged,
 			cases
 		};
-	}
-};
-
-export const actions: Actions = {
-	open: async () => {
-		console.log('u need to login');
 	}
 };

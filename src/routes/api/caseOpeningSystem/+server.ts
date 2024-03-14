@@ -3,14 +3,26 @@ import type { RequestEvent } from './$types';
 import { shuffleCase } from './CaseShuffler';
 import { OpenCase } from './OpenCase';
 import { putWinnerItemIntoPlace } from './PutWinnerItem';
+import prisma from '$lib/prisma';
 
 export const POST = async ({ request }: RequestEvent) => {
 	try {
-		const cases = await request.json();
+		const data = await request.json();
 
-		let shuffledItems = shuffleCase(cases.items as Item[]);
+		let newBalance = data.user.balance - data.cases.price;
 
-		const openSystem = new OpenCase(0, 100, cases);
+		await prisma.user.update({
+			where: {
+				steamid: `${data.user.steamid}`
+			},
+			data: {
+				balance: newBalance
+			}
+		});
+
+		let shuffledItems = shuffleCase(data.cases.items as Item[]);
+
+		const openSystem = new OpenCase(0, 100, data.cases);
 
 		openSystem.openCase();
 		const winnerName = openSystem.getWinnerName();

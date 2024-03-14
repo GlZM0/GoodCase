@@ -71,7 +71,10 @@
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(cases[0])
+				body: JSON.stringify({
+					cases: cases[0],
+					user: data.user
+				})
 			});
 
 			if (!response.ok) {
@@ -93,8 +96,6 @@
 
 		isOpening = true;
 
-		console.log(winnerName);
-
 		shuffledItems = putWinnerItemIntoPlace(
 			shuffledItems,
 			winnerName,
@@ -103,7 +104,6 @@
 			winnerColor,
 			winnerCondition
 		);
-		console.log(shuffledItems);
 
 		if (winnerColor == 'blue') {
 			color = 'rgb(59 130 246)';

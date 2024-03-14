@@ -4,6 +4,7 @@ import { shuffleCase } from './CaseShuffler';
 import { OpenCase } from './OpenCase';
 import { putWinnerItemIntoPlace } from './PutWinnerItem';
 import prisma from '$lib/prisma';
+import type { SiteInventory } from '../../../app';
 
 export const POST = async ({ request }: RequestEvent) => {
 	try {
@@ -11,7 +12,7 @@ export const POST = async ({ request }: RequestEvent) => {
 
 		let newBalance = data.user.balance - data.cases.price;
 
-		await prisma.user.update({
+		const updateUserBalance = prisma.user.update({
 			where: {
 				steamid: `${data.user.steamid}`
 			},
@@ -47,6 +48,26 @@ export const POST = async ({ request }: RequestEvent) => {
 			winnerColor: winnerColor,
 			winnerCondition: winnerCondition
 		};
+
+		const user = await prisma.user.findUnique({
+			where: {
+				steamid: `${data.user.steamid}`
+			}
+		});
+		//TODO: faster database update, parallel animation to backend
+		const userInventory: any = user?.siteInventory;
+		const mergedInventory = { ...userInventory, [responseBody.winnerName]: responseBody };
+
+		const updateUserInventory = prisma.user.update({
+			where: {
+				steamid: `${data.user.steamid}`
+			},
+			data: {
+				siteInventory: mergedInventory
+			}
+		});
+
+		await Promise.all([updateUserBalance, updateUserInventory]);
 
 		const headers = {
 			'Content-Type': 'application/json'

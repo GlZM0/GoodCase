@@ -1,8 +1,6 @@
-import type { Actions, PageServerLoad } from '../$types';
+import type { PageServerLoad } from '../$types';
 import prisma from '$lib/prisma';
-import type { Item, Case } from '../../app.d.ts';
-import { shuffleCase } from '../api/caseOpeningSystem/CaseShuffler';
-import { putWinnerItemIntoPlace } from '../api/caseOpeningSystem/PutWinnerItem';
+import type { Item } from '../../app.d.ts';
 
 const calcDropProbabilities = (caseItems: Item[]) => {
 	const totalSum: number = caseItems.reduce((acc, item) => acc + item.price, 0);

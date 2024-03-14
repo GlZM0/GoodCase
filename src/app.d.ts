@@ -39,10 +39,18 @@ declare global {
 		interface UserObj {
 			user: User[];
 		}
-		// interface PageData {}
-		// interface Platform {}
+
+		interface SiteInventory {
+			[key: string]: {
+				winnerName: string;
+				winnerPrice: number;
+				winnerImage: string;
+				winnerColor: string;
+				winnerCondition: string;
+			};
+		}
 	}
 	var prisma: PrismaClient;
 }
 
-export { Item, Case, UserObj };
+export { Item, Case, UserObj, SiteInventory };

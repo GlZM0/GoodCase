@@ -60,10 +60,6 @@
 		shuffledItems = shuffleCase(cases[0].items);
 	});
 
-	const handleLoginClick = () => {
-		isApiKey();
-	};
-
 	const openCase = async () => {
 		try {
 			const response = await fetch('../api/caseOpeningSystem', {
@@ -192,7 +188,9 @@
 						{#if !isLoggedIn}
 							<button
 								class="flex justify-center items-center rounded-full w-[250px] bg-gray-700"
-								on:click={handleLoginClick}
+								on:click={() => {
+									isApiKey();
+								}}
 							>
 								<div class="p-6">
 									<p class="font-semibold text-xl">You need to login</p>

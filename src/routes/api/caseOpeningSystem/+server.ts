@@ -31,6 +31,7 @@ export const POST = async ({ request }: RequestEvent) => {
 		const winnerImage = openSystem.getWinnerImage();
 		const winnerColor = openSystem.getWinnerColor();
 		const winnerCondition = openSystem.getWinnerCondition();
+		const winnerId = openSystem.getWinnerId();
 
 		putWinnerItemIntoPlace(
 			shuffledItems,
@@ -56,14 +57,22 @@ export const POST = async ({ request }: RequestEvent) => {
 		});
 		//TODO: faster database update, parallel animation to backend
 		const userInventory: any = user?.siteInventory;
-		const mergedInventory = { ...userInventory, [responseBody.winnerName]: responseBody };
+
+		let updatedInventory;
+
+		if (Array.isArray(userInventory)) {
+			updatedInventory = [...userInventory, winnerId];
+		} else {
+			updatedInventory = [winnerId];
+		}
+		console.log(updatedInventory);
 
 		const updateUserInventory = prisma.user.update({
 			where: {
 				steamid: `${data.user.steamid}`
 			},
 			data: {
-				siteInventory: mergedInventory
+				siteInventory: updatedInventory
 			}
 		});
 

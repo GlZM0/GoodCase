@@ -9,6 +9,7 @@ export class OpenCase {
 	private winnerImage: string;
 	private winnerColor: string;
 	private winnerCondition: string;
+	private winnerId: string;
 
 	constructor(private min: number, private max: number, private myCase: Case) {
 		this.cumulativeDistribution = [];
@@ -17,6 +18,7 @@ export class OpenCase {
 		this.winnerImage = '';
 		this.winnerColor = '';
 		this.winnerCondition = '';
+		this.winnerId = '';
 	}
 
 	public openCase(): void {
@@ -39,6 +41,7 @@ export class OpenCase {
 			this.winnerImage = winningItem.image;
 			this.winnerColor = winningItem.color;
 			this.winnerCondition = winningItem.condition;
+			this.winnerId = winningItem.id;
 		} else {
 			console.error('No winning item found for random number:', randomNumber);
 		}
@@ -62,5 +65,9 @@ export class OpenCase {
 
 	public getWinnerCondition(): string {
 		return this.winnerCondition;
+	}
+
+	public getWinnerId(): string {
+		return this.winnerId;
 	}
 }

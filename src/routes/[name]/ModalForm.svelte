@@ -8,10 +8,6 @@
 	export let winnerColor: string;
 	export let winnerCondition: string;
 
-	const openNext = () => {
-		openCase();
-	};
-
 	let dialog: HTMLDialogElement;
 
 	$: if (dialog && $showWinnerModal) dialog.showModal();
@@ -109,7 +105,7 @@
 						class="w-full h-12 border-2 border-green-500 bg-gradient-to-r from-surface-700/80 to-green-500/60 hover:from-green-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded-full flex items-center justify-center mb-2"
 						on:click={() => {
 							dialog.close();
-							openNext();
+							openCase();
 						}}
 					>
 						<svg

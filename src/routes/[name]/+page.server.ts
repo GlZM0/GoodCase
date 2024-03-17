@@ -73,7 +73,6 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 	let logged = false;
 
 	if (!personaname) {
-		console.log('u need to login');
 		return {
 			logged,
 			cases

@@ -47,7 +47,8 @@ export const POST = async ({ request }: RequestEvent) => {
 			winnerPrice: winnerPrice,
 			winnerImage: winnerImage,
 			winnerColor: winnerColor,
-			winnerCondition: winnerCondition
+			winnerCondition: winnerCondition,
+			newBalance: newBalance
 		};
 
 		const user = await prisma.user.findUnique({

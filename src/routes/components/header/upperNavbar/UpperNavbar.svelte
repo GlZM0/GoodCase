@@ -14,6 +14,7 @@
 	import { showApiModal } from '../../../../stores';
 	import { steamLogin } from '$routes/api/steam/signin/+server';
 	import type { UserObj } from '../../../../app';
+	import { newBalanceStore } from '../../../../stores';
 
 	export let data: UserObj;
 

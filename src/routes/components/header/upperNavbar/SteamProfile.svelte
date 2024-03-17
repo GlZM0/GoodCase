@@ -2,6 +2,10 @@
 	import type { UserObj } from '../../../../app';
 
 	export let data: UserObj;
+
+	let balance = data.user.balance;
+	let avatar = data.user.avatar;
+	let personaname = data.user.personaname;
 </script>
 
 <div class="flex-shrink-0">
@@ -18,7 +22,7 @@
 							console.log('runs modal to deposit funds');
 						}}
 					>
-						<span class="text-2xl text-[#fff] pr-10 pl-6">${data.user.balance}</span>
+						<span class="text-2xl text-[#fff] pr-10 pl-6">${balance}</span>
 						<div class="border-2 border-green-500 rounded-full">
 							<svg
 								class="w-14 h-14"
@@ -41,9 +45,9 @@
 				<div class="flex items-center">
 					<div class="border-2 flex items-center rounded-full w-[200px] relative">
 						<span class="flex items-center">
-							<img src={data.user.avatar} class="rounded-full w-14" alt="your avatar" />
+							<img src={avatar} class="rounded-full w-14" alt="your avatar" />
 							<div class="pl-5 overflow-hidden whitespace-nowrap w-[150px]">
-								<p class="text-2xl">{data.user.personaname}</p>
+								<p class="text-2xl">{personaname}</p>
 							</div>
 						</span>
 						<a href="../../../profile">
@@ -53,7 +57,7 @@
 						>
 					</div>
 
-					<form action="?/logout" method="POST">
+					<form action="/?/logout" method="POST">
 						<button class="pl-10" type="submit">
 							<svg
 								width="50px"

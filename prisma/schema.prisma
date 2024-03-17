@@ -39,6 +39,7 @@ model User {
   personaname   String
   profileurl    String
   avatar        String
+  bigAvatar     String
   balance       Float
   siteInventory Json?
 

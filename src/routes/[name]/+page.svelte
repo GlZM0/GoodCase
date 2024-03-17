@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
-	import { OpenCase } from '../api/caseOpeningSystem/OpenCase';
 	import { animate, spring } from 'motion';
 	import { showWinnerModal } from '../../stores';
 	import { putWinnerItemIntoPlace } from '../api/caseOpeningSystem/PutWinnerItem';
@@ -14,7 +12,7 @@
 	import type { Case, Item } from '../../app';
 	import { sortItems } from './ItemsSorter';
 	import { shuffleCase } from '../api/caseOpeningSystem/CaseShuffler';
-	import type { ActionData } from '../$types';
+	import { newBalanceStore } from '../../stores';
 
 	export let data: Case;
 	const cases = data.cases;
@@ -27,6 +25,7 @@
 	let winnerImage: string;
 	let winnerPrice: number;
 	let winnerCondition: string;
+	let newBalance: number;
 
 	let caseOpeningSound = new Sound(opening_mp3);
 	let caseOpenEndSound = new Sound(caseOpenEnd_mp3);
@@ -84,6 +83,9 @@
 			winnerImage = responseData.winnerImage;
 			winnerPrice = responseData.winnerPrice;
 			winnerCondition = responseData.winnerCondition;
+			newBalance = responseData.newBalance;
+
+			console.log(newBalance);
 		} catch (error) {
 			console.error('Error:', error);
 		}

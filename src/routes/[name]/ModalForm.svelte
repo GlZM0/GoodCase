@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { User } from '@prisma/client';
 	import { showWinnerModal } from '../../stores';
 
 	export let openCase: any;
@@ -7,11 +8,60 @@
 	export let winnerPrice: number;
 	export let winnerColor: string;
 	export let winnerCondition: string;
+	export let winnerId: string;
+	export let user: User;
 
 	let dialog: HTMLDialogElement;
 
 	$: if (dialog && $showWinnerModal) dialog.showModal();
 	$: if (dialog && !$showWinnerModal) dialog.close();
+
+	const close = async () => {
+		let winnerItem = {
+			winnerId: winnerId,
+			winnerName: winnerName,
+			winnerImage: winnerImage,
+			winnerPrice: winnerPrice,
+			winnerColor: winnerColor,
+			winnerCondition: winnerCondition
+		};
+
+		const response = await fetch('../api/close', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				winnerItem: winnerItem,
+				user: user
+			})
+		});
+
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+
+		const responseData = await response.json();
+	};
+
+	const sellItem = async () => {
+		const response = await fetch('../api/sellItem', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				winnerPrice: winnerPrice,
+				user: user
+			})
+		});
+
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+
+		const responseData = await response.json();
+	};
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -20,6 +70,7 @@
 	bind:this={dialog}
 	on:close={() => showWinnerModal.set(false)}
 	on:click|self={() => {
+		close();
 		dialog.close();
 	}}
 >
@@ -31,6 +82,7 @@
 		<button
 			class="absolute top-4 right-4"
 			on:click={() => {
+				close();
 				dialog.close();
 			}}
 		>
@@ -76,6 +128,10 @@
 				<div class="flex justify-center pb-1">
 					<button
 						class="w-full h-12 border-2 rounded-full border-red-500 bg-gradient-to-r from-surface-700/80 to-red-400/60 hover:from-red-500 hover:to-red-500 text-white font-bold py-2 px-4 flex items-center justify-center mr-4 mb-2"
+						on:click={() => {
+							sellItem();
+							dialog.close();
+						}}
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -104,6 +160,7 @@
 					<button
 						class="w-full h-12 border-2 border-green-500 bg-gradient-to-r from-surface-700/80 to-green-500/60 hover:from-green-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded-full flex items-center justify-center mb-2"
 						on:click={() => {
+							close();
 							dialog.close();
 							openCase();
 						}}
@@ -174,13 +231,20 @@
 								</g>
 							</g></svg
 						>
-						<p class="pl-2">Upgrader</p>
+						<button
+							on:click={() => {
+								close();
+								dialog.close();
+							}}
+						>
+							<p class="pl-2">Upgrader</p>
+						</button>
 					</a>
+
 					<a
 						class="w-full h-12 border-2 border-orange-500 bg-gradient-to-r from-surface-700/80 to-orange-500/60 hover:from-orange-500 hover:to-orange-500 text-white font-bold py-2 px-4 rounded-full flex items-center justify-center mb-2"
 						href="../contracts"
 					>
-						<!-- svelte-ignore a11y-img-redundant-alt -->
 						<svg
 							width="30px"
 							height="30px"
@@ -204,8 +268,15 @@
 								/></g
 							></svg
 						>
-
-						<p class="pl-2">Contracts</p>
+						<button
+							on:click={() => {
+								close();
+								dialog.close();
+							}}
+						>
+							<!-- svelte-ignore a11y-img-redundant-alt -->
+							<p class="pl-2">Contracts</p>
+						</button>
 					</a>
 				</div>
 			</div>

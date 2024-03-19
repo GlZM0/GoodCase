@@ -12,13 +12,14 @@
 	import type { Case, Item } from '../../app';
 	import { sortItems } from './ItemsSorter';
 	import { shuffleCase } from '../api/caseOpeningSystem/CaseShuffler';
-	import { newBalanceStore } from '../../stores';
 
 	export let data: Case;
 	const cases = data.cases;
 	const isLoggedIn = data.logged;
 	let caseName = cases[0].name.toUpperCase();
-	let color;
+	let color: string;
+
+	let user = data.user;
 
 	let winnerName: string;
 	let winnerColor: string;
@@ -26,6 +27,7 @@
 	let winnerPrice: number;
 	let winnerCondition: string;
 	let newBalance: number;
+	let winnerId: string;
 
 	let caseOpeningSound = new Sound(opening_mp3);
 	let caseOpenEndSound = new Sound(caseOpenEnd_mp3);
@@ -84,8 +86,7 @@
 			winnerPrice = responseData.winnerPrice;
 			winnerCondition = responseData.winnerCondition;
 			newBalance = responseData.newBalance;
-
-			console.log(newBalance);
+			winnerId = responseData.winnerId;
 		} catch (error) {
 			console.error('Error:', error);
 		}
@@ -223,6 +224,8 @@
 								{winnerColor}
 								{openCase}
 								{winnerCondition}
+								{winnerId}
+								{user}
 							/>
 						{/if}
 					</div>

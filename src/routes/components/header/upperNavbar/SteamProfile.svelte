@@ -3,9 +3,9 @@
 
 	export let data: UserObj;
 
-	let balance = data.user.balance;
-	let avatar = data.user.avatar;
-	let personaname = data.user.personaname;
+	let balance: number = data.user.balance.toFixed(2);
+	let avatar: string = data.user.avatar;
+	let personaname: string = data.user.personaname;
 </script>
 
 <div class="flex-shrink-0">

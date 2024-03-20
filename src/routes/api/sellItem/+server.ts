@@ -15,7 +15,8 @@ export const POST = async ({ request }: RequestEvent) => {
 
 		const userBalance: number | undefined = user?.balance;
 
-		updatedBalance = userBalance + winnerPrice;
+		updatedBalance = (userBalance + winnerPrice).toFixed(2);
+		console.log(updatedBalance);
 
 		const updateUserBalance = prisma.user.update({
 			where: {

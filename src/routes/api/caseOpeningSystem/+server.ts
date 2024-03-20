@@ -9,7 +9,11 @@ export const POST = async ({ request }: RequestEvent) => {
 	try {
 		const data = await request.json();
 
-		let newBalance = data.user.balance - data.cases.price;
+		const userBalance: number = data.user.balance;
+		const casePrice: number = data.cases.price;
+
+		let newBalance: number = (userBalance * 100 - casePrice * 100) / 100;
+		console.log(newBalance);
 
 		const updateUserBalance = prisma.user.update({
 			where: {

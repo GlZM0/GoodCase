@@ -5,7 +5,6 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	const personaname = await cookies.get('personaname');
 	const steamid = await cookies.get('steamid64');
 	const avatar = await cookies.get('avatar');
-	const balance = await cookies.get('balance');
 
 	const userExists = !!(await prisma.user.findFirst({
 		where: {
@@ -32,13 +31,20 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 			}
 		};
 	} else {
+		const user = await prisma.user.findFirst({
+			where: {
+				steamid: steamid
+			}
+		});
+
 		const logged = true;
 		return {
 			user: {
-				logged: logged,
-				personaname: personaname,
 				steamid: steamid,
-				avatar: avatar,
+				logged: logged,
+				personaname: user?.personaname,
+				avatar: user?.avatar,
+				bigAvatar: user?.bigAvatar,
 				balance: user?.balance
 			}
 		};

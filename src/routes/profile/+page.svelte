@@ -2,15 +2,17 @@
 	import type { UserObj } from '../../app';
 
 	export let data: UserObj;
+
+	const bigAvatar = data.user.bigAvatar;
 </script>
 
-<div class="flex px-20">
+<div class="flex">
 	<div>
-		<div class="pt-10 pb-5">
-			<h1 class="text-4xl">Your profile</h1>
+		<div class="py-14 pb-5">
+			<h1 class="text-3xl">Your profile</h1>
 		</div>
 		<div>
-			<img src={data.user.avatar} alt="user avatar" class="w-48" />
+			<img src={bigAvatar} alt="user avatar" class="w-48" />
 		</div>
 	</div>
 </div>

@@ -13,10 +13,10 @@ export const POST = async ({ request }: RequestEvent) => {
 			}
 		});
 
-		const userInventory: any = user?.siteInventory;
+		const userInventory: any = user?.siteInventory || [];
 
 		if (Array.isArray(userInventory)) {
-			updatedInventory = [...userInventory, winnerId];
+			updatedInventory = [winnerId, ...userInventory];
 		} else {
 			updatedInventory = [winnerId];
 		}

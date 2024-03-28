@@ -33,15 +33,16 @@ model Item {
 }
 
 model User {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  steamapikey   String
-  steamid       String @unique
-  personaname   String
-  profileurl    String
-  avatar        String
-  bigAvatar     String
-  balance       Float
-  siteInventory Json?
+  id               String @id @default(auto()) @map("_id") @db.ObjectId
+  steamapikey      String
+  steamid          String @unique
+  personaname      String
+  profileurl       String
+  avatar           String
+  bigAvatar        String
+  balance          Float
+  siteInventory    Json?
+  inventoryHistory Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

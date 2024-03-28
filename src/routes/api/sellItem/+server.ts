@@ -4,8 +4,9 @@ import prisma from '$lib/prisma';
 export const POST = async ({ request }: RequestEvent) => {
 	try {
 		const data = await request.json();
-		let updatedBalance;
-		let winnerPrice = data.winnerPrice;
+		let updatedBalance: number;
+		let updatedInventoryHistory;
+		let winnerPrice = data.winnerData.winnerPrice;
 
 		const user = await prisma.user.findUnique({
 			where: {
@@ -13,21 +14,34 @@ export const POST = async ({ request }: RequestEvent) => {
 			}
 		});
 
+		const sellData = {
+			itemId: data.winnerData.winnerId,
+			action: 'sold'
+		};
+
+		const userInventoryHistory: any = user?.inventoryHistory;
+
+		if (Array.isArray(userInventoryHistory)) {
+			updatedInventoryHistory = [sellData, ...userInventoryHistory];
+		} else {
+			updatedInventoryHistory = [sellData];
+		}
+
 		const userBalance: number | undefined = user?.balance;
 
-		updatedBalance = (userBalance + winnerPrice).toFixed(2);
-		console.log(updatedBalance);
+		updatedBalance = userBalance + winnerPrice;
 
-		const updateUserBalance = prisma.user.update({
+		const updateUser = prisma.user.update({
 			where: {
 				steamid: `${data.user.steamid}`
 			},
 			data: {
-				balance: updatedBalance
+				balance: updatedBalance,
+				inventoryHistory: updatedInventoryHistory
 			}
 		});
 
-		await Promise.all([updateUserBalance]);
+		await Promise.all([updateUser]);
 
 		const headers = {
 			'Content-Type': 'application/json'

@@ -13,7 +13,6 @@ export const POST = async ({ request }: RequestEvent) => {
 		const casePrice: number = data.cases.price;
 
 		let newBalance: number = (userBalance * 100 - casePrice * 100) / 100;
-		console.log(newBalance);
 
 		const updateUserBalance = prisma.user.update({
 			where: {

@@ -45,13 +45,18 @@
 	};
 
 	const sellItem = async () => {
+		let winnerData = {
+			winnerId: winnerId,
+			winnerPrice: winnerPrice
+		};
+
 		const response = await fetch('../api/sellItem', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				winnerPrice: winnerPrice,
+				winnerData: winnerData,
 				user: user
 			})
 		});

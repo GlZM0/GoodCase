@@ -14,23 +14,22 @@
 	import { showApiModal } from '../../../../stores';
 	import { steamLogin } from '$routes/api/steam/signin/+server';
 	import type { UserObj } from '../../../../app';
-	import { newBalanceStore } from '../../../../stores';
 
 	export let data: UserObj;
 
 	const isLogged = data.user.logged;
 </script>
 
-<div class="p-4 bg-surface-800 h-30">
-	<div class="mx-32 flex justify-between">
+<div class="p-4 bg-surface-800 h-24 flex items-center">
+	<div class="mx-32 flex justify-between w-full">
 		<div class="flex items-center">
 			<a href="/" class="!no-underline !text-white !flex !text-center !items-center"
 				><img
 					src="https://cdn.7tv.app/emote/6268904f4f54759b7184fa72/4x.webp"
 					alt="Logo"
-					class="h-20 mr-2"
+					class="h-16 mr-2"
 				/>
-				<span><h1 class="text-4xl font-semibold">GoodCase</h1></span>
+				<span><h1 class="text-3xl font-semibold">GoodCase</h1></span>
 			</a>
 		</div>
 		<!-- svelte-ignore` a11y-click-events-have-key-events -->

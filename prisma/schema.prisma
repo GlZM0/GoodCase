@@ -41,6 +41,7 @@ model User {
   avatar           String
   bigAvatar        String
   balance          Float
+  sumOfItemsPrice  Float?
   siteInventory    Json?
   inventoryHistory Json?
 

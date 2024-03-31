@@ -10,7 +10,7 @@
 <AppShell>
 	<Navbar {data} />
 
-	<main class="mx-32 p-4">
+	<main class="bg-surface-800">
 		<slot />
 	</main>
 

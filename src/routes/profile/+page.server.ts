@@ -1,33 +1,20 @@
 import type { PageServerLoad } from '../$types';
 import prisma from '$lib/prisma';
 
-interface InventoryItem {
-	itemId: string;
-	action: string;
-}
-
 export const load: PageServerLoad = async ({ cookies }) => {
-	const steamid = await cookies.get('steamid64');
+	const steamid = cookies.get('steamid64');
 
-	const userItemIds = await prisma.user.findMany({
+	const userItems = await prisma.user.findUnique({
 		where: {
 			steamid: `${steamid}`
 		},
 		select: {
-			siteInventory: true
-		}
-	});
-
-	const userInventoryHistory = await prisma.user.findMany({
-		where: {
-			steamid: `${steamid}`
-		},
-		select: {
+			siteInventory: true,
 			inventoryHistory: true
 		}
 	});
 
-	if (!userItemIds || userItemIds.length === 0) {
+	if (!userItems) {
 		throw new Error('User items not found');
 	}
 
@@ -44,13 +31,10 @@ export const load: PageServerLoad = async ({ cookies }) => {
 				const foundItem = await prisma.item.findUnique({ where: { id: itemId } });
 
 				if (foundItem) {
-					// Create an action field and append it to the found item
 					const itemWithAction = { ...foundItem, action: action };
 					itemsWithAction.push(itemWithAction);
 				}
 			}
-
-			console.log('Items with action retrieved successfully:', itemsWithAction);
 			return itemsWithAction;
 		} catch (error) {
 			console.error(error);
@@ -59,12 +43,12 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 	/* USER INVENTORY */
 
-	const itemIds: string[] = userItemIds[0].siteInventory as string[];
+	const itemIds: string[] = userItems.siteInventory as string[];
 
 	const getUserInventory = async (itemIds: string[]) => {
 		try {
 			const itemsPromises = itemIds.map((itemId) =>
-				prisma.item.findMany({
+				prisma.item.findUnique({
 					where: {
 						id: itemId
 					}
@@ -81,12 +65,12 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 	/* END */
 
-	const historyIdAction: any = userInventoryHistory[0].inventoryHistory;
+	const historyIdAction: any = userItems.inventoryHistory;
 	const userHistory = await getUserHistoryInventory(historyIdAction);
-	const userItems = await getUserInventory(itemIds);
+	const userActualItems = await getUserInventory(itemIds);
 
 	return {
-		userItems,
+		userActualItems,
 		userHistory
 	};
 };

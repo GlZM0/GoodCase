@@ -6,6 +6,7 @@ export const POST = async ({ request }: RequestEvent) => {
 		const data = await request.json();
 		let updatedInventory;
 		let winnerId = data.winnerItem.winnerId;
+		let winnerPrice = data.winnerItem.winnerPrice;
 
 		const user = await prisma.user.findUnique({
 			where: {
@@ -21,16 +22,20 @@ export const POST = async ({ request }: RequestEvent) => {
 			updatedInventory = [winnerId];
 		}
 
-		const updateUserInventory = prisma.user.update({
+		let userSumOfItemsPrice: any = user?.sumOfItemsPrice;
+		let newSum = userSumOfItemsPrice + winnerPrice;
+
+		const updateUserData = prisma.user.update({
 			where: {
 				steamid: `${data.user.steamid}`
 			},
 			data: {
-				siteInventory: updatedInventory
+				siteInventory: updatedInventory,
+				sumOfItemsPrice: newSum
 			}
 		});
 
-		await Promise.all([updateUserInventory]);
+		await Promise.all([updateUserData]);
 
 		const headers = {
 			'Content-Type': 'application/json'

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { UserObj } from '../../app';
+	import Inventory from './Inventory.svelte';
+	import Profile from './Profile.svelte';
 
 	export let data: UserObj;
 
@@ -10,7 +12,7 @@
 
 	const userProfileLink = `https://steamcommunity.com/profiles/${steamid}`;
 
-	const userItems = data.userItems;
+	const userItems = data.userActualItems;
 	const userHistory = data.userHistory;
 
 	const addHexColor = (items: any) => {
@@ -28,102 +30,70 @@
 
 	addHexColor(userItems);
 	addHexColor(userHistory);
+
+	const sellItems = async () => {
+		const response = await fetch('../api/sellAllItems', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		console.log(response.status);
+	};
 </script>
 
 <div class="flex">
 	<div>
-		<div class="relative flex py-5 items-center">
-			<div class="flex-grow border-t border-gray-400" />
-			<span class="flex-shrink mx-4 text-gray-100 text-3xl">Your Profile</span>
-			<div class="flex-grow border-t border-gray-400" />
+		<div class="bg-surface-800 py-8">
+			<div class="relative flex py-5 items-center">
+				<div class="flex-grow border-t border-gray-400" />
+				<span class="flex-shrink mx-4 text-gray-100 text-3xl">Your Profile</span>
+				<div class="flex-grow border-t border-gray-400" />
+			</div>
+			<Profile {balance} {userProfileLink} {bigAvatar} {name} {steamid} />
 		</div>
-		<div class="grid grid-cols-3 items-center">
-			<div class="flex items-center justify-center h-full">
-				<div class="text-center">
-					<p class="text-2xl mb-5 font-semibold">Balance:</p>
-					<div
-						class="border-4 cursor-pointer border-red-500 bg-gradient-to-r from-red-500/10 to-red-500/30 hover:from-red-500 hover:to-red-500 rounded-2xl p-4 w-auto font-semibold hover:transition-all duration-200"
-					>
-						<button
-							on:click={() => {
-								console.log('deposit balance');
-							}}
-							class="flex"
-						>
-							<p class="text-2xl px-2">${balance}</p>
-							<p class="text-2xl px-2">Deposit</p>
-						</button>
-					</div>
-				</div>
-			</div>
 
-			<div class="text-center">
-				<div class="flex flex-col items-center">
-					<a href={userProfileLink} class="flex flex-col items-center">
-						<img
-							src={bigAvatar}
-							alt="user avatar"
-							class="w-40 rounded-3xl border-4 border-full border-green-500"
-						/>
-					</a>
-					<a href={userProfileLink}>
-						<h1 class="text-3xl pb-2">{name}</h1>
-						<h2 class="text-lg pb-4">SteamID: {steamid}</h2>
-					</a>
-				</div>
-			</div>
-
-			<div class="flex items-center justify-center h-full">
-				<div class="text-center">
-					<p class="text-2xl mb-5 font-semibold">Your Tradelink:</p>
-					<input
-						type="text"
-						placeholder="Your Steam Trade URL"
-						class="p-2 border bg-transparent text-xl rounded-2xl w-96 focus:border-2 focus:border-green-500"
-					/>
-
-					<label for="" class="pt-2">
-						<a
-							href="https://steamcommunity.com/id/me/tradeoffers/privacy#trade_offer_access_url"
-							target="_blank"
-							class="text-lg underline text-gray-300 hover:text-gray-100 duration-300"
-							>Get the Tradelink</a
-						>
-					</label>
-				</div>
-			</div>
-		</div>
-		<div class="py-5">
+		<div class="bg-surface-700">
 			<div class="relative flex py-5 items-center">
 				<div class="flex-grow border-t border-gray-400" />
 				<span class="flex-shrink mx-4 text-gray-100 text-3xl">Inventory</span>
 				<div class="flex-grow border-t border-gray-400" />
 			</div>
-			<section class="pt-10 px-32">
-				<ul class="grid grid-cols-6">
-					{#each userItems as { name, image, price, hexColor }}
-						<li
-							class="border-2 border-solid rounded-lg p-8 m-4 w-auto h-auto"
-							style={`border-color: ${hexColor}`}
+			<div class="px-32">
+				<div class="grid justify-items-end">
+					<button
+						class="w-[15%] h-12 border-2 rounded-full border-red-500 bg-gradient-to-r from-surface-700/80 to-red-400/60 hover:from-red-500 hover:to-red-500 text-white font-bold py-2 flex items-center justify-center mr-4 mb-2"
+						on:click={() => {
+							sellItems();
+						}}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-6 w-6 mr-2"
+							viewBox="0 0 512 512"
+							fill="none"
+							stroke="#000000"
 						>
-							<p>{name}</p>
-							<img src={image} alt="item" />
-							<p>Price: ${price}</p>
-						</li>
-					{/each}
-					{#each userHistory as { name, image, price, action, hexColor }}
-						<li
-							class="border-2 border-solid rounded-lg p-8 m-4 w-auto h-auto"
-							style={`border-color: ${hexColor}`}
-						>
-							<p>{name}</p>
-							<img src={image} alt="item" />
-							<p>Price: ${price}</p>
-							<p>{action}</p>
-						</li>
-					{/each}
-				</ul>
-			</section>
+							<g id="SVGRepo_bgCarrier" stroke-width="0" />
+							<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+							<g id="SVGRepo_iconCarrier">
+								<title>shopping-cart</title>
+								<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+									<g id="icon" fill="#ffffff" transform="translate(42.666667, 85.333333)">
+										<path
+											d="M7.10542736e-15,-1.42108547e-14 L70.3622093,-1.42108547e-14 L89.7493333,85.3333333 L378.389061,85.3333333 L337.246204,277.333333 L89.6377907,277.333333 L36.288,42.6666667 L7.10542736e-15,42.6666667 L7.10542736e-15,-1.42108547e-14 Z M325.610667,128 L99.456,128 L123.690667,234.666667 L302.741333,234.666667 L325.610667,128 Z M138.666667,384 C156.339779,384 170.666667,369.673112 170.666667,352 C170.666667,334.326888 156.339779,320 138.666667,320 C120.993555,320 106.666667,334.326888 106.666667,352 C106.666667,369.673112 120.993555,384 138.666667,384 Z M288,384 C305.673112,384 320,369.673112 320,352 C320,334.326888 305.673112,320 288,320 C270.326888,320 256,334.326888 256,352 C256,369.673112 270.326888,384 288,384 Z"
+											id="Combined-Shape"
+										/>
+									</g>
+								</g>
+							</g>
+						</svg>
+						Sell all
+					</button>
+				</div>
+				<Inventory {userItems} {userHistory} />
+			</div>
 		</div>
 	</div>
 </div>

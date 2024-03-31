@@ -5,68 +5,81 @@ import { OpenCase } from './OpenCase';
 import { putWinnerItemIntoPlace } from './PutWinnerItem';
 import prisma from '$lib/prisma';
 
-export const POST = async ({ request }: RequestEvent) => {
+export const POST = async ({ request, cookies }: RequestEvent) => {
 	try {
 		const data = await request.json();
+		const steamid = cookies.get('steamid64');
 
-		const userBalance: number = data.user.balance;
-		const casePrice: number = data.cases.price;
-
-		let newBalance: number = (userBalance * 100 - casePrice * 100) / 100;
-
-		const updateUserBalance = prisma.user.update({
+		const user: any = await prisma.user.findUnique({
 			where: {
-				steamid: `${data.user.steamid}`
-			},
-			data: {
-				balance: newBalance
+				steamid: `${steamid}`
 			}
 		});
 
-		let shuffledItems = shuffleCase(data.cases.items as Item[]);
+		if (user.balance >= data.cases.price) {
+			const userBalance: number = data.user.balance;
+			const casePrice: number = data.cases.price;
 
-		const openSystem = new OpenCase(0, 100, data.cases);
+			let newBalance: number = (userBalance * 100 - casePrice * 100) / 100;
 
-		openSystem.openCase();
-		const winnerName = openSystem.getWinnerName();
-		const winnerPrice = openSystem.getWinnerPrice();
-		const winnerImage = openSystem.getWinnerImage();
-		const winnerColor = openSystem.getWinnerColor();
-		const winnerCondition = openSystem.getWinnerCondition();
-		const winnerId = openSystem.getWinnerId();
+			const updateUserBalance = prisma.user.update({
+				where: {
+					steamid: `${data.user.steamid}`
+				},
+				data: {
+					balance: newBalance
+				}
+			});
 
-		putWinnerItemIntoPlace(
-			shuffledItems,
-			winnerName,
-			winnerImage,
-			winnerPrice,
-			winnerColor,
-			winnerCondition
-		);
+			let shuffledItems = shuffleCase(data.cases.items as Item[]);
 
-		const responseBody = {
-			winnerName: winnerName,
-			winnerPrice: winnerPrice,
-			winnerImage: winnerImage,
-			winnerColor: winnerColor,
-			winnerCondition: winnerCondition,
-			newBalance: newBalance,
-			winnerId: winnerId
-		};
+			const openSystem = new OpenCase(0, 100, data.cases);
 
-		await Promise.all([updateUserBalance]);
+			openSystem.openCase();
+			const winnerName = openSystem.getWinnerName();
+			const winnerPrice = openSystem.getWinnerPrice();
+			const winnerImage = openSystem.getWinnerImage();
+			const winnerColor = openSystem.getWinnerColor();
+			const winnerCondition = openSystem.getWinnerCondition();
+			const winnerId = openSystem.getWinnerId();
 
-		const headers = {
-			'Content-Type': 'application/json'
-		};
+			putWinnerItemIntoPlace(
+				shuffledItems,
+				winnerName,
+				winnerImage,
+				winnerPrice,
+				winnerColor,
+				winnerCondition
+			);
 
-		return new Response(await JSON.stringify(responseBody), {
-			status: 200,
-			headers
-		});
+			const responseBody = {
+				winnerName: winnerName,
+				winnerPrice: winnerPrice,
+				winnerImage: winnerImage,
+				winnerColor: winnerColor,
+				winnerCondition: winnerCondition,
+				newBalance: newBalance,
+				winnerId: winnerId
+			};
+
+			await Promise.all([updateUserBalance]);
+
+			const headers = {
+				'Content-Type': 'application/json'
+			};
+
+			return new Response(JSON.stringify(responseBody), {
+				status: 200,
+				headers
+			});
+		} else {
+			return new Response('Payment Required: Insufficient funds.', {
+				status: 402
+			});
+		}
 	} catch (error) {
 		console.error('Error handling incoming request', error);
-		return new Response(await JSON.stringify({ error: 'Internal server error.' }), {
+		return new Response(JSON.stringify({ error: 'Internal server error.' }), {
 			status: 500,
 			headers: {
 				'Content-Type': 'application/json'

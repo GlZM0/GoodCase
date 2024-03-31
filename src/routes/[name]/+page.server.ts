@@ -48,6 +48,8 @@ const calcDropProbabilities = (caseItems: Item[]) => {
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const { name } = params as { name: string };
+	const steamid = cookies.get('steamid64');
+	let canOpen: boolean = false;
 
 	const cases = await prisma.case.findMany({
 		where: {
@@ -57,6 +59,20 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 			items: true
 		}
 	});
+
+	const user: any = await prisma.user.findUnique({
+		where: {
+			steamid: `${steamid}`
+		}
+	});
+
+	if (user != null) {
+		if (user.balance < cases[0].price) {
+			canOpen = false;
+		} else {
+			canOpen = true;
+		}
+	}
 
 	if (cases.length === 0) {
 		console.error(`Case with name '${name}' not found.`);
@@ -81,7 +97,8 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		logged = !logged;
 		return {
 			logged,
-			cases
+			cases,
+			canOpen
 		};
 	}
 };

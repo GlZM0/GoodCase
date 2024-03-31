@@ -2,9 +2,9 @@ import type { LayoutServerLoad } from './$types';
 import prisma from '$lib/prisma';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
-	const personaname = await cookies.get('personaname');
-	const steamid = await cookies.get('steamid64');
-	const avatar = await cookies.get('avatar');
+	const personaname = cookies.get('personaname');
+	const steamid = cookies.get('steamid64');
+	const avatar = cookies.get('avatar');
 
 	const userExists = !!(await prisma.user.findFirst({
 		where: {

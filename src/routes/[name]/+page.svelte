@@ -20,6 +20,7 @@
 	let color: string;
 
 	let user = data.user;
+	let canOpen = data.canOpen;
 
 	let winnerName: string;
 	let winnerColor: string;
@@ -62,22 +63,18 @@
 	});
 
 	const openCase = async () => {
-		try {
-			const response = await fetch('../api/caseOpeningSystem', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					cases: cases[0],
-					user: data.user
-				})
-			});
+		const response = await fetch('../api/caseOpeningSystem', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				cases: cases[0],
+				user: data.user
+			})
+		});
 
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-
+		if (response.status === 200) {
 			const responseData = await response.json();
 
 			winnerName = responseData.winnerName;
@@ -87,40 +84,40 @@
 			winnerCondition = responseData.winnerCondition;
 			newBalance = responseData.newBalance;
 			winnerId = responseData.winnerId;
-		} catch (error) {
-			console.error('Error:', error);
+
+			caseOpeningSound.play();
+
+			isOpening = true;
+
+			shuffledItems = putWinnerItemIntoPlace(
+				shuffledItems,
+				winnerName,
+				winnerImage,
+				winnerPrice,
+				winnerColor,
+				winnerCondition
+			);
+
+			if (winnerColor == 'blue') {
+				color = 'rgb(59 130 246)';
+			} else if (winnerColor == 'purple') {
+				color = 'rgb(136,71,255)';
+			}
+
+			const winnerItemX = getWinnerItemPosition(container, shuffledItems);
+
+			animate(
+				itemsContainer,
+				{ x: [0, winnerItemX - 100 + Math.random() * 200] },
+				{ easing: spring({ damping: 60, stiffness: 10, mass: 2, restSpeed: 1 }) }
+			).finished.then(() => {
+				showWinnerModal.set(true);
+				if (isAudio) caseOpenEndSound.play();
+				isOpening = false;
+			});
+		} else {
+			console.log('you need to deposit money');
 		}
-
-		caseOpeningSound.play();
-
-		isOpening = true;
-
-		shuffledItems = putWinnerItemIntoPlace(
-			shuffledItems,
-			winnerName,
-			winnerImage,
-			winnerPrice,
-			winnerColor,
-			winnerCondition
-		);
-
-		if (winnerColor == 'blue') {
-			color = 'rgb(59 130 246)';
-		} else if (winnerColor == 'purple') {
-			color = 'rgb(136,71,255)';
-		}
-
-		const winnerItemX = getWinnerItemPosition(container, shuffledItems);
-
-		animate(
-			itemsContainer,
-			{ x: [0, winnerItemX - 100 + Math.random() * 200] },
-			{ easing: spring({ damping: 60, stiffness: 10, mass: 2, restSpeed: 1 }) }
-		).finished.then(() => {
-			showWinnerModal.set(true);
-			if (isAudio) caseOpenEndSound.play();
-			isOpening = false;
-		});
 	};
 </script>
 
@@ -190,7 +187,7 @@
 					<div class="justify-center flex">
 						{#if !isLoggedIn}
 							<button
-								class="flex justify-center items-center rounded-full w-[250px] bg-gray-700"
+								class="flex justify-center items-center rounded-full w-60 h-16 bg-gray-700"
 								on:click={() => {
 									isApiKey();
 								}}
@@ -199,10 +196,10 @@
 									<p class="font-semibold text-xl">You need to login</p>
 								</div>
 							</button>
-						{:else}
+						{:else if canOpen}
 							<button
 								type="submit"
-								class="flex justify-center items-center rounded-full w-[250px]"
+								class="flex justify-center items-center rounded-full w-60 h-16"
 								style={gradientStyle}
 								disabled={isOpening}
 								on:click={openCase}
@@ -227,6 +224,16 @@
 								{winnerId}
 								{user}
 							/>
+						{:else}
+							<button
+								type="submit"
+								class="flex justify-center items-center rounded-full w-60 h-16 bg-gradient-to-r from-surface-500/90 to-red-500/80 hover:from-red-500 hover:to-red-500 text-white font-bold"
+								on:click={() => {
+									console.log('modal to deposit money');
+								}}
+							>
+								<h1 class="font-semibold text-xl">No balance</h1>
+							</button>
 						{/if}
 					</div>
 				</div>

@@ -7,8 +7,10 @@
 	const cases = data.cases;
 </script>
 
-<ColorCases {cases} />
+<section class="mx-32">
+	<ColorCases {cases} />
 
-<CsgoCases />
+	<CsgoCases />
 
-<FiftyCases />
+	<FiftyCases />
+</section>

@@ -3,6 +3,7 @@ import prisma from '$lib/prisma';
 export const POST = async ({ cookies }) => {
 	const steamid = cookies.get('steamid64');
 	let updatedInventoryHistory;
+	let newBalance;
 
 	const user = await prisma.user.findUnique({
 		where: {
@@ -17,7 +18,6 @@ export const POST = async ({ cookies }) => {
 	});
 
 	if (user) {
-		let newBalance;
 		if (user.sumOfItemsPrice) {
 			newBalance = user.balance + user.sumOfItemsPrice || 0;
 		}
@@ -36,8 +36,6 @@ export const POST = async ({ cookies }) => {
 			updatedInventoryHistory = [itemsWithSellData];
 		}
 
-		console.log(updatedInventoryHistory);
-
 		const updatedUser = await prisma.user.update({
 			where: {
 				steamid: `${steamid}`
@@ -51,7 +49,7 @@ export const POST = async ({ cookies }) => {
 		});
 	}
 
-	return new Response('ELO', {
+	return new Response(JSON.stringify(newBalance), {
 		status: 200
 	});
 };

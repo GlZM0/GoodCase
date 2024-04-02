@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { animate, spring } from 'motion';
-	import { showWinnerModal } from '../../stores';
+	import { balance, showWinnerModal } from '../../stores';
 	import { putWinnerItemIntoPlace } from '../api/caseOpeningSystem/PutWinnerItem';
 	import ModalForm from './ModalForm.svelte';
 	import { getWinnerItemPosition } from './WinnerItemPosition';
@@ -55,11 +55,37 @@
 		);
 		let allItems: Item[] = [];
 
-		for (let i = 0; i < Math.ceil(100 / originalItems.length); i++) {
-			allItems = allItems.concat(originalItems);
+		const numOfRepeats = Math.ceil(100 / originalItems.length);
+		for (let i = 0; i < numOfRepeats; i++) {
+			allItems.push(...originalItems);
 		}
+		shuffledItems = allItems.slice(0, 100);
 
 		shuffledItems = shuffleCase(cases[0].items);
+
+		const mapDisplayColor = (color: string) => {
+			switch (color) {
+				case 'Blue':
+					return '#2563eb';
+				case 'Purple':
+					return '#7c3aed';
+				case 'Pink':
+					return '#d946ef';
+				case 'Red':
+					return '#dc2626';
+				case 'Yellow':
+					return '#eab308';
+				default:
+					return '';
+			}
+		};
+
+		sortedItems.forEach((item) => {
+			if (item.name.startsWith('★')) {
+				item.color = 'Yellow';
+			}
+			item.displayColor = mapDisplayColor(item.color);
+		});
 	});
 
 	const openCase = async () => {
@@ -85,6 +111,8 @@
 			newBalance = responseData.newBalance;
 			winnerId = responseData.winnerId;
 
+			balance.update((value) => (value = newBalance));
+
 			caseOpeningSound.play();
 
 			isOpening = true;
@@ -99,16 +127,20 @@
 			);
 
 			if (winnerColor == 'blue') {
-				color = 'rgb(59 130 246)';
+				color = '#2563eb';
 			} else if (winnerColor == 'purple') {
-				color = 'rgb(136,71,255)';
+				color = '#7c3aed';
+			} else if (winnerColor == 'pink') {
+				color = '#d946ef';
+			} else if (winnerColor == 'red') {
+				color = '#dc2626';
 			}
 
 			const winnerItemX = getWinnerItemPosition(container, shuffledItems);
 
 			animate(
 				itemsContainer,
-				{ x: [0, winnerItemX - 100 + Math.random() * 200] },
+				{ x: [0, winnerItemX - 77.5 + Math.random() * 155] },
 				{ easing: spring({ damping: 60, stiffness: 10, mass: 2, restSpeed: 1 }) }
 			).finished.then(() => {
 				showWinnerModal.set(true);
@@ -161,17 +193,17 @@
 
 			<div class="flex justify-center w-full">
 				<div
-					class="border-4 border-solid border-white rounded-lg overflow-hidden w-[1400px] relative"
+					class="border-4 border-solid border-white rounded-lg overflow-hidden w-[1085px] h-[155px] relative"
 					bind:this={container}
 				>
 					<div class="flex justify-center w-full absolute top-0 left-75 z-10">
-						<div class="w-[6px] h-[200px] border-[3px] border-white" />
+						<div class="w-[6px] h-[155px] border-[3px] border-white" />
 					</div>
 
 					<div class="w-max flex" bind:this={itemsContainer}>
 						{#each shuffledItems as { name, image }}
 							<div
-								class="w-[200px] h-[200px] border-2 border-gray-600/50 border-solid flex items-center justify-center"
+								class="w-[155px] h-[155px] border-2 border-gray-600/50 border-solid flex items-center justify-center"
 							>
 								<div class="m-1">
 									<img class="flex aspect-[4/3]" src={image} alt={name} />
@@ -241,12 +273,33 @@
 		</section>
 		<section class="pt-10 px-32">
 			<ul class="grid grid-cols-6">
-				{#each sortedItems as { name, image, price, chance }}
-					<li class="border-2 border-solid rounded-lg p-8 m-4 w-auto h-auto">
-						<p>{name}</p>
-						<img src={image} alt="item" />
-						<p>Price: ${price}</p>
-						<p>Chance: {chance}%</p>
+				{#each sortedItems as { name, image, price, condition, displayColor, dropRangeStart, dropRangeEnd }}
+					<li
+						class="border-2 rounded-3xl p-4 m-4 flex flex-col items-center bg-gradient-to-r from-rgb(21, 26, 38) to-rgb(29, 31, 49) shadow-surface-700 shadow-xl transition-all duration-200 hover:scale-105 group"
+					>
+						<div class="relative">
+							<div class="hover:filter hover:blur-sm">
+								<div class="max-w-md my-4 p-4 relative" style={`border-color: ${displayColor}`}>
+									<div class="absolute inset-0 flex justify-center items-center">
+										<div
+											class="rounded-full h-40 w-40 m-10 backdrop-filter blur-3xl backdrop-blur-sm"
+											style={`background-image: radial-gradient(${displayColor}, transparent)`}
+										/>
+									</div>
+
+									<img
+										src={image}
+										alt={name}
+										class="max-w-full p-4 aspect-[4/3]"
+										style="position: relative; z-index: 1;"
+									/>
+								</div>
+								<h2 class="text-base font-bold text-center">{name}</h2>
+								<p class="text-base text-gray-500 mb-2 text-center">{condition}</p>
+								<p>${price}</p>
+								<p>{dropRangeStart} - {dropRangeEnd}</p>
+							</div>
+						</div>
 					</li>
 				{/each}
 			</ul>

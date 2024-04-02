@@ -1,5 +1,4 @@
 import { RandomNumberGenerator } from './caseUtils/RandomNumberGenerator';
-import { RangeIndexFinder } from './caseUtils/RangeIndex';
 import type { Case } from '../../../app.d.ts';
 
 export class OpenCase {

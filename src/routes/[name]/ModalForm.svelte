@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { User } from '@prisma/client';
-	import { showWinnerModal } from '../../stores';
+	import { balance, showWinnerModal } from '../../stores';
+	import { get } from 'svelte/store';
 
 	export let openCase: any;
 	export let winnerImage: string;
@@ -41,7 +42,7 @@
 			throw new Error('Network response was not ok');
 		}
 
-		const responseData = await response.json();
+		await response.json();
 	};
 
 	const sellItem = async () => {
@@ -66,6 +67,7 @@
 		}
 
 		const responseData = await response.json();
+		balance.update((value) => (value = responseData.user.balance));
 	};
 </script>
 

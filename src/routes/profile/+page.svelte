@@ -24,7 +24,15 @@
 	const getColorHex = (item: any) => {
 		switch (item.toLowerCase()) {
 			case 'blue':
-				return '#0000FF';
+				return '#2563eb';
+			case 'purple':
+				return '#7c3aed';
+			case 'pink':
+				return '#d946ef';
+			case 'red':
+				return '#dc2626';
+			default:
+				return '';
 		}
 	};
 
@@ -39,7 +47,9 @@
 			}
 		});
 
-		console.log(response.status);
+		const newBalance = await response.json();
+
+		// balance.update((value) => (value = newBalance));
 	};
 </script>
 

@@ -2,6 +2,9 @@
 	export let cases;
 	const milSpec = cases[0];
 	const restricted = cases[1];
+	const classified = cases[2];
+	const covert = cases[3];
+	const knife = cases[4];
 </script>
 
 <div>
@@ -41,29 +44,56 @@
 				</div>
 			</a>
 		</div>
-		<div class="flex w-64 h-64 items-center justify-center">
-			<a href="/"
-				><img
-					src="https://csgocases.com/uploads/gallery/oryginal/3b093de47d224a0490b98c628d48dc362b53ee79.png"
-					alt="classified-case"
-				/></a
-			>
+		<div class="flex w-64 h-64 items-center justify-center main-div">
+			<a href={classified.link} class="!no-underline">
+				<img src={classified.image} alt={classified.alt} />
+				<div>
+					<p class="flex text-white items-center justify-center py-3 text-xl">
+						{classified.name.toUpperCase()}
+					</p>
+				</div>
+				<div class="flex justify-center price-div">
+					<a
+						href={classified.link}
+						class="flex !no-underline text-white p-2 w-40 border-solid border-fuchsia-500 bg-gradient-to-r from-surface-700/80 to-fuchsia-500/60 font-bold border-2 rounded-full justify-center"
+						><p class="text-md price-paragraph">${classified.price}</p></a
+					>
+				</div>
+			</a>
 		</div>
-		<div class="flex w-64 h-64 items-center justify-center">
-			<a href="/"
-				><img
-					src="https://csgocases.com/uploads/gallery/oryginal/1b22c8b86430986063b1c18f3e9360e94e79206e.png"
-					alt="covert-case"
-				/></a
-			>
+		<div class="flex w-64 h-64 items-center justify-center main-div">
+			<a href={covert.link} class="!no-underline">
+				<img src={covert.image} alt={covert.alt} />
+				<div>
+					<p class="flex text-white items-center justify-center py-3 text-xl">
+						{covert.name.toUpperCase()}
+					</p>
+				</div>
+				<div class="flex justify-center price-div">
+					<a
+						href={covert.link}
+						class="flex !no-underline text-white p-2 w-40 border-solid border-red-600 bg-gradient-to-r from-surface-700/80 to-red-500/60 font-bold border-2 rounded-full justify-center"
+						><p class="text-md price-paragraph">${covert.price}</p></a
+					>
+				</div>
+			</a>
 		</div>
-		<div class="flex w-64 h-64 items-center justify-center">
-			<a href="/"
-				><img
-					src="https://csgocases.com/uploads/gallery/oryginal/ba688495e129493a89c550b86221a884a6c2089a.png"
-					alt="knife-case"
-				/></a
-			>
+		<div class="flex w-64 h-64 items-center justify-center main-div">
+			<a href={knife.link} class="!no-underline">
+				<img src={knife.image} alt={knife.alt} />
+				<div>
+					<p class="flex text-white items-center justify-center py-3 text-xl">
+						{knife.name.toUpperCase()}
+					</p>
+				</div>
+				<div class="flex justify-center price-div">
+					<a
+						href={knife.link}
+						class="flex !no-underline text-white p-2 w-40 border-solid border-yellow-400 bg-gradient-to-r from-surface-700/80 to-yellow-300/60 font-bold border-2 rounded-full justify-center"
+						><p class="text-md price-paragraph">${knife.price}</p></a
+					>
+				</div>
+			</a>
 		</div>
 	</div>
 </div>

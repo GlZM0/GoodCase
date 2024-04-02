@@ -1,5 +1,6 @@
 import type { LayoutServerLoad } from './$types';
 import prisma from '$lib/prisma';
+import { balance } from '../stores';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
 	const personaname = cookies.get('personaname');
@@ -36,6 +37,10 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 				steamid: steamid
 			}
 		});
+
+		if (user) {
+			balance.update((value) => (value = user.balance));
+		}
 
 		const logged = true;
 		return {

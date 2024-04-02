@@ -53,4 +53,4 @@ declare global {
 	var prisma: PrismaClient;
 }
 
-export { Item, Case, UserObj, SiteInventory };
+export { Item, User, Case, UserObj, SiteInventory };

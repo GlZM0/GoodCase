@@ -4,28 +4,37 @@ const prisma = new PrismaClient();
 
 const main = async () => {
 	try {
-		const caseId = '64bb95e4b2bdcb4142772c66';
+		const caseId = '65dc5392eb73a875d8234b19';
 		const itemIds = [
-			'65e76d373c1fdc6e83c6c14a',
-			'65e76d373c1fdc6e83c6c167',
-			'65e76d373c1fdc6e83c6c16a',
-			'65e76d373c1fdc6e83c6c188',
-			'65e76d373c1fdc6e83c6c189',
-			'65e76d373c1fdc6e83c6c193',
-			'65e76d373c1fdc6e83c6c1a0',
-			'65e76d373c1fdc6e83c6c1aa',
-			'65e76d373c1fdc6e83c6c1b1',
-			'65e76d373c1fdc6e83c6c1b2',
-			'65e76d373c1fdc6e83c6c1b7',
-			'65e76d373c1fdc6e83c6c1b9',
-			'65e76d373c1fdc6e83c6c1c3',
-			'65e76d373c1fdc6e83c6c1c4',
-			'65e76d373c1fdc6e83c6c1cb',
-			'65e76d373c1fdc6e83c6c1d0',
-			'65e76d373c1fdc6e83c6c1da',
-			'65e76d373c1fdc6e83c6c11d',
-			'65e76d373c1fdc6e83c6c128',
-			'65e76d373c1fdc6e83c6c130'
+			'65e76d373c1fdc6e83c6c4cb',
+			'65e76d373c1fdc6e83c6f903',
+			'65e76d373c1fdc6e83c6e8c5',
+			'65e76d373c1fdc6e83c70c15',
+			'65e76d373c1fdc6e83c7067a',
+			'65e76d373c1fdc6e83c6c32a',
+			'65e984fdfe5ededef34bee7e',
+			'65e76d373c1fdc6e83c6ecae',
+			'65e76d373c1fdc6e83c6f954',
+			'65e76d373c1fdc6e83c6d4d6',
+			'65e76d373c1fdc6e83c6d540',
+			'65e76d373c1fdc6e83c708cb',
+			'65e76d373c1fdc6e83c6c424',
+			'65e97a7bfe5ededef34be88c',
+			'65e983b8fe5ededef34bedfb',
+			'65e76d373c1fdc6e83c6e01a',
+			'65e76d373c1fdc6e83c6c8fc',
+			'65e76d373c1fdc6e83c6edfa',
+			'65e76d373c1fdc6e83c6f39b',
+			'65e76d373c1fdc6e83c6ee7d',
+			'65e979d8fe5ededef34be803',
+			'65e76d373c1fdc6e83c70603',
+			'65e76d373c1fdc6e83c6c94a',
+			'65e76d373c1fdc6e83c6ee25',
+			'65e76d373c1fdc6e83c6cf3f',
+			'65e97d59fe5ededef34beb0e',
+			'65e76d373c1fdc6e83c6d2c4',
+			'65e76d373c1fdc6e83c6f224',
+			'65e76d373c1fdc6e83c6da42'
 		];
 
 		// Retrieve the items based on their IDs

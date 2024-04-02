@@ -41,7 +41,7 @@ export const POST = async ({ request }: RequestEvent) => {
 			'Content-Type': 'application/json'
 		};
 
-		return new Response(await JSON.stringify(data), {
+		return new Response(JSON.stringify(data), {
 			status: 200,
 			headers
 		});

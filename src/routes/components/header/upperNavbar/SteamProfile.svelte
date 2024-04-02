@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { UserObj } from '../../../../app';
+	import { balance } from '../../../../stores';
 
 	export let data: UserObj;
 
-	let balance: number = data.user.balance.toFixed(2);
 	let avatar: string = data.user.avatar;
 	let personaname: string = data.user.personaname;
 </script>
@@ -19,10 +19,10 @@
 						class="border-2 border-green-500 flex items-center rounded-full bg-gradient-to-r from-green-500/10 to-green-500/30 hover:from-green-500 hover:to-green-500"
 						style="max-width: fit-content;"
 						on:click={() => {
-							console.log('runs modal to deposit funds');
+							balance.update((value) => (value = data.user.balance));
 						}}
 					>
-						<span class="text-2xl text-[#fff] pr-10 pl-6">${balance}</span>
+						<span class="text-2xl text-[#fff] pr-10 pl-6">${$balance.toFixed(2)}</span>
 						<div class="border-2 border-green-500 rounded-full">
 							<svg
 								class="w-14 h-14"

@@ -3,7 +3,7 @@ import type { Actions } from '@sveltejs/kit';
 import prisma from '$lib/prisma';
 import type { Case } from '../app';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ cookies }) => {
 	const cases: Case = await prisma.case.findMany({
 		include: {
 			items: true

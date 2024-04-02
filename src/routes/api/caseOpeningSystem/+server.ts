@@ -4,6 +4,7 @@ import { shuffleCase } from './CaseShuffler';
 import { OpenCase } from './OpenCase';
 import { putWinnerItemIntoPlace } from './PutWinnerItem';
 import prisma from '$lib/prisma';
+import { balance } from '../../../stores';
 
 export const POST = async ({ request, cookies }: RequestEvent) => {
 	try {

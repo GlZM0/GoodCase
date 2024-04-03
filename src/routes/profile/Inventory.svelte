@@ -1,36 +1,11 @@
 <script lang="ts">
-	interface UserItem {
-		caseIDs: Array<string>;
-		color: string;
-		condition: string;
-		hexColor: string;
-		id: string;
-		image: string;
-		name: string;
-		price: number;
-		type: string;
-	}
+	export let userItems: any;
 
-	interface UserHistory {
-		action: string;
-		caseIDs: Array<string>;
-		color: string;
-		condition: string;
-		hexColor: string;
-		id: string;
-		image: string;
-		name: string;
-		price: number;
-		type: string;
-	}
-
-	export let userItems: UserItem[];
-
-	export let userHistory: UserHistory[];
+	export let userHistory: any;
 </script>
 
 <section class="pt-10">
-	<ul class="grid grid-cols-6">
+	<ul class="grid grid-cols-7">
 		{#each userItems as { name, image, price, hexColor, condition, type }}
 			<li
 				class="border-2 rounded-3xl p-4 m-4 flex flex-col items-center bg-gradient-to-r from-rgb(21, 26, 38) to-rgb(29, 31, 49) shadow-surface-700 shadow-xl transition-all duration-200 hover:scale-105 group"

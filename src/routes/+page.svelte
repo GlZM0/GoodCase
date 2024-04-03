@@ -10,7 +10,7 @@
 <section class="mx-32">
 	<ColorCases {cases} />
 
-	<CsgoCases />
+	<CsgoCases {cases} />
 
 	<FiftyCases />
 </section>

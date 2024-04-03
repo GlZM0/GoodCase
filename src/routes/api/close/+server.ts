@@ -35,13 +35,38 @@ export const POST = async ({ request }: RequestEvent) => {
 			}
 		});
 
+		const getUserInventory = async (itemIds: string[]) => {
+			try {
+				const itemsPromises = itemIds.map((itemId) =>
+					prisma.item.findUnique({
+						where: {
+							id: itemId
+						}
+					})
+				);
+				const userItems = await Promise.all(itemsPromises);
+
+				return userItems.flat();
+			} catch (error) {
+				console.error('Error fetching item data:', error);
+				throw error;
+			}
+		};
+
+		const items = await getUserInventory(updatedInventory);
+
+		const responseData = {
+			data: data,
+			siteInventory: items
+		};
+
 		await Promise.all([updateUserData]);
 
 		const headers = {
 			'Content-Type': 'application/json'
 		};
 
-		return new Response(JSON.stringify(data), {
+		return new Response(JSON.stringify(responseData), {
 			status: 200,
 			headers
 		});

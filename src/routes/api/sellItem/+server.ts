@@ -43,11 +43,16 @@ export const POST = async ({ request }: RequestEvent) => {
 
 		await Promise.all([updateUser]);
 
+		const responseData = {
+			...data,
+			updatedBalance: updatedBalance
+		};
+
 		const headers = {
 			'Content-Type': 'application/json'
 		};
 
-		return new Response(await JSON.stringify(data), {
+		return new Response(JSON.stringify(responseData), {
 			status: 200,
 			headers
 		});

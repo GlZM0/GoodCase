@@ -7,12 +7,12 @@ const prisma = new PrismaClient();
 const main = async () => {
 	await prisma.case.create({
 		data: {
-			name: 'fade',
+			name: 'boreal',
 			image:
-				'https://cdn.csgocases.com/unsigned/aHR0cHM6Ly9jc2dvY2FzZXMuY29tL3VwbG9hZHMvZ2FsbGVyeS9vcnlnaW5hbC83ZjFiYTc3ZTEwZGRhYjc3MzUxMGY1NDMyNjE2NWExNmFiODMwMjIxLnBuZw==.png',
-			alt: 'fade-case',
-			link: '../../../fade',
-			price: 14.39
+				'https://cdn.csgocases.com/unsigned/aHR0cHM6Ly9jc2dvY2FzZXMuY29tL3VwbG9hZHMvZ2FsbGVyeS9vcnlnaW5hbC8wNjFiZjgxYWJjNzNhYzU0NmZmZTU2ZTdjMDUyYjFjODM2OTVmY2EwLnBuZw==.png',
+			alt: 'boreal-case',
+			link: '../../../boreal',
+			price: 12.99
 		}
 	});
 

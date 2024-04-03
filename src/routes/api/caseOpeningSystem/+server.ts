@@ -4,7 +4,6 @@ import { shuffleCase } from './CaseShuffler';
 import { OpenCase } from './OpenCase';
 import { putWinnerItemIntoPlace } from './PutWinnerItem';
 import prisma from '$lib/prisma';
-import { balance } from '../../../stores';
 
 export const POST = async ({ request, cookies }: RequestEvent) => {
 	try {
@@ -18,7 +17,7 @@ export const POST = async ({ request, cookies }: RequestEvent) => {
 		});
 
 		if (user.balance >= data.cases.price) {
-			const userBalance: number = data.user.balance;
+			const userBalance: number = user.balance;
 			const casePrice: number = data.cases.price;
 
 			let newBalance: number = (userBalance * 100 - casePrice * 100) / 100;

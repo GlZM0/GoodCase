@@ -1,5 +1,6 @@
 <script lang="ts">
-	export let balance: any;
+	import { balance } from '../../stores';
+
 	export let userProfileLink: string;
 	export let bigAvatar: string;
 	export let name: string;
@@ -19,7 +20,7 @@
 					}}
 					class="flex"
 				>
-					<p class="text-2xl px-2">${balance}</p>
+					<p class="text-2xl px-2">${$balance.toFixed(2)}</p>
 					<p class="text-2xl px-2">Deposit</p>
 				</button>
 			</div>

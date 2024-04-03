@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { animate, spring } from 'motion';
-	import { balance, showWinnerModal } from '../../stores';
+	import { balance, showWinnerModal, items } from '../../stores';
 	import { putWinnerItemIntoPlace } from '../api/caseOpeningSystem/PutWinnerItem';
 	import ModalForm from './ModalForm.svelte';
 	import { getWinnerItemPosition } from './WinnerItemPosition';
@@ -112,6 +112,7 @@
 			winnerId = responseData.winnerId;
 
 			balance.update((value) => (value = newBalance));
+			// items.update((value) => value += )
 
 			caseOpeningSound.play();
 
@@ -272,8 +273,8 @@
 			</div>
 		</section>
 		<section class="pt-10 px-32">
-			<ul class="grid grid-cols-6">
-				{#each sortedItems as { name, image, price, condition, displayColor, dropRangeStart, dropRangeEnd }}
+			<ul class="grid grid-cols-7">
+				{#each sortedItems as { name, image, price, chance, condition, displayColor, dropRangeStart, dropRangeEnd }}
 					<li
 						class="border-2 rounded-3xl p-4 m-4 flex flex-col items-center bg-gradient-to-r from-rgb(21, 26, 38) to-rgb(29, 31, 49) shadow-surface-700 shadow-xl transition-all duration-200 hover:scale-105 group"
 					>
@@ -297,7 +298,7 @@
 								<h2 class="text-base font-bold text-center">{name}</h2>
 								<p class="text-base text-gray-500 mb-2 text-center">{condition}</p>
 								<p>${price}</p>
-								<p>{dropRangeStart} - {dropRangeEnd}</p>
+								<p>{chance}%</p>
 							</div>
 						</div>
 					</li>

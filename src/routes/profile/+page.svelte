@@ -2,21 +2,40 @@
 	import type { UserObj } from '../../app';
 	import Inventory from './Inventory.svelte';
 	import Profile from './Profile.svelte';
+	import { balance, items, historyItems } from '../../stores';
+	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 
 	export let data: UserObj;
 
 	const bigAvatar = data.user.bigAvatar;
 	const name = data.user.personaname;
 	const steamid = data.user.steamid;
-	const balance = data.user.balance.toFixed(2);
 
 	const userProfileLink = `https://steamcommunity.com/profiles/${steamid}`;
 
-	const userItems = data.userActualItems;
-	const userHistory = data.userHistory;
+	$: userItems = $items;
+	$: userHistory = $historyItems;
 
-	const addHexColor = (items: any) => {
-		items.forEach((item: any) => {
+	let areItems: boolean = false;
+
+	onMount(() => {
+		userItems = $items;
+		userHistory = $historyItems;
+
+		addHexColor(userItems);
+		addHexColor(userHistory);
+
+		if (userItems != null || userHistory != null) {
+			areItems = true;
+		} else {
+			areItems = false;
+		}
+	});
+
+	const addHexColor = (userItems: any) => {
+		console.log(userItems);
+		userItems.forEach((item: any) => {
 			item.hexColor = getColorHex(item.color);
 		});
 	};
@@ -36,10 +55,7 @@
 		}
 	};
 
-	addHexColor(userItems);
-	addHexColor(userHistory);
-
-	const sellItems = async () => {
+	const sellAllItems = async () => {
 		const response = await fetch('../api/sellAllItems', {
 			method: 'POST',
 			headers: {
@@ -47,13 +63,24 @@
 			}
 		});
 
-		const newBalance = await response.json();
-
-		// balance.update((value) => (value = newBalance));
+		const responseData = await response.json();
+		const newBalance = responseData.newBalance;
+		if (response.status === 200) {
+			const userAllItems = userItems as any[];
+			const itemsWithAction = userAllItems.map((item) => ({
+				...item,
+				action: 'sold'
+			}));
+			balance.update((value) => (value = newBalance));
+			historyItems.update((value: any) => {
+				return value.concat(itemsWithAction);
+			});
+			items.update((value) => (value = []));
+		}
 	};
 </script>
 
-<div class="flex">
+<div class="min-w-full min-h-full">
 	<div>
 		<div class="bg-surface-800 py-8">
 			<div class="relative flex py-5 items-center">
@@ -61,7 +88,7 @@
 				<span class="flex-shrink mx-4 text-gray-100 text-3xl">Your Profile</span>
 				<div class="flex-grow border-t border-gray-400" />
 			</div>
-			<Profile {balance} {userProfileLink} {bigAvatar} {name} {steamid} />
+			<Profile {userProfileLink} {bigAvatar} {name} {steamid} />
 		</div>
 
 		<div class="bg-surface-700">
@@ -75,7 +102,7 @@
 					<button
 						class="w-[15%] h-12 border-2 rounded-full border-red-500 bg-gradient-to-r from-surface-700/80 to-red-400/60 hover:from-red-500 hover:to-red-500 text-white font-bold py-2 flex items-center justify-center mr-4 mb-2"
 						on:click={() => {
-							sellItems();
+							sellAllItems();
 						}}
 					>
 						<svg
@@ -102,7 +129,11 @@
 						Sell all
 					</button>
 				</div>
-				<Inventory {userItems} {userHistory} />
+				{#if areItems}
+					<Inventory {userItems} {userHistory} />
+				{:else}
+					<p>No items</p>
+				{/if}
 			</div>
 		</div>
 	</div>

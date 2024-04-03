@@ -49,7 +49,11 @@ export const POST = async ({ cookies }) => {
 		});
 	}
 
-	return new Response(JSON.stringify(newBalance), {
+	const responseData = {
+		newBalance: newBalance
+	};
+
+	return new Response(JSON.stringify(responseData), {
 		status: 200
 	});
 };

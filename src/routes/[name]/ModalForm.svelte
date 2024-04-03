@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { User } from '@prisma/client';
-	import { balance, showWinnerModal } from '../../stores';
-	import { get } from 'svelte/store';
+	import { balance, showWinnerModal, items } from '../../stores';
 
 	export let openCase: any;
 	export let winnerImage: string;
@@ -16,6 +15,10 @@
 
 	$: if (dialog && $showWinnerModal) dialog.showModal();
 	$: if (dialog && !$showWinnerModal) dialog.close();
+
+	const openNext = () => {
+		openCase();
+	};
 
 	const close = async () => {
 		let winnerItem = {
@@ -42,7 +45,10 @@
 			throw new Error('Network response was not ok');
 		}
 
-		await response.json();
+		const responseData = await response.json();
+		const userItems = responseData.siteInventory;
+
+		items.update((value) => (value = userItems));
 	};
 
 	const sellItem = async () => {
@@ -67,7 +73,7 @@
 		}
 
 		const responseData = await response.json();
-		balance.update((value) => (value = responseData.user.balance));
+		balance.update((value) => (value = responseData.updatedBalance));
 	};
 </script>
 
@@ -169,7 +175,7 @@
 						on:click={() => {
 							close();
 							dialog.close();
-							openCase();
+							openNext();
 						}}
 					>
 						<svg

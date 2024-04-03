@@ -4,13 +4,19 @@
 	import Navbar from './components/header/Navbar.svelte';
 	import Footer from './components/footer/footer.svelte';
 	import { onMount } from 'svelte';
-	import { balance } from '../stores';
+	import { balance, items, historyItems } from '../stores';
 
 	export let data;
 
 	onMount(async () => {
 		let userBalance = data.user.balance;
-		if (data) balance.update((value) => (value = data.user.balance || 0));
+		let userInventory = data.user.siteInventory;
+		let userHistoryInventory = data.user.inventoryHistory;
+		if (data) {
+			balance.update((value) => (value = userBalance || 0));
+			items.update((value) => (value = userInventory));
+			historyItems.update((value) => (value = userHistoryInventory));
+		}
 	});
 </script>
 

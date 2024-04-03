@@ -3,22 +3,38 @@ import prisma from '$lib/prisma';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const steamid = cookies.get('steamid64');
+	let userInventory: any;
+	let userInventoryHistory: any;
 
-	const userItems = await prisma.user.findUnique({
+	const user = await prisma.user.findUnique({
 		where: {
 			steamid: `${steamid}`
-		},
-		select: {
-			siteInventory: true,
-			inventoryHistory: true
 		}
 	});
 
-	if (!userItems) {
+	if (!user) {
 		throw new Error('User items not found');
 	}
 
 	/* USER INVENTORY HISTORY */
+
+	const getUserInventory = async (itemIds: string[]) => {
+		try {
+			const itemsPromises = itemIds.map((itemId) =>
+				prisma.item.findUnique({
+					where: {
+						id: itemId
+					}
+				})
+			);
+			const userItems = await Promise.all(itemsPromises);
+
+			return userItems.flat();
+		} catch (error) {
+			console.error('Error fetching item data:', error);
+			throw error;
+		}
+	};
 
 	const getUserHistoryInventory = async (itemData: any) => {
 		try {
@@ -41,36 +57,13 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		}
 	};
 
-	/* USER INVENTORY */
-
-	const itemIds: string[] = userItems.siteInventory as string[];
-
-	const getUserInventory = async (itemIds: string[]) => {
-		try {
-			const itemsPromises = itemIds.map((itemId) =>
-				prisma.item.findUnique({
-					where: {
-						id: itemId
-					}
-				})
-			);
-			const userItems = await Promise.all(itemsPromises);
-
-			return userItems.flat();
-		} catch (error) {
-			console.error('Error fetching item data:', error);
-			throw error;
-		}
-	};
-
-	/* END */
-
-	const historyIdAction: any = userItems.inventoryHistory;
-	const userHistory = await getUserHistoryInventory(historyIdAction);
-	const userActualItems = await getUserInventory(itemIds);
+	const itemIds: string[] = user.siteInventory as string[];
+	const historyItemIds: any = user.inventoryHistory;
+	userInventory = await getUserInventory(itemIds);
+	userInventoryHistory = await getUserHistoryInventory(historyItemIds);
 
 	return {
-		userActualItems,
-		userHistory
+		userInventory,
+		userInventoryHistory
 	};
 };

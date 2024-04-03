@@ -1,8 +1,10 @@
 const openid_params = new URLSearchParams({
 	'openid.ns': 'http://specs.openid.net/auth/2.0',
 	'openid.mode': 'checkid_setup',
-	'openid.return_to': 'http://localhost:5173/api/steam/verify/',
-	'openid.realm': 'http://localhost:5173/api/steam/verify/',
+	'openid.return_to':
+		'https://good-case-jope9as62-mateusz-hajduczeks-projects.vercel.app/api/steam/verify/',
+	'openid.realm':
+		'https://good-case-jope9as62-mateusz-hajduczeks-projects.vercel.app/api/steam/verify/',
 	'openid.identity': 'http://specs.openid.net/auth/2.0/identifier_select',
 	'openid.claimed_id': 'http://specs.openid.net/auth/2.0/identifier_select'
 });

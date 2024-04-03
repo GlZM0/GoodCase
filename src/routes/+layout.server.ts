@@ -83,8 +83,10 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 
 			const itemIds: string[] = user.siteInventory as string[];
 			const historyItemIds: any = user.inventoryHistory;
-			userInventory = await getUserInventory(itemIds);
-			userInventoryHistory = await getUserHistoryInventory(historyItemIds);
+			if (itemIds != null || historyItemIds != null) {
+				userInventory = await getUserInventory(itemIds);
+				userInventoryHistory = await getUserHistoryInventory(historyItemIds);
+			}
 		}
 
 		const logged = true;

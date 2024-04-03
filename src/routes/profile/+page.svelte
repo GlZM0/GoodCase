@@ -17,7 +17,7 @@
 	$: userItems = $items;
 	$: userHistory = $historyItems;
 
-	let areItems: boolean = false;
+	let areItems: boolean = true;
 
 	onMount(() => {
 		userItems = $items;
@@ -25,12 +25,6 @@
 
 		addHexColor(userItems);
 		addHexColor(userHistory);
-
-		if (userItems != null || userHistory != null) {
-			areItems = true;
-		} else {
-			areItems = false;
-		}
 	});
 
 	const addHexColor = (userItems: any) => {

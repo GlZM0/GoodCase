@@ -123,11 +123,7 @@
 						Sell all
 					</button>
 				</div>
-				{#if areItems}
-					<Inventory {userItems} {userHistory} />
-				{:else}
-					<p>No items</p>
-				{/if}
+				<Inventory {userItems} {userHistory} />
 			</div>
 		</div>
 	</div>

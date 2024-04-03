@@ -7,8 +7,12 @@
 	const knife = cases[4];
 </script>
 
-<div>
-	<h2 class="py-14 text-3xl">COLOR CASES</h2>
+<div class="py-6">
+	<div class="relative flex py-5 items-center">
+		<div class="flex-grow border-t border-gray-400" />
+		<span class="flex-shrink mx-4 text-gray-100 text-3xl">COLOR CASES</span>
+		<div class="flex-grow border-t border-gray-400" />
+	</div>
 	<div class="grid grid-cols-5 place-items-center">
 		<div class="flex w-64 h-64 items-center justify-center main-div">
 			<a href={milSpec.link} class="!no-underline group">

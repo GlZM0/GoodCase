@@ -5,13 +5,22 @@ const prisma = new PrismaClient();
 
 const main = async () => {
 	try {
-		const itemsYouWant = 25;
-		const totalItemsNeeded = itemsYouWant * 10;
+		const itemsYouWant = 19;
+		const totalItemsNeeded = itemsYouWant * 4;
 
 		const items = await prisma.item.findMany({
+			// where: {
+			// 	OR: [
+			// 		{ name: { contains: 'AK-47' } },
+			// 		{ type: { contains: 'Ursus' } },
+			// 		{ type: { contains: 'Skeleton' } },
+			// 		{ type: { contains: 'Kukri' } },
+			// 		{ type: { contains: 'Paracord' } }
+			// 	]
+			// },
 			where: {
 				name: {
-					contains: 'Fade'
+					contains: 'AWP'
 				}
 			},
 			select: {
@@ -25,13 +34,12 @@ const main = async () => {
 		const shuffledItems = shuffleArray(items);
 
 		const itemsToSelect = [];
-		const encounteredNames = new Set(); // Keep track of encountered item names
+		const encounteredNames = new Set();
 
 		const requiredCount1 = Math.ceil(0.8 * itemsYouWant);
 		let countRequirement1 = 0;
 
 		for (const item of shuffledItems) {
-			// Check if the name doesn't contain 'Souvenir' and hasn't been encountered before
 			if (
 				!item.name.includes('Souvenir') &&
 				!item.name.includes('Sticker') &&
@@ -39,12 +47,20 @@ const main = async () => {
 			) {
 				itemsToSelect.push(item);
 				countRequirement1++;
-				encounteredNames.add(item.name); // Add the name to the set of encountered names
+				encounteredNames.add(item.name);
 			}
 
 			if (countRequirement1 === itemsYouWant) break;
 		}
 
+		const newItem = {
+			id: '65e76d373c1fdc6e83c70380',
+			name: 'AWP | Containment Breach',
+			price: 475.069
+		};
+		const updatedItems = [...itemsToSelect, newItem];
+
+		// console.log(updatedItems);
 		// itemsToSelect.map((item) => {
 		// 	console.log(item.name + ' ' + item.price);
 		// });
@@ -78,7 +94,7 @@ const main = async () => {
 			{ id: '65e76d373c1fdc6e83c6c4f2' }
 		];
 
-		itemsDbPush(myItems);
+		itemsDbPush(updatedItems);
 	} catch (error) {
 		console.error('Error creating item:', error);
 		throw error;
@@ -88,7 +104,7 @@ const main = async () => {
 };
 
 const itemsDbPush = async (selectedItems) => {
-	const caseId = '660d673455011028ff93fa0a';
+	const caseId = '660da6b28401866bc904c948';
 	const itemIds = selectedItems.map((item) => item.id);
 
 	const items = await prisma.item.findMany({

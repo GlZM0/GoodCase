@@ -7,12 +7,12 @@ const prisma = new PrismaClient();
 const main = async () => {
 	await prisma.case.create({
 		data: {
-			name: 'boreal',
+			name: 'awp',
 			image:
-				'https://cdn.csgocases.com/unsigned/aHR0cHM6Ly9jc2dvY2FzZXMuY29tL3VwbG9hZHMvZ2FsbGVyeS9vcnlnaW5hbC8wNjFiZjgxYWJjNzNhYzU0NmZmZTU2ZTdjMDUyYjFjODM2OTVmY2EwLnBuZw==.png',
-			alt: 'boreal-case',
-			link: '../../../boreal',
-			price: 12.99
+				'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17PLfYQJU5c6jh7-HnvD8J_WExW0C7pUo3-jDpdXx0FHs-RBla2r6LIHGIwE2Y1_X-Fi7w-m7gZS0ot2Xnp9XPRld',
+			alt: 'awp-case',
+			link: '../../../awp',
+			price: 13.99
 		}
 	});
 
@@ -21,7 +21,7 @@ const main = async () => {
 			items: true
 		}
 	});
-	console.dir(allCases, { depth: null });
+	// console.dir(allCases, { depth: null });
 };
 
 main()

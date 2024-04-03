@@ -65,6 +65,8 @@
 
 		const mapDisplayColor = (color: string) => {
 			switch (color) {
+				case 'Industrial':
+					return '#5E98D9';
 				case 'Blue':
 					return '#2563eb';
 				case 'Purple':

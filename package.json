@@ -5,6 +5,7 @@
 	"scripts": {
 		"client": "vite dev --host",
 		"build": "prisma generate && vite build",
+		"postinstall": "prisma generate",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",

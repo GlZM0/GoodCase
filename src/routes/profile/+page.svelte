@@ -4,7 +4,7 @@
 	import Profile from './Profile.svelte';
 	import { balance, items, historyItems } from '../../stores';
 	import { onMount } from 'svelte';
-	import { get } from 'svelte/store';
+	import type { ProfileItem, ProfileHistoryItem } from '../../app';
 
 	export let data: UserObj;
 
@@ -14,40 +14,20 @@
 
 	const userProfileLink = `https://steamcommunity.com/profiles/${steamid}`;
 
+	let userItems: ProfileItem[];
+	let userHistory: ProfileHistoryItem[];
+
 	$: userItems = $items;
 	$: userHistory = $historyItems;
 
-	let areItems: boolean = true;
-
 	onMount(() => {
-		userItems = $items;
-		userHistory = $historyItems;
-
-		addHexColor(userItems);
-		addHexColor(userHistory);
-	});
-
-	const addHexColor = (userItems: any) => {
-		console.log(userItems);
-		userItems.forEach((item: any) => {
-			item.hexColor = getColorHex(item.color);
-		});
-	};
-
-	const getColorHex = (item: any) => {
-		switch (item.toLowerCase()) {
-			case 'blue':
-				return '#2563eb';
-			case 'purple':
-				return '#7c3aed';
-			case 'pink':
-				return '#d946ef';
-			case 'red':
-				return '#dc2626';
-			default:
-				return '';
+		if (userItems.length == 0) {
+			console.log('no items');
+		} else {
+			userItems = $items;
+			userHistory = $historyItems;
 		}
-	};
+	});
 
 	const sellAllItems = async () => {
 		const response = await fetch('../api/sellAllItems', {
@@ -60,7 +40,7 @@
 		const responseData = await response.json();
 		const newBalance = responseData.newBalance;
 		if (response.status === 200) {
-			const userAllItems = userItems as any[];
+			const userAllItems = userItems as ProfileItem[];
 			const itemsWithAction = userAllItems.map((item) => ({
 				...item,
 				action: 'sold'
@@ -123,7 +103,7 @@
 						Sell all
 					</button>
 				</div>
-				<Inventory {userItems} {userHistory} />
+				<Inventory />
 			</div>
 		</div>
 	</div>

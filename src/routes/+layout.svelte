@@ -10,8 +10,8 @@
 
 	onMount(async () => {
 		let userBalance = data.user.balance;
-		let userInventory = data.user.siteInventory;
-		let userHistoryInventory = data.user.inventoryHistory;
+		let userInventory = data.user.userEndItems;
+		let userHistoryInventory = data.user.userEndInventoryHistory;
 		if (data) {
 			balance.update((value) => (value = userBalance || 0));
 			items.update((value) => (value = userInventory));

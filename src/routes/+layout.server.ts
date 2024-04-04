@@ -1,7 +1,5 @@
 import type { LayoutServerLoad } from './$types';
 import prisma from '$lib/prisma';
-import { balance, items } from '../stores';
-import { get } from 'svelte/store';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
 	const personaname = cookies.get('personaname');
@@ -9,6 +7,8 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	const avatar = cookies.get('avatar');
 	let userInventory: any;
 	let userInventoryHistory: any;
+	let userEndItems: any;
+	let userEndInventoryHistory: any;
 
 	const userExists = !!(await prisma.user.findFirst({
 		where: {
@@ -37,7 +37,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	} else {
 		const user = await prisma.user.findFirst({
 			where: {
-				steamid: steamid
+				steamid: `${steamid}`
 			}
 		});
 
@@ -87,6 +87,32 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 				userInventory = await getUserInventory(itemIds);
 				userInventoryHistory = await getUserHistoryInventory(historyItemIds);
 			}
+
+			const addHexColor = (userItems: string[]) => {
+				userItems.forEach((item: any) => {
+					item.hexColor = getColorHex(item.color);
+				});
+
+				return userItems;
+			};
+
+			const getColorHex = (color: any) => {
+				switch (color.toLowerCase()) {
+					case 'blue':
+						return '#2563eb';
+					case 'purple':
+						return '#7c3aed';
+					case 'pink':
+						return '#d946ef';
+					case 'red':
+						return '#dc2626';
+					default:
+						return '';
+				}
+			};
+
+			userEndItems = addHexColor(userInventory);
+			userEndInventoryHistory = addHexColor(userInventoryHistory);
 		}
 
 		const logged = true;
@@ -98,8 +124,8 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 				avatar: user?.avatar,
 				bigAvatar: user?.bigAvatar,
 				balance: user?.balance,
-				siteInventory: userInventory,
-				inventoryHistory: userInventoryHistory
+				userEndItems: userEndItems,
+				userEndInventoryHistory: userEndInventoryHistory
 			}
 		};
 	}

@@ -70,8 +70,8 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 				bigAvatar: bigAvatar,
 				balance: clearBalance,
 				sumOfItemsPrice: 0,
-				siteInventory: null,
-				inventoryHistory: null
+				siteInventory: [],
+				inventoryHistory: []
 			}
 		});
 		cookies.set('balance', JSON.stringify(clearBalance), {

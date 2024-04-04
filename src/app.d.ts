@@ -17,6 +17,30 @@ declare global {
 			dropRangeEnd?: number;
 		}
 
+		interface ProfileItem {
+			caseIDs: string[];
+			color: string;
+			condition: string;
+			hexColor: string;
+			id: string;
+			image: string;
+			name: string;
+			price: number;
+			type: string;
+		}
+
+		interface ProfileHistoryItem {
+			action: string;
+			caseIDs: string[];
+			color: string;
+			condition: string;
+			id: string;
+			image: string;
+			name: string;
+			price: number;
+			type: string;
+		}
+
 		interface Case {
 			alt: string;
 			id: string;
@@ -53,4 +77,4 @@ declare global {
 	var prisma: PrismaClient;
 }
 
-export { Item, User, Case, UserObj, SiteInventory };
+export { Item, User, Case, UserObj, SiteInventory, ProfileItem, ProfileHistoryItem };

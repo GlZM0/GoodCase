@@ -1,7 +1,15 @@
 <script lang="ts">
-	export let userItems: any;
+	import type { ProfileItem, ProfileHistoryItem } from '../../app';
+	import { items, historyItems } from '../../stores';
 
-	export let userHistory: any;
+	let userItems: ProfileItem[];
+	let userHistory: ProfileHistoryItem[];
+
+	$: userItems = $items;
+	$: userHistory = $historyItems;
+
+	userItems = $items;
+	userHistory = $historyItems;
 </script>
 
 <section class="pt-10">

@@ -281,14 +281,14 @@
 						class="border-2 rounded-3xl p-4 m-4 flex flex-col items-center bg-gradient-to-r from-rgb(21, 26, 38) to-rgb(29, 31, 49) shadow-surface-700 shadow-xl transition-all duration-200 hover:scale-105 group"
 					>
 						<div class="relative">
-							<div class="hover:filter hover:blur-sm">
+							<div class="">
 								<div class="max-w-md my-4 p-4 relative" style={`border-color: ${displayColor}`}>
-									<div class="absolute inset-0 flex justify-center items-center">
+									<!-- <div class="absolute inset-0 flex justify-center items-center">
 										<div
 											class="rounded-full h-40 w-40 m-10 backdrop-filter blur-3xl backdrop-blur-sm"
 											style={`background-image: radial-gradient(${displayColor}, transparent)`}
 										/>
-									</div>
+									</div> -->
 
 									<img
 										src={image}

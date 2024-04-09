@@ -15,12 +15,6 @@
 	</div>
 	<div class="grid grid-cols-5 place-items-center">
 		<div class="flex w-64 h-64 items-center justify-center main-div relative space-y-4">
-			<div class="absolute inset-0 flex justify-center items-center">
-				<div
-					class="rounded-full h-[80%] w-[80%] m-10 opacity-50 backdrop-filter blur-3xl backdrop-blur-sm"
-					style={`background-image: radial-gradient(#0022AA, transparent)`}
-				/>
-			</div>
 			<a href={ak47.link} class="!no-underline group">
 				<img
 					src={ak47.image}

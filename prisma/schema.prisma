@@ -20,13 +20,14 @@ model Case {
 }
 
 model Item {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   color     String
   image     String
-  condition String
+  condition String?
   price     Float
   type      String
+  colorHex  String
 
   caseIDs String[] @db.ObjectId
   case    Case[]   @relation(fields: [caseIDs], references: [id])

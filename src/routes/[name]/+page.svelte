@@ -29,6 +29,7 @@
 	let winnerCondition: string;
 	let newBalance: number;
 	let winnerId: string;
+	let winnerHexColor: string;
 
 	let caseOpeningSound = new Sound(opening_mp3);
 	let caseOpenEndSound = new Sound(caseOpenEnd_mp3);
@@ -62,32 +63,6 @@
 		shuffledItems = allItems.slice(0, 100);
 
 		shuffledItems = shuffleCase(cases[0].items);
-
-		const mapDisplayColor = (color: string) => {
-			switch (color) {
-				case 'Industrial':
-					return '#5E98D9';
-				case 'Blue':
-					return '#2563eb';
-				case 'Purple':
-					return '#7c3aed';
-				case 'Pink':
-					return '#d946ef';
-				case 'Red':
-					return '#dc2626';
-				case 'Yellow':
-					return '#eab308';
-				default:
-					return '';
-			}
-		};
-
-		sortedItems.forEach((item) => {
-			if (item.name.startsWith('★')) {
-				item.color = 'Yellow';
-			}
-			item.displayColor = mapDisplayColor(item.color);
-		});
 	});
 
 	const openCase = async () => {
@@ -112,9 +87,9 @@
 			winnerCondition = responseData.winnerCondition;
 			newBalance = responseData.newBalance;
 			winnerId = responseData.winnerId;
+			winnerHexColor = responseData.winnerHexColor;
 
 			balance.update((value) => (value = newBalance));
-			// items.update((value) => value += )
 
 			caseOpeningSound.play();
 
@@ -258,6 +233,7 @@
 								{winnerCondition}
 								{winnerId}
 								{user}
+								{winnerHexColor}
 							/>
 						{:else}
 							<button
@@ -276,17 +252,18 @@
 		</section>
 		<section class="pt-10 px-32">
 			<ul class="grid grid-cols-7">
-				{#each sortedItems as { name, image, price, chance, condition, displayColor, dropRangeStart, dropRangeEnd }}
+				{#each sortedItems as { name, image, price, chance, condition, colorHex, dropRangeStart, dropRangeEnd }}
 					<li
 						class="border-2 rounded-3xl p-4 m-4 flex flex-col items-center bg-gradient-to-r from-rgb(21, 26, 38) to-rgb(29, 31, 49) shadow-surface-700 shadow-xl transition-all duration-200 hover:scale-105 group"
+						style={`border-top-color: ${colorHex}`}
 					>
 						<div class="relative">
 							<div class="">
-								<div class="max-w-md my-4 p-4 relative" style={`border-color: ${displayColor}`}>
+								<div class="max-w-md my-4 p-4 relative">
 									<!-- <div class="absolute inset-0 flex justify-center items-center">
 										<div
 											class="rounded-full h-40 w-40 m-10 backdrop-filter blur-3xl backdrop-blur-sm"
-											style={`background-image: radial-gradient(${displayColor}, transparent)`}
+											style={`background-image: radial-gradient(${colorHex}, transparent)`}
 										/>
 									</div> -->
 

@@ -10,6 +10,7 @@
 	export let winnerCondition: string;
 	export let winnerId: string;
 	export let user: User;
+	export let winnerHexColor: string;
 
 	let dialog: HTMLDialogElement;
 
@@ -27,7 +28,8 @@
 			winnerImage: winnerImage,
 			winnerPrice: winnerPrice,
 			winnerColor: winnerColor,
-			winnerCondition: winnerCondition
+			winnerCondition: winnerCondition,
+			winnerHexColor: winnerHexColor
 		};
 
 		const response = await fetch('../api/close', {
@@ -121,11 +123,11 @@
 				<h1 class="text-md">{winnerName === null ? '' : '(' + winnerCondition + ')'}</h1>
 			</div>
 			<div>
-				<div class="max-w-md my-4 p-4 relative" style={`border-color: ${winnerColor}`}>
+				<div class="max-w-md my-4 p-4 relative" style={`border-color: ${winnerHexColor}`}>
 					<div class="absolute inset-0 flex justify-center items-center">
 						<div
 							class="rounded-full h-full w-full m-10 opacity-50 backdrop-filter blur-3xl backdrop-blur-sm"
-							style={`background-image: radial-gradient(${winnerColor}, transparent)`}
+							style={`background-image: radial-gradient(${winnerHexColor}, transparent)`}
 						/>
 					</div>
 

@@ -8,6 +8,7 @@ export class OpenCase {
 	private winnerColor: string;
 	private winnerCondition: string;
 	private winnerId: string;
+	private winnerHexColor: string;
 
 	constructor(private min: number, private max: number, private myCase: Case) {
 		this.winnerName = '';
@@ -16,6 +17,7 @@ export class OpenCase {
 		this.winnerColor = '';
 		this.winnerCondition = '';
 		this.winnerId = '';
+		this.winnerHexColor = '';
 	}
 
 	public openCase(): void {
@@ -39,6 +41,7 @@ export class OpenCase {
 			this.winnerColor = winningItem.color;
 			this.winnerCondition = winningItem.condition;
 			this.winnerId = winningItem.id;
+			this.winnerHexColor = winningItem.colorHex;
 		} else {
 			console.error('No winning item found for random number:', randomNumber);
 		}
@@ -66,5 +69,9 @@ export class OpenCase {
 
 	public getWinnerId(): string {
 		return this.winnerId;
+	}
+
+	public getWinnerHexColor(): string {
+		return this.winnerHexColor;
 	}
 }

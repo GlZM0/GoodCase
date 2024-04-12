@@ -4,6 +4,10 @@ import prisma from '$lib/prisma';
 import type { Case } from '../app';
 
 export const load: PageServerLoad = async ({ cookies }) => {
+	const steamid = cookies.get('steamid64');
+	let userInventory: any;
+	let userInventoryHistory: any;
+
 	const cases: Case = await prisma.case.findMany({
 		include: {
 			items: true

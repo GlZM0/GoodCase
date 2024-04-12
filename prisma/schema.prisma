@@ -31,6 +31,8 @@ model Item {
 
   caseIDs String[] @db.ObjectId
   case    Case[]   @relation(fields: [caseIDs], references: [id])
+
+  updatedAt DateTime? @updatedAt
 }
 
 model User {

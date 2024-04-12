@@ -1,15 +1,18 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { ProfileItem, ProfileHistoryItem } from '../../app';
 	import { items, historyItems } from '../../stores';
 
-	let userItems: ProfileItem[];
-	let userHistory: ProfileHistoryItem[];
+	export let userItems: ProfileItem[];
+	export let userHistory: ProfileHistoryItem[];
 
 	$: userItems = $items;
 	$: userHistory = $historyItems;
 
-	userItems = $items;
-	userHistory = $historyItems;
+	onMount(() => {
+		userItems = $items;
+		userHistory = $historyItems;
+	});
 </script>
 
 <section class="pt-10">

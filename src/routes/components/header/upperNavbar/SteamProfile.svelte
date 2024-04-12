@@ -50,11 +50,13 @@
 								<p class="text-2xl">{personaname}</p>
 							</div>
 						</span>
-						<a href="../../../profile">
-							<div
-								class="absolute top-0 left-0 w-full h-full rounded-full bg-gray-700 opacity-0 hover:opacity-20 transition-opacity duration-200"
-							/></a
-						>
+						<button>
+							<a href="../../../profile">
+								<div
+									class="absolute top-0 left-0 w-full h-full rounded-full bg-gray-700 opacity-0 hover:opacity-20 transition-opacity duration-200"
+								/></a
+							>
+						</button>
 					</div>
 
 					<form action="/?/logout" method="POST">

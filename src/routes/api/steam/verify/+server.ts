@@ -100,5 +100,5 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 		maxAge: 60 * 60 * 24 * 30
 	});
 
-	throw redirect(302, 'http://localhost:5173');
+	throw redirect(302, 'https://good-case.vercel.app/');
 };

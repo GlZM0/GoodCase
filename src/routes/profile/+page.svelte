@@ -16,12 +16,13 @@
 
 	$: userInv = data.inventories.userInventory;
 	$: userInvHistory = data.inventories.userInventoryHistory;
+	$: userSumOfItemsPrice = data.sumOfItemsPrice;
 
 	onMount(() => {
-		if (data) {
-			items.update((value) => (value = userInv));
-			historyItems.update((value) => (value = userInvHistory));
-		}
+		// if (data) {
+		// 	items.update((value) => (value = userInv));
+		// 	historyItems.update((value) => (value = userInvHistory));
+		// }
 	});
 
 	const sellAllItems = async () => {
@@ -36,6 +37,7 @@
 		const newBalance = responseData.user.newBalance;
 		if (response.status === 200) {
 			balance.update((value) => (value = newBalance));
+			userSumOfItemsPrice = 0;
 			userInv = [];
 			userInvHistory = responseData.user.inventoryHistory;
 		}
@@ -61,35 +63,43 @@
 			</div>
 			<div class="px-32">
 				<div class="grid justify-items-end">
-					<button
-						class="w-[15%] h-12 border-2 rounded-full border-red-500 bg-gradient-to-r from-surface-700/80 to-red-400/60 hover:from-red-500 hover:to-red-500 text-white font-bold py-2 flex items-center justify-center mr-4 mb-2"
-						on:click={() => {
-							sellAllItems();
-						}}
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="h-6 w-6 mr-2"
-							viewBox="0 0 512 512"
-							fill="none"
-							stroke="#000000"
+					{#if userSumOfItemsPrice > 0}
+						<button
+							class="w-[13%] h-12 border-2 rounded-full border-red-500 bg-gradient-to-r from-surface-700/80 to-red-400/60 hover:from-red-500 hover:to-red-500 text-white font-bold py-2 flex items-center justify-center mr-4 mb-2"
+							on:click={() => {
+								sellAllItems();
+							}}
 						>
-							<g id="SVGRepo_bgCarrier" stroke-width="0" />
-							<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-							<g id="SVGRepo_iconCarrier">
-								<title>shopping-cart</title>
-								<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-									<g id="icon" fill="#ffffff" transform="translate(42.666667, 85.333333)">
-										<path
-											d="M7.10542736e-15,-1.42108547e-14 L70.3622093,-1.42108547e-14 L89.7493333,85.3333333 L378.389061,85.3333333 L337.246204,277.333333 L89.6377907,277.333333 L36.288,42.6666667 L7.10542736e-15,42.6666667 L7.10542736e-15,-1.42108547e-14 Z M325.610667,128 L99.456,128 L123.690667,234.666667 L302.741333,234.666667 L325.610667,128 Z M138.666667,384 C156.339779,384 170.666667,369.673112 170.666667,352 C170.666667,334.326888 156.339779,320 138.666667,320 C120.993555,320 106.666667,334.326888 106.666667,352 C106.666667,369.673112 120.993555,384 138.666667,384 Z M288,384 C305.673112,384 320,369.673112 320,352 C320,334.326888 305.673112,320 288,320 C270.326888,320 256,334.326888 256,352 C256,369.673112 270.326888,384 288,384 Z"
-											id="Combined-Shape"
-										/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-6 w-6 mr-2"
+								viewBox="0 0 512 512"
+								fill="none"
+								stroke="#000000"
+							>
+								<g id="SVGRepo_bgCarrier" stroke-width="0" />
+								<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+								<g id="SVGRepo_iconCarrier">
+									<title>shopping-cart</title>
+									<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										<g id="icon" fill="#ffffff" transform="translate(42.666667, 85.333333)">
+											<path
+												d="M7.10542736e-15,-1.42108547e-14 L70.3622093,-1.42108547e-14 L89.7493333,85.3333333 L378.389061,85.3333333 L337.246204,277.333333 L89.6377907,277.333333 L36.288,42.6666667 L7.10542736e-15,42.6666667 L7.10542736e-15,-1.42108547e-14 Z M325.610667,128 L99.456,128 L123.690667,234.666667 L302.741333,234.666667 L325.610667,128 Z M138.666667,384 C156.339779,384 170.666667,369.673112 170.666667,352 C170.666667,334.326888 156.339779,320 138.666667,320 C120.993555,320 106.666667,334.326888 106.666667,352 C106.666667,369.673112 120.993555,384 138.666667,384 Z M288,384 C305.673112,384 320,369.673112 320,352 C320,334.326888 305.673112,320 288,320 C270.326888,320 256,334.326888 256,352 C256,369.673112 270.326888,384 288,384 Z"
+												id="Combined-Shape"
+											/>
+										</g>
 									</g>
 								</g>
-							</g>
-						</svg>
-						Sell all
-					</button>
+							</svg>
+							Sell all for ${userSumOfItemsPrice}
+						</button>
+					{:else}
+						<button
+							class="w-[15%] h-12 border-2 rounded-full border-gray-500 bg-gray-700 text-white font-bold py-2 flex items-center justify-center mr-4 mb-2 cursor-default"
+						>
+							No items to sell
+						</button>
+					{/if}
 				</div>
 				<section class="pt-10">
 					<ul class="grid grid-cols-7">

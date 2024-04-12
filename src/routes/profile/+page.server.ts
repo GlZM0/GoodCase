@@ -59,6 +59,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		}
 
 		return {
+			sumOfItemsPrice: user?.sumOfItemsPrice,
 			inventories: {
 				userInventory: userInventory,
 				userInventoryHistory: userInventoryHistory

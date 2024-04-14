@@ -6,7 +6,11 @@ export const POST = async ({ request }: RequestEvent) => {
 		const data = await request.json();
 		let updatedBalance: number;
 		let updatedInventoryHistory;
-		let winnerPrice = data.winnerData.winnerPrice;
+		let price = data.itemData.itemPrice;
+		let userInv: any;
+		let userInvHistory: any;
+		let filteredInv: any;
+		let newSumPriceOfItems: any;
 
 		const user = await prisma.user.findUnique({
 			where: {
@@ -15,7 +19,7 @@ export const POST = async ({ request }: RequestEvent) => {
 		});
 
 		const sellData = {
-			itemId: data.winnerData.winnerId,
+			itemId: data.itemData.itemId,
 			action: 'sold'
 		};
 
@@ -27,9 +31,64 @@ export const POST = async ({ request }: RequestEvent) => {
 			updatedInventoryHistory = [sellData];
 		}
 
+		const userActualInv: any = user?.siteInventory;
+
+		if (Array.isArray(userActualInv)) {
+			filteredInv = userActualInv.filter((item) => item !== sellData.itemId);
+		} else {
+			console.log('userActualInv is not an array');
+		}
+
 		const userBalance: number | undefined = user?.balance;
 
-		updatedBalance = userBalance + winnerPrice;
+		updatedBalance = userBalance + price;
+
+		if (user) {
+			if (user.sumOfItemsPrice != null) newSumPriceOfItems = user.sumOfItemsPrice - price;
+
+			const getUserInventory = async (itemIds: string[]) => {
+				try {
+					const userItems = await prisma.item.findMany({
+						where: {
+							id: { in: itemIds }
+						}
+					});
+
+					return userItems;
+				} catch (error) {
+					console.error('Error fetching item data:', error);
+					throw error;
+				}
+			};
+
+			const getUserHistoryInventory = async (itemData: any) => {
+				try {
+					const itemsWithAction = [];
+
+					for (const item of itemData) {
+						const itemId = item.itemId;
+						const action = item.action;
+
+						const foundItem = await prisma.item.findUnique({ where: { id: itemId } });
+
+						if (foundItem) {
+							const itemWithAction = { ...foundItem, action: action };
+							itemsWithAction.push(itemWithAction);
+						}
+					}
+					return itemsWithAction;
+				} catch (error) {
+					console.error(error);
+				}
+			};
+
+			const itemIds: string[] = user.siteInventory as string[];
+			const historyItemIds: any = user.inventoryHistory;
+			if (itemIds != undefined || historyItemIds != undefined) {
+				userInv = await getUserInventory(filteredInv);
+				userInvHistory = await getUserHistoryInventory(updatedInventoryHistory);
+			}
+		}
 
 		const updateUser = prisma.user.update({
 			where: {
@@ -37,6 +96,8 @@ export const POST = async ({ request }: RequestEvent) => {
 			},
 			data: {
 				balance: updatedBalance,
+				sumOfItemsPrice: newSumPriceOfItems,
+				siteInventory: filteredInv,
 				inventoryHistory: updatedInventoryHistory
 			}
 		});
@@ -45,7 +106,10 @@ export const POST = async ({ request }: RequestEvent) => {
 
 		const responseData = {
 			...data,
-			updatedBalance: updatedBalance
+			updatedBalance: updatedBalance,
+			sumOfItemsPrice: newSumPriceOfItems,
+			siteInventory: userInv,
+			userInventoryHistory: userInvHistory
 		};
 
 		const headers = {

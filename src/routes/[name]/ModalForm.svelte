@@ -54,9 +54,9 @@
 	};
 
 	const sellItem = async () => {
-		let winnerData = {
-			winnerId: winnerId,
-			winnerPrice: winnerPrice
+		let itemData = {
+			itemId: winnerId,
+			itemPrice: winnerPrice
 		};
 
 		const response = await fetch('../api/sellItem', {
@@ -65,7 +65,7 @@
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				winnerData: winnerData,
+				itemData: itemData,
 				user: user
 			})
 		});

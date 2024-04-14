@@ -42,6 +42,32 @@
 			userInvHistory = responseData.user.inventoryHistory;
 		}
 	};
+
+	const sellItem = async (itemId: any, itemPrice: any) => {
+		let itemData = {
+			itemId: itemId,
+			itemPrice: itemPrice
+		};
+
+		const response = await fetch('../api/sellItem', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				itemData: itemData,
+				user: data.user
+			})
+		});
+
+		const responseData = await response.json();
+		if (response.status === 200) {
+			balance.update((value) => (value = responseData.updatedBalance));
+			userSumOfItemsPrice = responseData.sumOfItemsPrice;
+			userInv = responseData.siteInventory;
+			userInvHistory = responseData.userInventoryHistory;
+		}
+	};
 </script>
 
 <div class="min-w-full min-h-full">
@@ -91,11 +117,11 @@
 									</g>
 								</g>
 							</svg>
-							Sell all for ${userSumOfItemsPrice}
+							Sell all for ${userSumOfItemsPrice.toFixed(2)}
 						</button>
 					{:else}
 						<button
-							class="w-[15%] h-12 border-2 rounded-full border-gray-500 bg-gray-700 text-white font-bold py-2 flex items-center justify-center mr-4 mb-2 cursor-default"
+							class="w-[13%] h-12 border-2 rounded-full border-gray-500 bg-gray-700 text-white font-bold py-2 flex items-center justify-center mr-4 mb-2 cursor-default"
 						>
 							No items to sell
 						</button>
@@ -103,37 +129,46 @@
 				</div>
 				<section class="pt-10">
 					<ul class="grid grid-cols-7">
-						{#each userInv as { name, image, price, hexColor, condition, type }}
+						{#each userInv as { id, name, image, price, colorHex, condition, type }}
 							<li
-								class="border-2 rounded-3xl p-4 m-4 flex flex-col items-center bg-gradient-to-r from-rgb(21, 26, 38) to-rgb(29, 31, 49) shadow-surface-700 shadow-xl transition-all duration-200 hover:scale-105 group"
+								class="border-2 rounded-3xl p-4 m-4 flex flex-col items-center transition-all duration-200 group relative overflow-hidden hover:scale-105"
+								style={`border-top-color: ${colorHex}`}
 							>
-								<div class="relative">
-									<div class="hover:filter hover:blur-sm">
-										<div class="max-w-md my-4 p-4 relative" style={`border-color: ${hexColor}`}>
-											<div class="absolute inset-0 flex justify-center items-center">
-												<div
-													class="rounded-full h-40 w-40 opacity-80 m-10 backdrop-filter blur-3xl backdrop-blur-sm"
-													style={`background-image: radial-gradient(${hexColor}, transparent)`}
-												/>
-											</div>
-
-											<img
-												src={image}
-												alt={name}
-												class="max-w-full p-4 aspect-[4/3]"
-												style="position: relative; z-index: 1;"
-											/>
-										</div>
-										<h2 class="text-base font-bold text-center">{name}</h2>
-										<p class="text-base text-gray-500 mb-2 text-center">{condition}</p>
+								<div>
+									<div class="max-w-md my-4 p-4">
+										<img src={image} alt={name} class="max-w-full aspect-[4/3]" />
 									</div>
+									<h2 class="text-base font-bold text-center">{name}</h2>
+									<p class="text-base text-gray-500 mb-2 text-center">{condition}</p>
+								</div>
+								<div
+									class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-y-full group-hover:transition-all group-hover:duration-200 group-hover:translate-y-0"
+								>
+									<button
+										class="w-[75%] h-12 border-2 rounded-full border-red-500 bg-gradient-to-r from-surface-700/80 to-red-400/60 hover:from-red-500 hover:to-red-500 text-white font-bold py-2 px-4 flex items-center justify-center mb-2"
+										on:click={() => {
+											sellItem(id, price);
+										}}
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											class="h-6 w-6 mr-2"
+											viewBox="0 0 512 512"
+											fill="none"
+											stroke="#000000"
+										>
+											<!-- SVG content -->
+										</svg>
+										Sell for ${price.toFixed(2)}
+									</button>
 								</div>
 							</li>
 						{/each}
 
-						{#each userInvHistory as { name, image, price, action, hexColor, condition }}
+						{#each userInvHistory as { name, image, price, action, colorHex, condition }}
 							<li
-								class="border-2 rounded-3xl p-4 m-4 flex flex-col items-center relative bg-gradient-to-r from-rgb(21, 26, 38) to-rgb(29, 31, 49) shadow-surface-700 shadow-xl transition-transform hover:scale-105"
+								class="border-2 rounded-3xl p-4 m-4 flex flex-col items-center transition-all duration-200 hover:scale-105 group"
+								style={`border-top-color: ${colorHex}`}
 							>
 								<div class="flex items-center">
 									<svg
@@ -159,21 +194,9 @@
 									<p class="ml-2 text-xl">{action}</p>
 								</div>
 
-								<div class="hover:filter hover:blur-sm">
-									<div class="max-w-md my-4 p-4 relative" style={`border-color: ${hexColor}`}>
-										<div class="absolute inset-0 flex justify-center items-center">
-											<div
-												class="rounded-full h-40 w-40 opacity-80 m-10 backdrop-filter blur-3xl backdrop-blur-sm"
-												style={`background-image: radial-gradient(${hexColor}, transparent)`}
-											/>
-										</div>
-
-										<img
-											src={image}
-											alt={name}
-											class="max-w-full aspect-[4/3]"
-											style="position: relative; z-index: 1;"
-										/>
+								<div>
+									<div class="max-w-md my-4 p-4">
+										<img src={image} alt={name} class="max-w-full aspect-[4/3]" />
 									</div>
 									<h2 class="text-base font-bold text-center">{name}</h2>
 									<p class="text-base text-gray-500 mb-2 text-center">{condition}</p>

@@ -30,6 +30,8 @@
 	let newBalance: number;
 	let winnerId: string;
 	let winnerHexColor: string;
+	let winnerCaseIDs: string[];
+	let winnerType: string;
 
 	let caseOpeningSound = new Sound(opening_mp3);
 	let caseOpenEndSound = new Sound(caseOpenEnd_mp3);
@@ -88,6 +90,8 @@
 			newBalance = responseData.newBalance;
 			winnerId = responseData.winnerId;
 			winnerHexColor = responseData.winnerHexColor;
+			winnerCaseIDs = responseData.winnerCaseIDs;
+			winnerType = responseData.winnerType;
 
 			balance.update((value) => (value = newBalance));
 
@@ -225,6 +229,8 @@
 								</div>
 							</button>
 							<ModalForm
+								{winnerCaseIDs}
+								{winnerType}
 								{winnerImage}
 								{winnerName}
 								{winnerPrice}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { User } from '@prisma/client';
-	import { balance, showWinnerModal, items } from '../../stores';
+	import { balance, showWinnerModal, items, selectedItem } from '../../stores';
 
 	export let openCase: any;
 	export let winnerImage: string;
@@ -11,6 +11,8 @@
 	export let winnerId: string;
 	export let user: User;
 	export let winnerHexColor: string;
+	export let winnerCaseIDs: string[];
+	export let winnerType: string;
 
 	let dialog: HTMLDialogElement;
 
@@ -248,6 +250,20 @@
 						>
 						<button
 							on:click={() => {
+								let itemData = {
+									caseIDs: winnerCaseIDs,
+									color: winnerColor,
+									colorHex: winnerHexColor,
+									condition: winnerCondition,
+									id: winnerId,
+									name: winnerName,
+									image: winnerImage,
+									price: winnerPrice,
+									type: winnerType
+								};
+
+								selectedItem.update((value) => (value = itemData));
+								console.log($selectedItem);
 								close();
 								dialog.close();
 							}}

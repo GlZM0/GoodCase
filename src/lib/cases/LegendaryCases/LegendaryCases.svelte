@@ -30,7 +30,7 @@
 				<div class="flex justify-center price-div">
 					<a
 						href={fade.link}
-						class="flex !no-underline text-white p-2 w-40 border-solid border-purple-500 bg-gradient-to-r from-purple-500/80 to-amber-400 font-bold border-2 rounded-full justify-center transform transition-transform scale-x-100 group-hover:scale-x-110"
+						class="flex !no-underline text-white p-2 w-40 border-solid border-purple-500 bg-gradient-to-r from-purple-500/80 via-pink-400 to-amber-400 font-bold border-2 rounded-full justify-center transform transition-transform scale-x-100 group-hover:scale-x-110"
 					>
 						<p class="text-md price-paragraph">${fade.price}</p>
 					</a>

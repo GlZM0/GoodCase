@@ -43,6 +43,8 @@ export const POST = async ({ request, cookies }: RequestEvent) => {
 			const winnerCondition = openSystem.getWinnerCondition();
 			const winnerId = openSystem.getWinnerId();
 			const winnerHexColor = openSystem.getWinnerHexColor();
+			const winnerCaseIDs = openSystem.getWinnerCaseIds();
+			const winnerType = openSystem.getWinnerType();
 
 			putWinnerItemIntoPlace(
 				shuffledItems,
@@ -61,7 +63,9 @@ export const POST = async ({ request, cookies }: RequestEvent) => {
 				winnerCondition: winnerCondition,
 				newBalance: newBalance,
 				winnerId: winnerId,
-				winnerHexColor: winnerHexColor
+				winnerHexColor: winnerHexColor,
+				winnerCaseIDs: winnerCaseIDs,
+				winnerType: winnerType
 			};
 
 			await Promise.all([updateUserBalance]);

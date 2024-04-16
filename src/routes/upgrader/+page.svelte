@@ -6,14 +6,18 @@
 		upgradeChance,
 		won,
 		cashback,
-		balance
+		balance,
+		winnerPercentage
 	} from '../../stores';
 	import type { ProfileItem } from '../../app';
 	import { onMount } from 'svelte';
+	import { animate, spring, timeline } from 'motion';
 	export let data;
 
 	$: userInv = data.userInventory;
 	$: items = data.items;
+
+	let itemContainer: HTMLElement;
 
 	const toastStore = getToastStore();
 
@@ -74,7 +78,19 @@
 
 		const responseData = await response.json();
 		if (response.status === 200) {
-			won.update((value) => (value = responseData.won));
+			let winnerPercentageNumber = parseFloat(responseData.winnerPercentage);
+			let turnover = 720 + winnerPercentageNumber * 3.6;
+			console.log(winnerPercentageNumber);
+			winnerPercentage.update((value) => (value = turnover));
+			console.log($winnerPercentage);
+
+			animate(
+				itemContainer,
+				{ rotate: $winnerPercentage },
+				{ easing: spring({ damping: 60, stiffness: 10, mass: 2, restSpeed: 1 }) }
+			).finished.then(() => {
+				won.update((value) => (value = responseData.won));
+			});
 
 			if ($won === true) {
 				userInv = responseData.siteInventory;
@@ -85,7 +101,6 @@
 				cashback.update((value) => (value = responseData.cashback));
 				balance.update((value) => (value = $balance + $cashback));
 				selectedItem.update((value) => (value = null));
-				selectedWinnerItem.update((value: any) => (value = null));
 			}
 		}
 	};
@@ -129,15 +144,48 @@
 		</div>
 
 		{#if $won === null && $upgradeChance}
-			<div class="rounded-full border-4 border-white flex">
-				<ProgressRadial
-					class="h-96 w-96"
-					font={64}
-					meter="stroke-surface-400/80"
-					track="stroke-surface-800/60"
-					stroke={515}
-					value={$upgradeChance}>{$upgradeChance.toFixed(2)}%</ProgressRadial
-				>
+			<div class="relative">
+				<div class="rounded-full border-4 border-white flex">
+					<div bind:this={itemContainer}>
+						<ProgressRadial
+							class="absolute inset-0 h-96 w-96"
+							font={64}
+							meter="stroke-surface-400/80"
+							track="stroke-surface-800/60"
+							stroke={515}
+							value={$upgradeChance}
+						/>
+					</div>
+					<div
+						class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-5xl"
+					>
+						{$upgradeChance.toFixed(2)}%
+					</div>
+				</div>
+				<div class="absolute top-[0.95rem] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+					<svg
+						width="40px"
+						height="40px"
+						viewBox="-1.6 -1.6 19.20 19.20"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						transform="matrix(1, 0, 0, -1, 0, 0)rotate(0)"
+						stroke="#ffffff"
+						stroke-width="0.00016"
+						><g id="SVGRepo_bgCarrier" stroke-width="0" /><g
+							id="SVGRepo_tracerCarrier"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke="#CCCCCC"
+							stroke-width="0.32"
+						/><g id="SVGRepo_iconCarrier"
+							><path
+								fill="#ffffff"
+								d="M8 1.25a2.101 2.101 0 00-1.785.996l.64.392-.642-.388-5.675 9.373-.006.01a2.065 2.065 0 00.751 2.832c.314.183.67.281 1.034.285h11.366a2.101 2.101 0 001.791-1.045 2.064 2.064 0 00-.006-2.072L9.788 2.25l-.003-.004A2.084 2.084 0 008 1.25z"
+							/></g
+						></svg
+					>
+				</div>
 			</div>
 		{:else if $won === true}
 			<div

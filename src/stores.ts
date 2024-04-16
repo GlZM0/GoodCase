@@ -13,3 +13,4 @@ export const selectedWinnerItem = writable<ProfileItem>(null);
 export const upgradeChance = writable<number | null>(null);
 export const won = writable<boolean | null>();
 export const cashback = writable<number>(0);
+export const winnerPercentage = writable<number>(0);

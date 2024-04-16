@@ -84,7 +84,7 @@ export const POST = async ({ request, cookies }: RequestEvent) => {
 
 			responseData = {
 				won: calculatorData.won,
-				winnerPercentage: calculatorData.winnerPercentage,
+				winnerPercentage: calculatorData.winnerPercentageNumber,
 				siteInventory: userInventory
 			};
 		} else {
@@ -148,7 +148,7 @@ export const POST = async ({ request, cookies }: RequestEvent) => {
 
 			responseData = {
 				won: calculatorData.won,
-				winnerPercentage: calculatorData.winnerPercentage,
+				winnerPercentage: calculatorData.winnerPercentageNumber,
 				siteInventory: userInventory,
 				cashback: cashback
 			};

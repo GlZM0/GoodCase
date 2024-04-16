@@ -3,10 +3,10 @@ export const calculateWin = (data: any) => {
 
 	const generateRandomNumber = () => {
 		let randomNumber = Math.random() * (100 - 1) + 1;
-		return randomNumber.toFixed(2);
+		return randomNumber;
 	};
 
-	let winnerPercentage = generateRandomNumber();
+	let winnerPercentage: number = generateRandomNumber();
 
 	if (winnerPercentage > data.itemData.upgradeChance) {
 		won = false;
@@ -16,6 +16,6 @@ export const calculateWin = (data: any) => {
 
 	return {
 		won: won,
-		winnerPercentage: winnerPercentage
+		winnerPercentageNumber: winnerPercentage
 	};
 };

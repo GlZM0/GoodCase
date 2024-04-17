@@ -79,7 +79,11 @@
 		const responseData = await response.json();
 		if (response.status === 200) {
 			let winnerPercentageNumber = parseFloat(responseData.winnerPercentage);
-			let turnover = 720 + winnerPercentageNumber * 3.6;
+			let turnover: any;
+			if ($upgradeChance) {
+				turnover = 720 + winnerPercentageNumber * 3.6 - (100 - $upgradeChance);
+			}
+
 			console.log(winnerPercentageNumber);
 			winnerPercentage.update((value) => (value = turnover));
 			console.log($winnerPercentage);

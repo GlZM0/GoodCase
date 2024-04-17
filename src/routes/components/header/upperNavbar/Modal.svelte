@@ -1,10 +1,24 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import { showApiModal } from '../../../../stores';
 	import { steamLogin } from '../../../api/steam/signin/+server';
 
 	let dialog: HTMLDialogElement;
-	let apiKey: number;
+	let apiKey: string;
+
+	const toastStore2 = getToastStore();
+
+	const apiToast = () => {
+		const t: ToastSettings = {
+			message: 'Provide correct api key',
+			background: 'bg-gradient-to-r from-surface-700 to-red-500 text-white',
+			classes: 'border-4 border-red-500 font-bold'
+		};
+		toastStore2.trigger(t);
+	};
+
+	toastStore2.clear();
 
 	const handleClick = () => {
 		localStorage.setItem('apikey', JSON.stringify(apiKey));
@@ -18,7 +32,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <dialog
-	class="rounded p-0 w-1/2 h-1/4 bg-surface-700"
+	class="justify-center rounded-[32px] p-0 h-[500px] w-[500px] bg-surface-700 overflow-hidden"
 	bind:this={dialog}
 	on:close={() => {
 		showApiModal.set(false);
@@ -27,21 +41,53 @@
 		dialog.close();
 	}}
 >
-	<div class="flex justify-center items-center space-x-2 text-white" on:click|stopPropagation>
+	<div
+		class="flex flex-col justify-center items-center text-center space-y-2 text-white h-full"
+		on:click|stopPropagation
+	>
+		<button
+			class="absolute top-4 right-4"
+			on:click|self={() => {
+				dialog.close();
+			}}
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-10 w-10 mr-2"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M6 18L18 6M6 6l12 12"
+				/>
+			</svg>
+		</button>
 		<form method="POST" action="?/signin" use:enhance>
 			<label for="apiKey" class="label">
-				<span> Put your Steam API Key here: </span>
+				<span class="text-3xl"> Put your Steam API Key here: </span>
 			</label>
 			<input
 				type="text"
-				class="input p-1 border-2 m-1 placeholder:pl-1"
+				class="input p-1 border-2 my-5 placeholder:pl-1"
 				placeholder="API KEY"
 				name="apikey"
 				bind:value={apiKey}
 			/>
 			<div class="flex flex-col items-center">
-				<button type="submit" on:click={handleClick} class="border-2 my-2 p-1 rounded-lg"
-					>Submit</button
+				<button
+					type="submit"
+					on:click={() => {
+						if (apiKey.length === 32) {
+							handleClick();
+						} else {
+							apiToast();
+						}
+					}}
+					class="border-2 my-5 p-1 rounded-lg w-40 h-16 text-xl">Submit</button
 				>
 			</div>
 			<p>

@@ -263,7 +263,6 @@
 								};
 
 								selectedItem.update((value) => (value = itemData));
-								console.log($selectedItem);
 								close();
 								dialog.close();
 							}}

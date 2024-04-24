@@ -54,27 +54,26 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 
 	userExists = !!(await prisma.user.findFirst({
 		where: {
-			steamapikey: JSON.stringify(userSteamApiKey)
+			steamid: userSteamID64
 		}
 	}));
 
 	if (!userExists) {
-		var clearBalance = 0;
+		var userBalance = 1000;
 		await prisma.user.create({
 			data: {
-				steamapikey: JSON.stringify(userSteamApiKey),
 				steamid: userSteamID64?.toString() ?? '',
 				personaname: personaname,
 				profileurl: profileurl,
 				avatar: avatar,
 				bigAvatar: bigAvatar,
-				balance: clearBalance,
+				balance: userBalance,
 				sumOfItemsPrice: 0,
 				siteInventory: [],
 				inventoryHistory: []
 			}
 		});
-		cookies.set('balance', JSON.stringify(clearBalance), {
+		cookies.set('balance', JSON.stringify(userBalance), {
 			path: '/',
 			maxAge: 60 * 60 * 24 * 30
 		});
@@ -84,7 +83,6 @@ export const GET = async ({ url, cookies }: RequestEvent) => {
 				steamid: userSteamID64
 			}
 		});
-
 		cookies.set('balance', JSON.stringify(user?.balance), {
 			path: '/',
 			maxAge: 60 * 60 * 24 * 30

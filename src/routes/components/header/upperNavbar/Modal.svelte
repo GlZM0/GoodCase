@@ -20,8 +20,7 @@
 
 	toastStore2.clear();
 
-	const handleClick = () => {
-		localStorage.setItem('apikey', JSON.stringify(apiKey));
+	const login = () => {
 		dialog.close();
 		steamLogin();
 	};
@@ -82,7 +81,7 @@
 					type="submit"
 					on:click={() => {
 						if (apiKey.length === 32) {
-							handleClick();
+							login();
 						} else {
 							apiToast();
 						}

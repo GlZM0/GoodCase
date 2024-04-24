@@ -8,8 +8,8 @@
 	import { Sound } from 'svelte-sound';
 	import opening_mp3 from '../../static/openingSound.mp3';
 	import caseOpenEnd_mp3 from '../../static/caseOpenEnd.mp3';
-	import { isApiKey } from '$routes/components/header/upperNavbar/UpperNavbar.svelte';
 	import type { Case, Item } from '../../app';
+	import { showApiModal } from '../../stores';
 	import { sortItems } from './ItemsSorter';
 	import { shuffleCase } from '../api/caseOpeningSystem/CaseShuffler';
 
@@ -203,7 +203,7 @@
 							<button
 								class="flex justify-center items-center rounded-full w-60 h-16 bg-gray-700"
 								on:click={() => {
-									isApiKey();
+									showApiModal.set(true);
 								}}
 							>
 								<div class="p-6">

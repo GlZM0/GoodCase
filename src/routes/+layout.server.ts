@@ -2,6 +2,7 @@ import type { LayoutServerLoad } from './$types';
 import prisma from '$lib/prisma';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
+	cookies.delete('apikey', { path: '/' });
 	const personaname = cookies.get('personaname');
 	const steamid = cookies.get('steamid64');
 	const avatar = cookies.get('avatar');

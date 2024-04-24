@@ -1,23 +1,16 @@
-<script context="module">
-	export const isApiKey = () => {
-		if (localStorage.getItem('apikey')) {
-			steamLogin();
-		} else {
-			showApiModal.set(true);
-		}
-	};
-</script>
-
 <script lang="ts">
 	import SteamProfile from './SteamProfile.svelte';
 	import Modal from './Modal.svelte';
 	import { showApiModal } from '../../../../stores';
-	import { steamLogin } from '$routes/api/steam/signin/+server';
 	import type { UserObj } from '../../../../app';
 
 	export let data: UserObj;
 
 	const isLogged = data.user.logged;
+
+	const login = () => {
+		showApiModal.set(true);
+	};
 </script>
 
 <div class="p-4 bg-surface-800 h-24 flex items-center">
@@ -38,7 +31,7 @@
 				{#if isLogged}
 					<SteamProfile {data} />
 				{:else}
-					<button on:click={isApiKey}>
+					<button on:click={() => login()}>
 						<div
 							class="flex justify-center items-center space-x-2 bg-gray-700 p-4 rounded-3xl border-2 border-gray-300 transition-transform duration-250 scale-100 hover:scale-90 active:scale-100"
 						>

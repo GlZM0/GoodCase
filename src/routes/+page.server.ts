@@ -34,10 +34,11 @@ export const actions: Actions = {
 		};
 	},
 	logout: async ({ cookies }) => {
-		cookies.delete('personaname');
-		cookies.delete('avatar');
-		cookies.delete('steamid64');
-		cookies.delete('balance');
+		cookies.delete('personaname', { path: '/' });
+		cookies.delete('avatar', { path: '/' });
+		cookies.delete('steamid64', { path: '/' });
+		cookies.delete('balance', { path: '/' });
+		cookies.delete('apikey', { path: '/' });
 
 		return {
 			success: true

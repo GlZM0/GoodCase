@@ -1,38 +1,51 @@
-# create-svelte
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+# GoodCase 🐸👍
 
-## Creating a project
+## ⭐ Table of contents
 
-If you're seeing this, you've probably already done this step. Congrats!
+- [📄 Project Description](#project-description)
+- [🏛️ Architecture](#architecture)
+- [🌐 Website](#website)
+- [🖼️ Screens](#screens)
+- [📜 License](#license)
+- [❗Important](#important)
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Project Description
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+Project revolves around the development of a Counter-Strike 2 gambling platform, offering users a thrilling experience by opening cases where you roll an item which you can sell or upgrade it. Site promises a sleek and intuitive interface.
 
-## Developing
+### Key Features:
+- **Steam API Integration:** Seamlessly log in via Steam for secure authentication.
+- **Case Opening:** Experience the excitement of opening cases to discover in-game items.
+- **Item Selling:** Trade or sell your items for profit or to enhance your inventory.
+- **Item Upgrading:** Enhance the value of your items through the upgrade feature.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+This project relies on data provided by my [Steam Market  Data Engineer Project](https://github.com/gizmo19/steam-data-engineer-project), ensuring accurate and up-to-date item details and market values.
 
-```bash
-npm run dev
+## Architecture
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+### Frontend Layer:
 
-## Building
+The frontend layer, built with Svelte, SvelteKit, Tailwind and Skeleton UI, forms the user-facing aspect of GoodCase. It provides an intuitive interface for users to interact with the Counter-Strike 2 gambling features, including case opening, item selling and upgrading.
 
-To create a production version of your app:
+### Backend Layer:
 
-```bash
-npm run build
-```
+The backend layer encompasses the server-side logic and data processing capabilities of our platform. It handles user authentication via the Steam API and facilitates interactions with the database hosted on MongoDB Atlas. Additionally, this layer manages core functionalities such as item transactions, upgrades, and inventory management. Built with Node.js and leveraging the power of TypeScript for type safety. MongoDB is updated by [Steam Market  Data Engineer Project](https://github.com/gizmo19/steam-data-engineer-project).
 
-You can preview the production build with `npm run preview`.
+## Website
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Check how it works! [GoodCase](https://good-case.vercel.app/)
+
+## Screens
+
+![GoodCase](images/GoodCase_logged.png)
+![GoodCase](images/GoodCase_opening.png)
+![GoodCase](images/GoodCase_upgrader.png)
+
+## License
+
+This project is licensed under the MIT License.
+
+## Important
+
+Users cannot deposit real money into the system. GoodCase is designed and created as personal private project

@@ -48,4 +48,6 @@ This project is licensed under the MIT License.
 
 ## Important
 
+Used CSGOCASES images of the cases
+
 Users cannot deposit real money into the system. GoodCase is designed and created as personal private project
